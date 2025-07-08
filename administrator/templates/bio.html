@@ -1,0 +1,332 @@
+{% load static %}
+<div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="profileModalLabel"><b>Perfil de Usuário</b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'profile_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {# Campo para FOTO DE PERFIL - COM PRÉ-VISUALIZAÇÃO #}
+                    <div class="form-group profile-image-upload-group">
+                        <label for="profile_photo" class="col-sm-3 control-label">Foto de Perfil</label>
+                        <div class="col-sm-9 profile-image-container">
+                            <img id="profile-preview"
+                                 src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}"
+                                 alt="Foto de Perfil"
+                                 class="img-circle profile-preview-img">
+                            {# ATENÇÃO: name="profile_image" AGORA CORRESPONDE AO MODELO E FORM #}
+                            <input type="file" class="form-control" id="profile_photo" name="profile_image" accept="image/*">
+                            <p class="help-block">Tamanho máximo: 2MB. Formatos: JPG, PNG.</p>
+                        </div>
+                    </div>
+
+                    {# Campo para PRIMEIRO NOME #}
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-3 control-label">Primeiro Nome</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="firstname" name="first_name" value="{{ request.user.first_name }}" required>
+                        </div>
+                    </div>
+
+                    {# Campo para ÚLTIMO NOME #}
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">Último Nome</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="lastname" name="last_name" value="{{ request.user.last_name }}" required>
+                        </div>
+                    </div>
+
+                    {# Campo para Email (Exemplo) #}
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label">Email</label>
+                        <div class="col-sm-9">
+                            <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" readonly>
+                        </div>
+                    </div>
+
+                    {# Campo para Senha Atual (Opcional, para confirmação) #}
+                    <div class="form-group">
+                        <label for="password" class="col-sm-3 control-label">Senha Atual</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha atual para confirmar">
+                        </div>
+                    </div>
+
+                    {# Campo para Nova Senha (Opcional) #}
+                    <div class="form-group">
+                        <label for="new_password" class="col-sm-3 control-label">Nova Senha</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Deixe em branco para não alterar">
+                        </div>
+                    </div>
+
+                    {# Campo para Confirmar Nova Senha (Opcional) #}
+                    <div class="form-group">
+                        <label for="confirm_password" class="col-sm-3 control-label">Confirmar Senha</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirme sua nova senha">
+                        </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Fechar</button>
+                <button type="submit" class="btn btn-primary-gradient btn-flat" name="save"><i class="fa fa-save"></i> Salvar Alterações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Variáveis do tema - Cores e sombras padrão para Secure Vote */
+    :root {
+      --card-bg: #FFFFFF;
+      --primary-blue: #0077B5; /* Azul principal para links, focos */
+      --dark-blue: #005A8D; /* Azul mais escuro para hover */
+      --text-dark: #212529; /* Cor principal do texto */
+      --text-light: #6c757d; /* Cor do texto secundário/ajuda */
+      --success-green: #28a745; /* Verde para sucesso */
+      --border-light: #E0E0E0; /* Borda clara */
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave */
+      
+      /* Cores do gradiente principal (do tema Secure Vote) */
+      --quantum-blue: #00b4d8; /* Azul claro */
+      --secure-green: #2ecc71; /* Verde */
+      --gradient-start: var(--secure-green);
+      --gradient-end: var(--quantum-blue);
+    }
+
+    /* Conteúdo do Modal */
+    .modal-content {
+      background: var(--card-bg);
+      border: none; /* Remove a borda padrão do modal */
+      border-radius: 12px; /* Cantos mais arredondados */
+      box-shadow: 0 12px 30px var(--shadow-light); /* Sombra mais visível e suave */
+      color: var(--text-dark);
+      overflow: hidden; /* Garante que o conteúdo respeite o border-radius */
+    }
+
+    /* Cabeçalho do Modal */
+    .modal-header {
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); /* Gradiente no cabeçalho */
+      border-bottom: none; /* Remove a borda padrão */
+      padding: 20px 25px; /* Mais preenchimento */
+      color: #fff; /* Texto branco no cabeçalho */
+      position: relative; /* Para o posicionamento absoluto do botão fechar */
+      display: flex; /* Para alinhar título e botão */
+      justify-content: space-between; /* Espaço entre eles */
+      align-items: center; /* Alinhamento vertical */
+    }
+
+    .modal-header .modal-title {
+      font-size: 1.6rem; /* Título maior */
+      font-weight: 700;
+      color: #fff; /* Cor do título */
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2); /* Sombra suave no texto */
+      animation: none; /* Remove animação de brilho do título, focamos nos botões */
+    }
+
+    /* Botão de Fechar (X) do Modal */
+    .modal-header .close {
+      color: #fff; /* Cor do X branco */
+      opacity: 0.9;
+      transition: all 0.3s ease;
+      font-size: 2rem; /* X maior */
+      text-shadow: none;
+    }
+
+    .modal-header .close:hover {
+      opacity: 1;
+      transform: rotate(90deg) scale(1.1);
+      color: #e0e0e0; /* Fica mais claro no hover */
+    }
+
+    /* Corpo do Modal */
+    .modal-body {
+      padding: 30px 25px; /* Mais preenchimento geral */
+      color: var(--text-dark);
+    }
+
+    /* Ajustes para elementos de formulário dentro do modal */
+    .modal-body .form-group {
+        margin-bottom: 20px; /* Mais espaçamento entre os campos */
+        display: flex; /* Usa flexbox para alinhar label e input */
+        align-items: center; /* Alinha itens verticalmente */
+    }
+
+    .modal-body .control-label {
+        color: var(--text-dark);
+        font-weight: 600;
+        text-align: right; /* Alinha labels à direita */
+        padding-right: 20px; /* Espaço entre label e input */
+        flex-basis: 140px; /* Largura fixa para labels, ajuste se precisar */
+        flex-shrink: 0; /* Previne que o label encolha */
+    }
+    
+    /* Contêiner do Input (col-sm-9) */
+    .modal-body .col-sm-9 {
+        flex-grow: 1; /* Permite que o input preencha o espaço restante */
+        max-width: calc(100% - 140px); /* Ajusta largura máxima baseada na largura do label */
+    }
+
+    .modal-body .form-control {
+        border: 1px solid var(--border-light);
+        color: var(--text-dark);
+        background-color: #F8F9FA;
+        border-radius: 8px; /* Inputs mais arredondados */
+        padding: 12px 15px; /* Mais preenchimento para inputs */
+        transition: all 0.3s ease; /* Transição suave para foco */
+        font-size: 1rem;
+    }
+    .modal-body .form-control:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.25rem rgba(0, 119, 181, 0.2); /* Sombra mais suave para foco */
+        background-color: #FFFFFF;
+        outline: none; /* Remove o outline padrão do navegador */
+    }
+
+    .modal-body .help-block {
+        font-size: 0.8rem; /* Texto de ajuda menor */
+        color: var(--text-light);
+        margin-top: 8px; /* Mais espaço acima do texto de ajuda */
+        margin-bottom: 0;
+        line-height: 1.4;
+    }
+
+    /* Estilo Específico para Imagem de Perfil */
+    .profile-image-upload-group .profile-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centraliza a imagem e o input de arquivo */
+        text-align: center;
+    }
+    .profile-preview-img {
+        width: 100px;
+        height: 100px;
+        border: 3px solid var(--primary-blue); /* Borda mais proeminente para a imagem */
+        border-radius: 50%; /* Garante um círculo perfeito */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para a imagem */
+        object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+        margin-bottom: 15px; /* Espaço abaixo da imagem */
+        transition: border-color 0.3s ease;
+    }
+    .profile-preview-img:hover {
+        border-color: var(--secure-green); /* Muda a cor da borda no hover */
+    }
+    #profile_photo { /* Ajustes para o input de arquivo */
+        padding: 8px 10px;
+        height: auto;
+    }
+
+    /* Rodapé do Modal */
+    .modal-footer {
+      border-top: 1px solid var(--border-light);
+      padding: 20px 25px; /* Mais preenchimento */
+      display: flex;
+      justify-content: flex-end; /* Alinha botões à direita */
+      gap: 15px; /* Espaço entre os botões */
+    }
+
+    /* Estilo dos Botões */
+    .btn {
+        padding: 10px 20px; /* Preenchimento consistente */
+        font-weight: 600;
+        border-radius: 8px; /* Botões mais arredondados */
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil no botão */
+        text-transform: uppercase; /* Texto em maiúsculas */
+        letter-spacing: 0.5px;
+    }
+
+    .btn-default {
+      background: #F0F2F5; /* Fundo mais claro */
+      border: 1px solid #D1D9E0; /* Borda mais suave */
+      color: var(--text-dark);
+    }
+
+    .btn-default:hover {
+      background: #E5E9EE;
+      border-color: #BCC2CC;
+      transform: translateY(-2px); /* Elevação sutil no hover */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Sombra mais forte no hover */
+    }
+
+    /* Botão com Gradiente Principal (Substitui .btn-success para ter o estilo do tema) */
+    .btn-primary-gradient {
+      background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end)) !important;
+      border: none !important;
+      color: #fff !important;
+      position: relative; /* Para o efeito de brilho */
+      overflow: hidden; /* Esconde o brilho extra */
+    }
+
+    .btn-primary-gradient:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.0));
+        transition: all 0.5s ease;
+        transform: translateX(-100%);
+    }
+
+    .btn-primary-gradient:hover:before {
+        transform: translateX(0);
+    }
+
+    .btn-primary-gradient:hover {
+      transform: translateY(-2px); /* Elevação no hover */
+      box-shadow: 0 8px 20px rgba(0, 180, 216, 0.4); /* Sombra colorida mais forte */
+      filter: brightness(105%); /* Leve aumento de brilho */
+    }
+
+    /* Estilo dos Ícones nos Botões */
+    .btn .fa {
+        margin-right: 8px; /* Espaço entre ícone e texto */
+        font-size: 1.1em;
+    }
+
+    /* Animação - Mantenho se quiser usar em outro lugar, mas removi do título do modal */
+    @keyframes logoGlow {
+      0% { text-shadow: 0 0 5px var(--quantum-blue); }
+      50% { text-shadow: 0 0 10px var(--secure-green); }
+      100% { text-shadow: 0 0 5px var(--quantum-blue); }
+    }
+</style>
+
+<script>
+    // JavaScript para pré-visualização instantânea da imagem de perfil
+    document.addEventListener('DOMContentLoaded', function() {
+        const profilePhotoInput = document.getElementById('profile_photo');
+        const profilePreviewImg = document.getElementById('profile-preview');
+
+        if (profilePhotoInput && profilePreviewImg) {
+            profilePhotoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePreviewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    // Se nenhum arquivo for selecionado, volta para a imagem padrão ou existente
+                    // Importante: A URL aqui precisa ser dinâmica para refletir a imagem atual do usuário
+                    // após o fechamento e reabertura do modal, ou se o usuário remove a seleção.
+                    // Para o caso de remoção, seria ideal ter um botão "Remover Imagem".
+                    // Por enquanto, ele volta para a imagem padrão se o usuário cancelar a seleção do arquivo.
+                    profilePreviewImg.src = "{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}";
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,337 @@
+{% extends 'root.html' %} {% load static %} {% block content %}
+<style>
+  /* Variáveis do tema claro (redefinidas para garantir aplicação neste bloco) */
+  :root {
+    --card-bg: #ffffff; /* Fundo principal para cartões/contêineres */
+    --page-bg: #f0f2f5; /* Fundo da página, cinza bem claro */
+    --primary-blue: #0077b5; /* Azul principal para cabeçalhos, botões, links (Revisado para um tom mais vibrante) */
+    --secondary-blue: #0096c7; /* Um azul secundário */
+    --dark-blue: #005a8d; /* Azul mais escuro para contraste */
+    --tertiary-blue: #add8e6; /* Azul bem claro para fundos de hover sutis */
+    --text-dark: #212529; /* Cor principal do texto - quase preto */
+    --text-light: #495057; /* Cor do texto secundário/neutro */
+    --success-green: #28a745; /* Verde para sucesso/ícones */
+    --danger-red: #dc3545; /* Vermelho para erros/ações perigosas */
+    --warning-yellow: #ffc107; /* Amarelo para avisos */
+    --info-cyan: #17a2b8; /* Ciano para informações */
+    --border-light: #e0e0e0; /* Borda clara */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave para elementos */
+
+    /* Cores de destaque para gradientes/brilhos (mantidas vibrantes) */
+    --quantum-blue: #00b4d8;
+    --secure-green: #2ecc71;
+    --cyber-purple: #6c5ce7;
+    --golden-yellow: #ffd700;
+  }
+
+  /* Main content area */
+  .content {
+    padding: 20px;
+    background: var(--page-bg);
+    border-radius: 12px;
+    margin: 20px;
+    box-shadow: 0 5px 25px var(--shadow-light);
+    color: var(--text-dark);
+  }
+
+  /* Small Box (Stat Box) styles */
+  .small-box {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    color: #fff;
+  }
+
+  .small-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 90, 141, 0.2);
+  }
+
+  /* Gradientes dos Small Boxes */
+  .small-box.bg-aqua {
+    background: linear-gradient(
+      135deg,
+      var(--quantum-blue),
+      var(--cyber-purple)
+    );
+  }
+
+  .small-box.bg-green {
+    background: linear-gradient(
+      135deg,
+      var(--secure-green),
+      var(--primary-blue)
+    );
+  }
+
+  .small-box.bg-yellow {
+    background: linear-gradient(135deg, var(--golden-yellow), #ffa07a);
+  }
+
+  .small-box.bg-red {
+    background: linear-gradient(135deg, var(--danger-red), #ff6347);
+  }
+
+  /* Ícones dos Small Boxes */
+  .small-box .icon {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .small-box .inner h3 {
+    color: #fff !important; /* FORÇA O BRANCO */
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+
+  .small-box .inner p {
+    color: #fff !important; /* FORÇA O BRANCO */
+    font-size: 1.1rem;
+  }
+
+  /* Rodapé dos Small Boxes */
+  .small-box-footer {
+    background: rgba(0, 0, 0, 0.15);
+    color: #fff !important;
+    text-decoration: none;
+    display: block;
+    padding: 6px 10px;
+  }
+
+  .small-box-footer:hover {
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff !important;
+  }
+
+  /* Box (para gráficos) */
+  .box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    color: var(--text-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+
+  .box-header {
+    border-bottom: 1px solid var(--border-light);
+    padding: 15px;
+  }
+
+  .box-title {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .box-body {
+    padding: 15px;
+    color: var(--text-dark);
+  }
+
+  /* Botão de "Imprimir" */
+  .btn-success {
+    background: linear-gradient(
+      135deg,
+      var(--secure-green),
+      var(--quantum-blue)
+    ) !important;
+    border: none !important;
+    border-radius: 6px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #fff !important;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    filter: brightness(110%);
+  }
+
+  /* Estilo para o título "Contagem de Votos" */
+  .content h3 {
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .content h3 .pull-right {
+    margin-left: 10px;
+  }
+
+  /* Responsividade básica para os small-boxes em telas muito pequenas */
+  @media (max-width: 767px) {
+    .col-xs-6 {
+      width: 100%;
+      float: none;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+<section class="content">
+  <div class="row">
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>{{ position_count }}</h3>
+          <p>Número de Posições</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-tasks"></i>
+        </div>
+        <a href="{% url 'viewPositions' %}" class="small-box-footer"
+          >Mais informações <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{ candidate_count }}</h3>
+          <p>Número de Candidatos</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-black-tie"></i>
+        </div>
+        <a href="{% url 'viewCandidates' %}" class="small-box-footer"
+          >Mais informações <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{ voters_count }}</h3>
+          <p>Total de Eleitores</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-users"></i>
+        </div>
+        <a href="{% url 'adminViewVoters' %}" class="small-box-footer"
+          >Mais informações <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{ voted_voters_count }}</h3>
+          <p>Eleitores que Votaram</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-edit"></i>
+        </div>
+        <a href="{% url 'viewVotes' %}" class="small-box-footer"
+          >Mais informações <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h3>
+        Contagem de Votos
+        <span class="pull-right">
+          <a
+            href="{% url 'printResult' %}"
+            class="btn btn-success btn-sm btn-flat"
+            ><span class="glyphicon glyphicon-print"></span> Imprimir</a
+          >
+        </span>
+      </h3>
+    </div>
+  </div>
+
+  {% for position in positions %} {% if forloop.counter0|divisibleby:2 %}
+  <div class="row">
+    {% endif %}
+    <div class="col-sm-6">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h4 class="box-title"><b>{{ position.name }}</b></h4>
+        </div>
+        <div class="box-body">
+          <div class="chart">
+            <canvas
+              id="{{ position.name|slugify }}"
+              style="height: 200px"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if forloop.counter|divisibleby:2 or forloop.last %}
+  </div>
+  {% endif %} {% endfor %}
+</section>
+
+{% endblock content %} {% block custom_js %}
+<script src="{% static 'bower_components/chart.js/Chart.js' %}"></script>
+{% for key, value in chart_data.items %}
+<script>
+  $(function() {
+    var rowid = '{{ value.pos_id }}';
+    var description = '{{ key|safe|slugify }}';
+    var barChartCanvas = $('#' + description).get(0).getContext('2d');
+    var barChart = new Chart(barChartCanvas);
+    var barChartData = {
+      labels: {{ value.candidates|safe }},
+      datasets: [{
+        label: 'Votes',
+        fillColor: 'rgba(0, 90, 141, 0.8)',
+        strokeColor: 'rgba(0, 90, 141, 1)',
+        pointColor: '#3b8bba',
+        pointStrokeColor: 'rgba(0, 90, 141, 1)',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(0, 90, 141, 1)',
+        data: {{ value.votes|safe }}
+      }]
+    };
+    var barChartOptions = {
+      // Opções gerais para gráficos de barra
+      scaleBeginAtZero: true,
+      scaleShowGridLines: true,
+      scaleGridLineColor: 'rgba(224, 224, 224, 0.6)',
+      scaleGridLineWidth: 1,
+      scaleShowHorizontalLines: true, // Manter para as linhas horizontais no gráfico vertical
+      scaleShowVerticalLines: true,   // Manter para as linhas verticais
+      barShowStroke: true,
+      barStrokeWidth: 2,
+      barValueSpacing: 5,
+      barDatasetSpacing: 1,
+      responsive: true,
+      maintainAspectRatio: true,
+      scaleFontColor: 'var(--text-dark)',
+      scaleFontSize: 12,
+      customTooltips: function(tooltip) {
+            $(this._chart.canvas).css('cursor', 'pointer');
+            var positionY = this._chart.canvas.offsetTop;
+            var positionX = this._chart.canvas.offsetLeft;
+            $('.chartjs-tooltip').remove();
+            if (tooltip.html) {
+                new Chart.Tooltip({
+                    x: positionX + tooltip.x,
+                    y: positionY + tooltip.y,
+                    html: tooltip.html
+                }).appendTo(document.body);
+            }
+        }
+    };
+
+    barChartOptions.datasetFill = false;
+    // Alterar de HorizontalBar para Bar para gráficos verticais
+    var myChart = barChart.Bar(barChartData, barChartOptions);
+  });
+</script>
+{% endfor %} {% endblock custom_js %}

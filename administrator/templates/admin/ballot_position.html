@@ -1,0 +1,325 @@
+{% extends 'root.html' %} {% block content %}
+<section class="content">
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1" id="content">
+      {# Conteúdo será carregado aqui via AJAX #} {# Este é um placeholder
+      inicial para mostrar o título e uma mensagem #}
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Gerenciamento de Posições da Cédula</h3>
+        </div>
+        <div class="box-body">
+          <p>
+            Use os botões para reordenar os candidatos na cédula eleitoral. Os
+            candidatos aparecerão aqui após o carregamento.
+          </p>
+          {# Um botão de exemplo para testar o estilo, será substituído #}
+          <button class="btn btn-primary reset" data-desc="some-group">
+            <i class="fa fa-undo"></i> Resetar Seleção
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block custom_js %}
+<script>
+  $(function () {
+    fetch(); // Carrega os dados iniciais da cédula
+
+    // Evento para resetar seleções de checkboxes/radios
+    $(document).on("click", ".reset", function (e) {
+      e.preventDefault();
+      var desc = $(this).data("desc"); // 'some-group' é apenas um exemplo
+      $("." + desc).iCheck("uncheck"); // Desmarca os checkboxes/radios com a classe especificada
+    });
+
+    // Evento para mover um item para cima na lista
+    $(document).on("click", ".moveup", function (e) {
+      e.preventDefault();
+      var id = $(this).data("id");
+      // Animação de subida (visual) - pode ser removida se causar flicker com o fetch rápido
+      $("#" + id).animate(
+        {
+          marginTop: "-300px",
+        },
+        300,
+        function () {
+          // Callback para chamar AJAX após a animação
+          $.ajax({
+            type: "GET",
+            url: '{% url "update_ballot_position" 1 "up" %}'.replace(1, id),
+            dataType: "json",
+            success: function (response) {
+              if (!response.error) {
+                fetch(); // Recarrega os dados após a atualização bem-sucedida
+              } else {
+                alert(response.message); // Exibe mensagem de erro
+                fetch(); // Recarrega mesmo com erro para reverter animação
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("Erro ao mover para cima:", error);
+              alert("Ocorreu um erro ao tentar mover o item para cima.");
+              fetch(); // Recarrega para limpar o estado de erro
+            },
+          });
+        }
+      );
+    });
+
+    // Evento para mover um item para baixo na lista
+    $(document).on("click", ".movedown", function (e) {
+      e.preventDefault();
+      var id = $(this).data("id");
+      // Animação de descida (visual) - pode ser removida se causar flicker com o fetch rápido
+      $("#" + id).animate(
+        {
+          marginTop: "+300px",
+        },
+        300,
+        function () {
+          // Callback para chamar AJAX após a animação
+          $.ajax({
+            type: "GET",
+            url: '{% url "update_ballot_position" 1 "down" %}'.replace(1, id),
+            dataType: "json",
+            success: function (response) {
+              if (!response.error) {
+                fetch(); // Recarrega os dados após a atualização bem-sucedida
+              } else {
+                alert(response.message); // Exibe mensagem de erro
+                fetch(); // Recarrega mesmo com erro para reverter animação
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("Erro ao mover para baixo:", error);
+              alert("Ocorreu um erro ao tentar mover o item para baixo.");
+              fetch(); // Recarrega para limpar o estado de erro
+            },
+          });
+        }
+      );
+    });
+  });
+
+  // Função para buscar e renderizar o conteúdo da cédula
+  function fetch() {
+    $.ajax({
+      type: "GET",
+      url: '{% url "fetch_ballot" %}',
+      dataType: "json",
+      success: function (response) {
+        $("#content").html(response).iCheck({
+          checkboxClass: "icheckbox_flat-green",
+          radioClass: "iradio_flat-green",
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Erro ao carregar a cédula:", error);
+        $("#content").html(
+          "<p class='text-danger'>Não foi possível carregar as posições da cédula. Tente novamente mais tarde.</p>"
+        );
+      },
+    });
+  }
+</script>
+
+<style>
+  /* Variáveis do tema claro - Consistente com os outros arquivos */
+  /* Elas já estão definidas no root.html, mas reafirmadas aqui para clareza e para garantir que as animações usem as mesmas cores */
+  :root {
+    --card-bg: #ffffff !important;
+    --primary-blue: #0077b5 !important;
+    --secondary-blue: #0096c7 !important;
+    --tertiary-blue: #add8e6 !important;
+    --dark-blue: #005a8d !important;
+    --success-green: #28a745 !important;
+    --vibrant-green: #2ecc71 !important;
+    --text-neutral: #555555 !important; /* Cinza médio para textos */
+    --border-light: #e0e0e0 !important;
+    --shadow-light: rgba(0, 0, 0, 0.08) !important;
+
+    --quantum-blue: #00b4d8 !important;
+    --secure-green: #2ecc71 !important;
+
+    /* Gradientes padrão para reutilização (pode ter sido definido no root.html, mas para garantir) */
+    --gradient-primary: linear-gradient(
+      45deg,
+      var(--quantum-blue),
+      var(--cyber-purple)
+    ) !important;
+    --gradient-success: linear-gradient(
+      45deg,
+      var(--secure-green),
+      var(--quantum-blue)
+    ) !important;
+  }
+
+  /* Conteúdo principal da página (o '.box' é que define o estilo visual principal agora) */
+  .content {
+    /* Padding e fundo do .content-wrapper são definidos no root.html */
+  }
+
+  /* Estilos para a caixa principal (box) dentro do conteúdo */
+  .box {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: 12px !important; /* Aumenta o arredondamento */
+    box-shadow: 0 4px 15px var(--shadow-light) !important;
+    overflow: hidden !important; /* Garante que o conteúdo respeite o border-radius */
+    margin-bottom: 20px !important; /* Espaçamento entre caixas */
+  }
+
+  .box-header {
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 18px 20px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background-color: var(
+      --page-bg
+    ) !important; /* Fundo suave para o header da caixa */
+  }
+
+  .box-title {
+    color: var(
+      --primary-blue
+    ) !important; /* Título da caixa em azul principal */
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+  }
+
+  .box-body {
+    padding: 20px !important;
+    color: var(
+      --text-neutral
+    ) !important; /* Texto do corpo da caixa em cinza neutro */
+  }
+
+  /* Estilo para checkboxes e radios (iCheck) */
+  /* Fundo e borda para o estado não marcado */
+  .icheckbox_flat-green,
+  .iradio_flat-green {
+    background: var(
+      --card-bg
+    ) !important; /* Fundo branco para o elemento não marcado */
+    border: 1px solid var(--border-light) !important; /* Borda clara */
+    border-radius: 3px !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05) !important; /* Sombra interna sutil */
+    /* Tamanho e posição base para o iCheck */
+    width: 22px !important; /* Largura padrão do iCheck */
+    height: 22px !important; /* Altura padrão do iCheck */
+    vertical-align: middle !important;
+    margin-right: 5px !important;
+    cursor: pointer !important;
+    display: inline-block !important; /* Garante que o span seja inline-block */
+    position: relative !important; /* Para posicionar o pseudo-elemento */
+  }
+
+  /* Fundo e borda para o estado marcado */
+  .icheckbox_flat-green.checked,
+  .iradio_flat-green.checked {
+    background: var(
+      --success-green
+    ) !important; /* Fundo verde de sucesso quando marcado */
+    border-color: var(
+      --success-green
+    ) !important; /* Borda verde de sucesso quando marcado */
+    box-shadow: none !important; /* Remove a sombra interna quando marcado */
+  }
+
+  /* Ajuste para o ícone de check dentro do iCheck (checkbox) */
+  .icheckbox_flat-green.checked::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 6px !important; /* Ajuste o tamanho conforme necessário */
+    height: 12px !important; /* Ajuste o tamanho conforme necessário */
+    border: solid white !important;
+    border-width: 0 2px 2px 0 !important;
+    transform: rotate(45deg) !important;
+    top: 2px !important; /* Ajuste a posição */
+    left: 7px !important; /* Ajuste a posição */
+  }
+  /* O ícone de radio (pode ser um ponto) */
+  .iradio_flat-green.checked::after {
+    content: "" !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background: white !important;
+    border: none !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  /* Estilos para o estado hover dos iChecks */
+  .icheckbox_flat-green:hover,
+  .iradio_flat-green:hover {
+    opacity: 0.8 !important; /* Leve transparência no hover */
+  }
+
+  /* Ajustes para a lista de cédulas que será carregada via AJAX */
+  .ballot-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 15px !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: 8px !important;
+    margin-bottom: 10px !important;
+    background-color: var(
+      --page-bg
+    ) !important; /* Fundo suave para cada item */
+    box-shadow: 0 2px 5px var(--shadow-light) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .ballot-item:hover {
+    background-color: var(
+      --tertiary-blue
+    ) !important; /* Fundo suave no hover */
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px var(--shadow-light) !important;
+  }
+
+  .ballot-item .item-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+  }
+
+  .ballot-item .item-info img {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--primary-blue) !important;
+    object-fit: cover !important;
+  }
+
+  .ballot-item .item-name {
+    font-weight: 600 !important;
+    color: var(--dark-blue) !important;
+    font-size: 1.1em !important;
+  }
+
+  .ballot-item .item-position {
+    color: var(--text-neutral) !important;
+    font-size: 0.9em !important;
+  }
+
+  .ballot-item .item-actions .btn {
+    margin-left: 8px !important;
+  }
+
+  /* Mensagens de erro/sucesso (se retornadas pelo AJAX) */
+  .text-danger {
+    color: #dc3545 !important; /* Vermelho padrão para erros */
+  }
+  .text-success {
+    color: var(--success-green) !important; /* Verde para sucesso */
+  }
+</style>
+{% endblock custom_js %}

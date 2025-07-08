@@ -1,0 +1,440 @@
+{% load static %}
+<style>
+  /* Novas variáveis para o tema claro - Copiadas do base.html para consistência */
+  :root {
+    --card-bg: #FFFFFF; /* Fundo principal para cartões/contêineres */
+    --page-bg: #F0F2F5; /* Fundo da página, cinza muito claro */
+    --primary-blue: #0077B5; /* Azul principal para cabeçalhos, botões, links (Ajustado para o tom vibrante) */
+    --secondary-blue: #0096C7; /* Um azul secundário */
+    --dark-blue: #005A8D; /* Azul mais escuro para contraste */
+    --text-dark: #212529; /* Cor principal do texto - quase preto */
+    --text-light: #495057; /* Cor do texto secundário/neutro */
+    --success-green: #28a745; /* Verde para sucesso/ícones */
+    --danger-red: #dc3545; /* Vermelho para erros/ações perigosas */
+    --warning-yellow: #ffc107; /* Amarelo para avisos */
+    --info-cyan: #17a2b8; /* Ciano para informações */
+    --border-light: #E0E0E0; /* Borda clara */
+    --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave */
+    
+    /* Manter as cores de destaque originais que funcionam com o gradiente */
+    --quantum-blue: #00b4d8; 
+    --secure-green: #2ecc71; 
+    --cyber-purple: #6c5ce7;
+    --golden-yellow: #ffd700;
+  }
+
+  /* Cabeçalho principal (Header Navbar) */
+  .main-header {
+    background: var(--card-bg); 
+    border-bottom: 1px solid var(--border-light); 
+    box-shadow: 0 0 10px var(--shadow-light); 
+  }
+
+  /* Área do Logo (parte esquerda do header) */
+  .logo {
+    background: var(--primary-blue); 
+    padding: 10px 20px;
+    color: #fff; 
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 90, 141, 0.2); 
+    display: flex; /* Adicionado para alinhar imagem e texto */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    gap: 10px; /* Espaço entre a logo e o texto */
+  }
+
+  /* Ajustes para o hover do logo */
+  .logo:hover {
+    background-color: darkred; /* Azul um pouco mais escuro no hover */
+  }
+
+  /* Estilo da Imagem da Logo */
+  .logo .logo-image {
+    height: 30px; /* Ajuste o tamanho da altura da logo conforme necessário */
+    width: auto; /* Mantém a proporção */
+    vertical-align: middle; /* Alinha com o texto */
+  }
+
+  /* Texto do logo grande e mini - MANTÉM GRADIENTE E ANIMAÇÃO */
+  .logo-lg .logo-text, /* Mudado para .logo-text */
+  .logo-mini .logo-text { /* Mudado para .logo-text */
+    font-size: 2rem;
+    font-weight: 700;
+    background: black;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
+    animation: logoGlow 3s infinite;
+  }
+    /* Estilo para a versão minimizada (SV) */
+  .logo-mini {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%; /* Garante que o mini logo ocupe a altura do container */
+  }
+  .logo-mini .logo-text { /* Texto 'SV' */
+      font-size: 1.5rem; /* Ajuste o tamanho da fonte para o mini logo */
+  }
+  .logo-mini .logo-image {
+      display: none; /* Esconde a imagem no modo mini */
+  }
+
+
+  @keyframes logoGlow {
+    0% { text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue); }
+    50% { text-shadow: 0 0 20px var(--secure-green), 0 0 40px var(--secure-green); }
+    100% { text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue); }
+  }
+
+  /* Links do menu da Navbar (lado direito) */
+  .navbar-custom-menu .nav > li > a {
+    color: var(--text-dark); 
+    transition: all 0.3s ease;
+  }
+
+  .navbar-custom-menu .nav > li > a:hover {
+    color: var(--primary-blue); 
+    background: rgba(0, 0, 0, 0.03); 
+  }
+  
+  /* Botão de alternar sidebar (Hamburger icon) */
+  .sidebar-toggle {
+    color: var(--text-dark); 
+  }
+  .sidebar-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.03); 
+    color: var(--primary-blue); 
+  }
+
+
+  /* Dropdown menu (User account dropdown) */
+  .dropdown-menu {
+    background: var(--card-bg); 
+    border: 1px solid var(--border-light); 
+    box-shadow: 0 5px 20px var(--shadow-light); 
+  }
+
+  /* Cabeçalho do usuário no dropdown (com a imagem e nome) */
+  .user-header {
+    background: linear-gradient(45deg, var(--secure-green), var(--quantum-blue)); 
+    padding: 20px;
+    text-align: center;
+  }
+
+  .user-header img {
+    border: 3px solid rgba(255, 255, 255, 0.5); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  }
+
+  .user-header p {
+    color: #fff; 
+    margin-top: 10px;
+  }
+
+  /* Rodapé do usuário no dropdown (com botões) */
+  .user-footer {
+    background: var(--page-bg); 
+    padding: 10px;
+    border-top: 1px solid var(--border-light); 
+    display: flex; /* Adicionado para alinhar botões */
+    justify-content: space-between; /* Espaço entre os botões */
+    align-items: center;
+  }
+
+  /* Botões dentro do user-footer (Sair, etc.) */
+  .user-footer .btn-default { /* Mais específico para evitar sobrescrever outros btn-default */
+    background: var(--page-bg); 
+    border: 1px solid var(--border-light);
+    color: var(--text-dark); 
+    transition: all 0.3s ease;
+    padding: 6px 12px; /* Padding ajustado */
+  }
+
+  .user-footer .btn-default:hover {
+    background: var(--border-light); 
+    border-color: var(--text-light); 
+    color: var(--text-dark); 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px var(--shadow-light); 
+  }
+
+  /* Itens de menu dentro do dropdown */
+  .dropdown-menu > li > a {
+    color: var(--text-dark); 
+  }
+
+  .dropdown-menu > li > a:hover {
+    background-color: rgba(0, 0, 0, 0.03); 
+    color: var(--primary-blue); 
+  }
+
+  /* --- Estilos do Modal de Perfil (Bio) - COPIADOS AQUI --- */
+  /* NOTA: Estes estilos estão duplicados do profile_modal.html
+     Idealmente, você teria um único arquivo CSS compartilhado
+     para evitar duplicação e facilitar a manutenção.
+     Mantenho-os aqui como solicitado para um código completo. */
+  .modal-content {
+    background: var(--card-bg); 
+    border: 1px solid var(--border-light); 
+    border-radius: 10px;
+    box-shadow: 0 0 25px var(--shadow-light); 
+    color: var(--text-dark); 
+  }
+
+  .modal-header {
+    border-bottom: 1px solid var(--border-light); 
+    padding: 15px 20px; 
+  }
+
+  .modal-header .modal-title {
+    font-size: 1.4rem; 
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--secure-green), var(--quantum-blue)); 
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; 
+    animation: logoGlow 3s infinite; 
+  }
+
+  .modal-header .close {
+    color: var(--text-dark); 
+    opacity: 0.7; 
+    transition: all 0.3s ease;
+    font-size: 1.8rem; 
+  }
+
+  .modal-header .close:hover {
+    opacity: 1;
+    transform: rotate(90deg) scale(1.1); 
+    color: var(--primary-blue); 
+  }
+
+  .modal-body {
+    padding: 20px;
+    color: var(--text-dark); 
+  }
+
+  .modal-body .form-group {
+      margin-bottom: 15px; 
+  }
+
+  .modal-body .control-label {
+      color: var(--text-dark); 
+      font-weight: 600; 
+      text-align: left; 
+      padding-top: 7px; 
+  }
+
+  .modal-body .form-control {
+      border: 1px solid var(--border-light); 
+      color: var(--text-dark); 
+      background-color: #F8F9FA; 
+      border-radius: 5px; 
+      padding: 10px 12px; 
+  }
+  .modal-body .form-control:focus {
+      border-color: var(--primary-blue); 
+      box-shadow: 0 0 0 0.2rem rgba(0, 119, 181, 0.25); 
+      background-color: #FFFFFF; 
+  }
+
+  .modal-body .help-block {
+      font-size: 0.85rem;
+      color: var(--text-light); 
+      margin-top: 5px;
+      margin-bottom: 0;
+  }
+
+  .modal-footer {
+    border-top: 1px solid var(--border-light); 
+    padding: 15px 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+  }
+
+  /* Botão padrão (Fechar) */
+  .btn-default { 
+    background: #F8F9FA; 
+    border: 1px solid var(--border-light); 
+    color: var(--text-dark); 
+    transition: all 0.3s ease;
+    padding: 8px 15px; 
+    border-radius: 5px;
+  }
+
+  .btn-default:hover {
+    background: #E9ECEF; 
+    border-color: #CED4DA; 
+    color: var(--text-dark); 
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 8px var(--shadow-light); 
+  }
+
+  /* Botão de sucesso (Salvar) */
+  /* Renomeado de btn-success para btn-primary-gradient para consistência com o modal */
+  .btn-primary-gradient {
+    background: linear-gradient(135deg, var(--secure-green), var(--quantum-blue)) !important; 
+    border: none !important; 
+    color: #fff !important; 
+    transition: all 0.3s ease;
+    padding: 8px 15px; 
+    border-radius: 5px;
+  }
+
+  .btn-primary-gradient:hover {
+    transform: translateY(-1px); 
+    box-shadow: 0 2px 10px rgba(0, 180, 216, 0.4); 
+    filter: brightness(110%);
+  }
+
+  /* Animação de brilho (usada no título do modal) */
+  @keyframes logoGlow {
+    0% { text-shadow: 0 0 5px var(--quantum-blue); }
+    50% { text-shadow: 0 0 10px var(--secure-green); }
+    100% { text-shadow: 0 0 5px var(--quantum-blue); }
+  }
+</style>
+
+<header class="main-header">
+  <a href="{% url 'adminDashboard' %}" class="logo">
+    <span class="logo-mini">
+      <img src="{% static 'images/logo_sv.png' %}" alt="Logo Mini" class="logo-image">
+      <span class="logo-text">SV</span>
+    </span>
+    <span class="logo-lg">
+      <img src="{% static 'images/logo_sv.png' %}" alt="Logo Secure Vote" class="logo-image">
+      <span class="logo-text">Secure Vote</span>
+    </span>
+  </a>
+  <nav class="navbar navbar-static-top">
+    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <span class="sr-only">Alternar navegação</span>
+    </a>
+
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {# ATENÇÃO: Carrega profile_image do usuário ou padrão #}
+            <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}" 
+                 class="user-image" alt="User Image">
+            <span class="hidden-xs">{{ request.user.first_name }}</span> {# Mostrar apenas o primeiro nome na navbar #}
+          </a>
+          <ul class="dropdown-menu">
+            <li class="user-header">
+              {# ATENÇÃO: Carrega profile_image do usuário ou padrão #}
+              <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}" 
+                   class="img-circle" alt="User Image">
+
+              <p>
+                {{ request.user.first_name }} {{ request.user.last_name }} 
+                {% if request.user.is_superuser %}
+                    <small>Administrador(a)</small>
+                {% elif request.user.groups.all %} {# Se o usuário pertence a algum grupo #}
+                    <small>{{ request.user.groups.all.0.name }}</small> {# Pega o nome do primeiro grupo #}
+                {% else %}
+                    <small>Eleitor(a)</small> 
+                {% endif %}
+              </p>
+            </li>
+            <li class="user-footer">
+              <div class="pull-left"> 
+                <a href="#profile" data-toggle="modal" class="btn btn-default btn-flat" id="admin_profile">Perfil</a>
+              </div>
+              <div class="pull-right">
+                <a href="{% url 'account_logout' %}" class="btn btn-default btn-flat">Sair</a>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+{# O MODAL DE PERFIL ESTÁ INCLUÍDO DIRETAMENTE AQUI (para facilitar o exemplo) #}
+{# Em um projeto real, é melhor ter o modal em um arquivo separado e usar {% include 'path/to/profile_modal.html' %} #}
+<div class="modal fade" id="profile">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><b>Perfil de Usuário</b></h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" method="POST" action="{% url 'profile_update' %}" enctype="multipart/form-data">
+              {% csrf_token %} 
+              
+              {# Campo para FOTO DE PERFIL #}
+              <div class="form-group">
+                <label for="profile_photo" class="col-sm-3 control-label">Foto de Perfil</label>
+                <div class="col-sm-9">
+                  {# ATENÇÃO: name="profile_image" #}
+                  <input type="file" class="form-control" id="profile_photo" name="profile_image" accept="image/*">
+                  <p class="help-block">Tamanho máximo: 2MB. Formatos: JPG, PNG.</p>
+                </div>
+              </div>
+
+              {# Campo para PRIMEIRO NOME #}
+              <div class="form-group">
+                <label for="firstname" class="col-sm-3 control-label">Primeiro Nome</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="firstname" name="first_name" value="{{ request.user.first_name }}" required>
+                </div>
+              </div>
+              
+              {# Campo para ÚLTIMO NOME #}
+              <div class="form-group">
+                <label for="lastname" class="col-sm-3 control-label">Último Nome</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="lastname" name="last_name" value="{{ request.user.last_name }}" required>
+                </div>
+              </div>
+
+              {# Campo para Email (Exemplo) #}
+              <div class="form-group">
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-9">
+                  <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" readonly>
+                </div>
+              </div>
+
+              {# Campo para Senha Atual (Opcional, para confirmação) #}
+              <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Senha Atual</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha atual para confirmar">
+                </div>
+              </div>
+
+              {# Campo para Nova Senha (Opcional) #}
+              <div class="form-group">
+                <label for="new_password" class="col-sm-3 control-label">Nova Senha</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Deixe em branco para não alterar">
+                </div>
+              </div>
+
+              {# Campo para Confirmar Nova Senha (Opcional) #}
+              <div class="form-group">
+                <label for="confirm_password" class="col-sm-3 control-label">Confirmar Senha</label>
+                <div class="col-sm-9">
+                  <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirme sua nova senha">
+                </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Fechar</button>
+            {# Renomeado de btn-success para btn-primary-gradient para consistência #}
+            <button type="submit" class="btn btn-primary-gradient btn-flat" name="save"><i class="fa fa-save"></i> Salvar Alterações</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>

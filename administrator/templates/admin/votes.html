@@ -1,0 +1,404 @@
+{% extends 'root.html' %}  
+
+{% block content %} 
+<style> 
+  /* Variáveis do Tema Claro (para garantir consistência, embora root.html seja a fonte primária) */ 
+  :root { 
+    --card-bg: #FFFFFF !important;  
+    --page-bg: #F8F9FA !important; /* Fundo da página, um cinza bem claro */ 
+    --primary-blue: #0077B5 !important; /* Azul principal para cabeçalhos, botões, links */ 
+    --secondary-blue: #0096C7 !important; /* Um azul secundário */ 
+    --tertiary-blue: #ADD8E6 !important; /* Um azul mais claro para hover/seleções suaves */ 
+    --dark-blue: #005A8D !important; /* Um azul mais escuro, bom para texto de destaque */ 
+    --success-green: #28a745 !important; /* Verde para sucesso/ícones */ 
+    --vibrant-green: #2ecc71 !important; /* Verde mais vibrante para gradientes */ 
+    --danger-red: #dc3545 !important; /* Vermelho para erros/ações perigosas */ 
+    --warning-yellow: #ffc107 !important; /* Amarelo para avisos */ 
+    --info-cyan: #17a2b8 !important; /* Ciano para informações */ 
+    --text-dark: #333333 !important; /* Texto escuro mais legível (não preto puro) */ 
+    --text-neutral: #555555 !important; /* Cinza médio para textos secundários */ 
+    --border-light: #E0E0E0 !important; /* Borda clara */ 
+    --shadow-light: rgba(0, 0, 0, 0.08) !important; /* Sombra suave para elementos */ 
+
+    /* Cores de destaque para gradientes/brilhos */ 
+    --quantum-blue: #00b4d8 !important;  
+    --secure-green: #2ecc71 !important;  
+    --cyber-purple: #6c5ce7 !important; 
+    --golden-yellow: #ffd700 !important;  
+
+    /* Gradientes usados na página */ 
+    --gradient-table-header: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)) !important; 
+    --gradient-danger-header: linear-gradient(90deg, var(--danger-red), #e74c3c) !important;  
+  } 
+
+  /* Main content area */ 
+  .content { 
+    padding: 25px !important; /* Aumenta o padding */ 
+    background: var(--page-bg) !important;  
+    border-radius: 12px !important;  
+    margin: 25px !important; /* Aumenta a margem */ 
+    box-shadow: 0 5px 25px var(--shadow-light) !important;  
+    color: var(--text-dark) !important;  
+  } 
+
+  /* Box (geral) */ 
+  .box { 
+    background: var(--card-bg) !important;  
+    border: 1px solid var(--border-light) !important;  
+    border-radius: 12px !important; 
+    color: var(--text-dark) !important;  
+    box-shadow: 0 2px 10px var(--shadow-light) !important;  
+    overflow: hidden !important;  
+  } 
+
+  .box-header { 
+    border-bottom: 1px solid var(--border-light) !important; 
+    padding: 20px !important; /* Aumenta o padding do header */ 
+    display: flex !important; 
+    justify-content: space-between !important; 
+    align-items: center !important; 
+    background-color: var(--page-bg) !important;  
+  } 
+
+  .box-title { 
+    color: var(--primary-blue) !important;  
+    font-size: 1.6rem !important; /* Aumenta o tamanho do título */ 
+    font-weight: 600 !important; 
+  } 
+
+  .box-body { 
+    padding: 20px !important; 
+    color: var(--text-neutral) !important;  
+  } 
+
+  /* Tabela */ 
+  .table { 
+    width: 100% !important; 
+    margin-bottom: 0 !important;  
+    background-color: transparent !important;  
+    color: var(--text-dark) !important;  
+    border-collapse: separate !important; 
+    border-spacing: 0 !important; 
+  } 
+
+  .table th, 
+  .table td { 
+    padding: 14px !important; /* Aumenta o padding das células */ 
+    vertical-align: middle !important; 
+    border: 1px solid var(--border-light) !important;  
+    font-size: 1.15rem !important; /* Aumenta o tamanho da fonte para os dados da tabela */ 
+    line-height: 1.6 !important; /* Melhora a legibilidade do texto nas células */ 
+  } 
+
+  .table thead th { 
+    background: var(--gradient-table-header) !important;  
+    color: #fff !important;  
+    font-weight: 600 !important; 
+    text-transform: uppercase !important; 
+    border-color: var(--primary-blue) !important;  
+    font-size: 1.1rem !important; /* Aumenta o tamanho da fonte dos cabeçalhos da tabela */ 
+  } 
+  .box .table thead th:first-child { border-top-left-radius: 12px !important; } 
+  .box .table thead th:last-child { border-top-right-radius: 12px !important; } 
+
+  /* Estilo de hover para linhas da tabela */ 
+  .table tbody tr:hover { 
+    background-color: var(--tertiary-blue) !important;  
+    cursor: pointer; 
+  } 
+
+  /* Botões */ 
+  .btn { 
+    border-radius: 12px !important; 
+    transition: all 0.3s ease !important; 
+    color: #fff !important;  
+    padding: 12px 25px !important; /* Aumenta o padding para melhor toque */ 
+    font-size: 1.05rem !important; /* Aumenta o tamanho da fonte do botão */ 
+    display: inline-flex !important;  
+    align-items: center !important; 
+    gap: 10px !important; /* Aumenta o espaçamento entre ícone e texto */ 
+  } 
+
+  .btn-sm { 
+    padding: 10px 20px !important; /* Ajusta o padding para botões pequenos */ 
+    font-size: 0.95rem !important; /* Ajusta o tamanho da fonte para botões pequenos */ 
+  } 
+
+  .btn-primary { 
+    background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-purple)) !important; 
+    border: none !important; 
+  } 
+
+  .btn-success { 
+    background: linear-gradient(135deg, var(--secure-green), var(--quantum-blue)) !important; 
+    border: none !important; 
+  } 
+
+  .btn-danger { 
+    background: var(--gradient-danger-header) !important;  
+    border: none !important; 
+  } 
+   
+  /* Botão padrão (Fechar) */ 
+  .btn-default { 
+    background-color: var(--page-bg) !important;  
+    border: 1px solid var(--border-light) !important;  
+    color: var(--text-dark) !important;  
+  } 
+  .btn-default:hover { 
+    background-color: var(--border-light) !important;  
+    color: var(--text-dark) !important; 
+  } 
+
+  .btn:hover { 
+    transform: translateY(-2px) !important; 
+    box-shadow: 0 8px 25px rgba(0, 90, 141, 0.2) !important;  
+  } 
+   
+  /* Modals */ 
+  .modal-content { 
+    background: var(--card-bg) !important;  
+    border-radius: 12px !important;  
+    border: 1px solid var(--border-light) !important;  
+    color: var(--text-dark) !important;  
+    box-shadow: 0 10px 30px var(--shadow-light) !important;  
+  } 
+
+  .modal-header { 
+    border-bottom: 1px solid var(--border-light) !important;  
+    padding: 20px !important; /* Aumenta o padding do header do modal */ 
+    background-color: var(--page-bg) !important;  
+  } 
+
+  .modal-footer { 
+    border-top: 1px solid var(--border-light) !important;  
+    padding: 20px !important; /* Aumenta o padding do footer do modal */ 
+    background-color: var(--page-bg) !important;  
+  } 
+   
+  .modal-title { 
+    color: var(--primary-blue) !important;  
+    font-weight: 600 !important; 
+    font-size: 1.4rem !important; /* Aumenta o tamanho do título do modal */ 
+  } 
+
+  /* Labels dos formulários (para consistência, embora não haja form embutido aqui) */ 
+  .form-group label { 
+      color: var(--dark-blue) !important;  
+      font-weight: 600 !important; 
+      margin-bottom: 8px !important; /* Aumenta a margem */ 
+      display: block !important; 
+      font-size: 1.05rem !important; /* Aumenta o tamanho do label */ 
+  } 
+
+  /* Texto de erro de validação (para consistência) */ 
+  .text-danger { 
+      color: var(--danger-red) !important;  
+      font-size: 0.95em !important; /* Aumenta ligeiramente */ 
+      display: block !important;  
+      margin-top: 8px !important;  
+  } 
+
+  /* Texto bold no modal */ 
+  .modal-body .bold { 
+    color: var(--dark-blue) !important;  
+    font-weight: 700 !important; 
+    margin-top: 20px !important; /* Aumenta a margem */ 
+    font-size: 1.6em !important; /* Aumenta o tamanho */ 
+  } 
+   
+  /* Botão de fechar (X) do modal */ 
+  .modal-header .close { 
+    color: var(--text-neutral) !important;  
+    opacity: 0.7 !important; 
+    transition: opacity 0.3s ease !important; 
+    font-size: 2.0rem !important; /* Aumenta o tamanho do 'x' */ 
+  } 
+  .modal-header .close:hover { 
+    opacity: 1 !important; 
+    color: var(--danger-red) !important;  
+  } 
+
+  /* Estilos específicos para o modal de reinício (reset) */ 
+  #reset .modal-body p { 
+      color: var(--text-neutral) !important; 
+      font-size: 1.15em !important; /* Aumenta a fonte */ 
+      margin-bottom: 8px !important;  
+  } 
+  #reset .modal-body h4 { 
+      color: var(--danger-red) !important;  
+      font-weight: 600 !important; 
+      margin-top: 15px !important; /* Aumenta a margem */ 
+      font-size: 1.3em !important; /* Aumenta a fonte */ 
+  } 
+  #reset .modal-title { 
+      color: var(--danger-red) !important;  
+  } 
+
+</style> 
+
+<section class="content"> 
+  <div class="row"> 
+    <div class="col-xs-12"> 
+      <div class="box"> 
+        <div class="box-header with-border"> 
+          <h3 class="box-title">Registros de Votos</h3>  
+          <a 
+            href="#reset" 
+            data-toggle="modal" 
+            class="btn btn-danger btn-sm"  
+            ><i class="fa fa-refresh"></i> Reiniciar Votos</a 
+          > 
+        </div> 
+        <div class="box-body"> 
+          <table id="example1" class="table table-bordered table-hover">  
+            <thead> 
+              <tr>  
+                <th>Nome do Eleitor</th> 
+                <th>Candidato Votado</th> 
+                <th>Posição</th> 
+              </tr> 
+            </thead> 
+            <tbody> 
+              {% for vote in votes %} 
+              <tr> 
+                <td>{{ vote.voter }}</td> 
+                <td>{{ vote.candidate }}</td> 
+                <td>{{ vote.position }}</td> 
+              </tr> 
+              {% endfor %} 
+            </tbody> 
+          </table> 
+        </div> 
+      </div> 
+    </div> 
+  </div> 
+</section> 
+
+{% endblock content %}  
+
+{% block modal %} 
+<div class="modal fade" id="reset"> 
+  <div class="modal-dialog"> 
+    <div class="modal-content"> 
+      <div class="modal-header"> 
+        <button 
+          type="button" 
+          class="close" 
+          data-dismiss="modal" 
+          aria-label="Fechar" 
+        > 
+          <span aria-hidden="true">&times;</span> 
+        </button> 
+        <h4 class="modal-title"><b>Reiniciar Votos</b></h4>  
+      </div> 
+      <div class="modal-body"> 
+        <div class="text-center"> 
+          <p>Você tem certeza que deseja reiniciar todos os votos?</p>  
+          <h4>Isto irá eliminar permanentemente todos os registros de votos.</h4>  
+        </div> 
+      </div> 
+      <div class="modal-footer"> 
+        <button 
+          type="button" 
+          class="btn btn-default pull-left"  
+          data-dismiss="modal" 
+        > 
+          <i class="fa fa-close"></i> Fechar 
+        </button> 
+        <a href="{% url 'resetVote' %}" class="btn btn-danger"  
+          ><i class="fa fa-refresh"></i> Reiniciar</a 
+        > 
+      </div> 
+    </div> 
+  </div> 
+</div> 
+{% endblock modal %}  
+
+{% block custom_js %} 
+<script> 
+  $(function () { 
+    // Verifica se já existe uma instância do DataTables na tabela
+    // e a destrói antes de inicializar novamente.
+    if ($.fn.DataTable.isDataTable('#example1')) {
+      $('#example1').DataTable().destroy();
+    }
+
+    // Inicializa o DataTables para a tabela de votos 
+    $("#example1").DataTable({ 
+      responsive: true, 
+      autoWidth: false,  
+      order: [],  
+      // Tradução completa para o português 
+      language: { 
+        "sEmptyTable": "Nenhum registro encontrado", 
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", 
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", 
+        "sInfoFiltered": "(Filtrados de _MAX_ registros no total)", 
+        "sInfoPostFix": "", 
+        "sInfoThousands": ".", 
+        "sLengthMenu": "_MENU_ resultados por página", 
+        "sLoadingRecords": "Carregando...", 
+        "sProcessing": "Processando...", 
+        "sZeroRecords": "Nenhum registro encontrado", 
+        "sSearch": "Pesquisar:", 
+        "oPaginate": { 
+          "sNext": "Próximo", 
+          "sPrevious": "Anterior", 
+          "sFirst": "Primeiro", 
+          "sLast": "Último" 
+        }, 
+        "oAria": { 
+          "sSortAscending": ": Ordenar colunas de forma ascendente", 
+          "sSortDescending": ": Ordenar colunas de forma descendente" 
+        }, 
+        "select": { 
+          "rows": { 
+            "_": "%d linhas selecionadas", 
+            "0": "Nenhuma linha selecionada", 
+            "1": "1 linha selecionada" 
+          } 
+        } 
+      } 
+    }); 
+
+    // Os event listeners '.edit' e '.delete' e a função 'getRow' no JS não parecem ser usados nesta página 
+    // Já que não há botões de editar/excluir na tabela de votos e nenhum modal 'edit'/'delete' é definido aqui. 
+    // Mantenho-os caso sejam usados em outro contexto ou se a funcionalidade for adicionada mais tarde. 
+    $(document).on("click", ".edit", function (e) { 
+      e.preventDefault(); 
+      $("#edit").modal("show"); 
+      var id = $(this).data("id"); 
+      getRow(id); 
+    }); 
+
+    $(document).on("click", ".delete", function (e) { 
+      e.preventDefault(); 
+      $("#delete").modal("show"); 
+      var id = $(this).data("id"); 
+      getRow(id); 
+    }); 
+  }); 
+
+  // Esta função busca dados de um candidato, o que parece estranho para uma página de Votos. 
+  // Mantenho-a, mas é importante verificar se ela é realmente necessária aqui. 
+  function getRow(id) { 
+    $.ajax({ 
+      type: "GET", 
+      url: '{% url "viewCandidate" %}',  
+      data: { 
+        id: id, 
+      }, 
+      dataType: "json", 
+      success: function (response) { 
+        $(".id").val(id);  
+        $(".display_form").html(response.form); 
+        $(".fullname").html(response.fullname); 
+      }, 
+      error: function(xhr, status, error) { 
+        console.error("Erro ao obter dados:", error); 
+      } 
+    }); 
+  } 
+</script> 
+{% endblock custom_js %}

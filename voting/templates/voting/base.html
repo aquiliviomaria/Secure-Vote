@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'images/logo_sv.png' %}"
+    />
+    <title>Secure Vote</title>
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+      name="viewport"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'dist/css/skins/_all-skins.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'toastr/toastr.min.css' %} " />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+    />
+
+    <style>
+      .mt20 {
+        margin-top: 20px;
+      }
+      .title {
+        font-size: 50px;
+      }
+      #candidate_list {
+        margin-top: 20px;
+      }
+
+      #candidate_list ul {
+        list-style-type: none;
+      }
+
+      #candidate_list ul li {
+        margin: 0 30px 30px 0;
+        vertical-align: top;
+      }
+
+      .clist {
+        margin-left: 20px;
+      }
+
+      .cname {
+        font-size: 25px;
+      }
+
+      .votelist {
+        font-size: 17px;
+      }
+
+      :root {
+        --primary-blue: #005a8d;
+        --secondary-orange: #f58428;
+        --success-green: #28a745;
+        --light-bg: #f8f9fa;
+        --card-bg: #ffffff;
+        --text-dark: #212529;
+        --text-light: #6c757d;
+      }
+
+      body.securevote-light-theme {
+        background-color: var(--light-bg);
+        color: var(--text-dark);
+      }
+
+      body.securevote-light-theme a {
+        color: var(--primary-blue);
+      }
+
+      body.securevote-light-theme h1,
+      body.securevote-light-theme h2,
+      body.securevote-light-theme h3,
+      body.securevote-light-theme h4,
+      body.securevote-light-theme h5,
+      body.securevote-light-theme h6 {
+        color: var(--primary-blue);
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .btn-primary {
+        background-color: var(--primary-blue);
+        border-color: var(--primary-blue);
+        color: #fff;
+      }
+
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: #004c75;
+        border-color: #004c75;
+      }
+
+      .btn-outline-primary {
+        color: var(--primary-blue);
+        border-color: var(--primary-blue);
+        background-color: transparent;
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--primary-blue);
+        color: #fff;
+      }
+
+      .btn-secondary-orange {
+        background-color: var(--secondary-orange);
+        border-color: var(--secondary-orange);
+        color: #fff;
+      }
+
+      .btn-secondary-orange:hover,
+      .btn-secondary-orange:focus {
+        background-color: #e0741c;
+        border-color: #e0741c;
+      }
+
+      .btn-success {
+        background-color: var(--success-green);
+        border-color: var(--success-green);
+        color: #fff;
+      }
+
+      .btn-success:hover,
+      .btn-success:focus {
+        background-color: #218838;
+        border-color: #218838;
+      }
+
+      .system-header {
+        text-align: center;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .system-header img {
+        height: 60px;
+        margin-right: 15px;
+      }
+
+      .system-header h1 {
+        font-size: 3.5em;
+        font-weight: 700;
+        color: var(--primary-blue);
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body class="hold-transition skin-blue login-page securevote-light-theme">
+    {% block content %} {% endblock content %}
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'plugins/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+    <script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+    <script src="{% static 'toastr/toastr.min.js' %}"></script>
+    <script>
+      $(function () {
+        $("#example1").DataTable();
+        var bookTable = $("#booklist").DataTable({
+          paging: true,
+          lengthChange: false,
+          searching: true,
+          ordering: true,
+          info: false,
+          autoWidth: false,
+        });
+
+        $("#searchBox").on("keyup", function () {
+          bookTable.search(this.value).draw();
+        });
+      });
+    </script>
+    {% if messages %} {% for message in messages %}
+    <script>
+      toastr.{{ message.tags }}('{{ message }}', '{{ message.tags|title }}');
+    </script>
+    {% endfor %} {% endif %}
+  </body>
+</html>

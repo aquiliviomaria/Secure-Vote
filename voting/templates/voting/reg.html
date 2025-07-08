@@ -1,0 +1,434 @@
+{% extends "voting/base.html" %} 
+{% load static %} 
+{% block content %}
+<link
+  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.19/dist/tailwind.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  rel="stylesheet"
+/>
+
+<style>
+  /* Variáveis CSS para consistência com login.html */
+  :root {
+    --card-bg: #ffffff;
+    --primary-blue: #005a8d;
+    --success-green: #28a745;
+  }
+
+  /* Animações */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Container Principal do Formulário */
+  .auth-container {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 2;
+  }
+
+  .auth-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Área do Logo */
+  .logo-area {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .logo-area img {
+    max-width: 160px;
+    height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  /* Títulos e Mensagens */
+  .secure-header {
+    text-align: center;
+  }
+
+  .secure-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+  }
+
+  .secure-header .login-box-msg {
+    color: #4a4a4a;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Formulário */
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Modificação para .form-group para ter ícone dentro do input */
+  .form-group.has-feedback {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  /* Ajusta o padding do input para acomodar o ícone */
+  .form-group.has-feedback input[type="text"],
+  .form-group.has-feedback input[type="email"],
+  .form-group.has-feedback input[type="password"] {
+    width: 100%;
+    padding: 14px 16px 14px 40px; /* Aumenta o padding esquerdo */
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #1f2a44;
+    font-size: 1.05rem; /* Ajustado para melhor legibilidade */
+    transition: all 0.3s ease;
+  }
+
+  /* Estilo específico para input type="file" */
+  .form-group.has-feedback input[type="file"] {
+    width: 100%;
+    padding: 12px 15px; /* Padding padrão, sem ícone interno */
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #1f2a44;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-group.has-feedback input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.15rem rgba(0, 90, 141, 0.3);
+  }
+
+  .form-group.has-feedback input:not(:placeholder-shown) {
+    background-color: #f8fafc;
+  }
+
+  /* Estilo do ícone dentro do input de texto/email/password */
+  .form-group.has-feedback .fa {
+    position: absolute;
+    left: 15px; /* Posição do ícone */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 1em; /* Tamanho do ícone */
+    pointer-events: none; /* Garante que o ícone não atrapalhe o clique no input */
+  }
+
+  /* Foco visível */
+  .form-group.has-feedback input:focus,
+  .auth-actions .btn-primary:focus,
+  .auth-actions .btn-flat:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+  }
+
+  /* Mensagens de erro */
+  .text-danger {
+    color: #ff4757;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* Botões */
+  .auth-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #006d9f 100%);
+    border: none;
+    color: #fff;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-flat {
+    background: transparent;
+    border: 1px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem; /* Ajustado para consistência com o botão primário */
+    transition: all 0.3s ease;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-primary:hover,
+  .btn-flat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 90, 141, 0.2);
+  }
+
+  .btn-flat:hover {
+    background: var(--primary-blue);
+    color: #fff;
+  }
+
+  /* Footer de conexão segura */
+  .secure-connection-footer {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--success-green);
+    font-size: 0.9em; /* Ajustado para consistência */
+    font-weight: 500;
+    padding: 10px 20px;
+    background: rgba(40, 167, 69, 0.15);
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+  }
+
+  .secure-connection-footer .dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success-green);
+    border-radius: 50%;
+    animation: pulse-green 2s infinite;
+  }
+
+  @keyframes pulse-green {
+    0% {
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.3);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
+      opacity: 0.7;
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+      opacity: 1;
+    }
+  }
+
+  /* Responsividade */
+  @media (max-width: 576px) {
+    .auth-container {
+      max-width: 90%;
+      padding: 1.5rem;
+    }
+
+    .secure-header h1 {
+      font-size: 1.8rem;
+    }
+
+    .secure-header .login-box-msg {
+      font-size: 1rem;
+    }
+
+    .form-group.has-feedback label,
+    .form-group.has-feedback input,
+    .text-danger {
+      font-size: 0.95rem;
+    }
+
+    .auth-actions .btn-primary,
+    .auth-actions .btn-flat {
+      font-size: 1rem;
+      padding: 12px;
+    }
+
+    .secure-connection-footer {
+      bottom: 15px;
+      font-size: 0.9rem;
+      padding: 8px 15px;
+    }
+  }
+
+  /* Centralização da página */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background-color: #f4f6f9;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+</style>
+
+<div class="auth-container">
+  <div class="logo-area">
+    <img src="{% static 'images/logo_sv.png' %}" alt="Logotipo SecureVote" />
+  </div>
+  <div class="secure-header">
+    <h1>Crie sua conta</h1>
+    <p class="login-box-msg">Registre-se para começar a votar</p>
+  </div>
+
+  <form class="auth-form" action="{% url 'account_register' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-body">
+      {# Loop para o CustomUserForm (form1) #}
+      {% for field in form1 %}
+      <div class="form-group has-feedback">
+        {# Exibe erros específicos do campo #}
+        {% if field.errors %}
+        <span class="text-danger">{{ field.errors }}</span>
+        {% endif %}
+
+        {# Renderiza o campo com placeholder e ícone, conforme o nome do campo #}
+        {% if field.name == 'first_name' %}
+        <input type="text" class="form-control" name="{{ field.name }}" placeholder="Primeiro Nome" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-user"></span>
+        {% elif field.name == 'last_name' %}
+        <input type="text" class="form-control" name="{{ field.name }}" placeholder="Último Nome" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-user"></span>
+        {% elif field.name == 'email' %}
+        <input type="email" class="form-control" name="{{ field.name }}" placeholder="E-mail" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-envelope"></span>
+        {% elif field.name == 'profile_image' %}
+        {# Para campos de arquivo, não usamos placeholder nem ícone interno da mesma forma #}
+        {# Você pode adicionar um label para "Foto de Perfil" se desejar #}
+        <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; color: #4a4a4a; font-size: 0.95em;">Foto de Perfil:</label>
+        {{ field }}
+        {# Opcional: Adicionar um ícone ao lado do campo de arquivo, se o design permitir #}
+        {# <span class="fa fa-camera" style="position: relative; top: -2px; left: 5px;"></span> #}
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      {# Adiciona os campos de senha manualmente para ter controle total (como o login.html) #}
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" name="password" placeholder="Senha" required aria-label="Senha" />
+        <span class="fa fa-lock"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" name="confirm_password" placeholder="Confirmar Senha" required aria-label="Confirmar Senha" />
+        <span class="fa fa-lock"></span>
+      </div>
+      
+      {# Exibir mensagens de erro globais do formulário (se houver) #}
+      {% if form1.non_field_errors %}
+      <div class="text-danger">
+        {% for error in form1.non_field_errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if form2.non_field_errors %}
+      <div class="text-danger">
+        {% for error in form2.non_field_errors %}
+        <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# Loop para o VoterForm (form2) #}
+      {% for field in form2 %}
+      <div class="form-group has-feedback">
+        {% if field.errors %}
+        <span class="text-danger">{{ field.errors }}</span>
+        {% endif %}
+        
+        {# Renderiza o campo com placeholder e ícone, conforme o nome do campo #}
+        {# Você precisará ajustar os tipos de input e placeholders conforme os campos do VoterForm #}
+        {# Exemplo para campos comuns do VoterForm. Adapte conforme seu VoterForm #}
+        {% if field.name == 'contact' %}
+        <input type="text" class="form-control" name="{{ field.name }}" placeholder="Contacto" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-phone"></span>
+        {% elif field.name == 'address' %}
+        <input type="text" class="form-control" name="{{ field.name }}" placeholder="Endereço" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-map-marker-alt"></span>
+        {% elif field.name == 'gender' %}
+        {# Para select/dropdowns, o placeholder não se aplica, e o ícone pode ser diferente #}
+        <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; color: #4a4a4a; font-size: 0.95em;">{{ field.label }}:</label>
+        {{ field }} {# Renderiza o campo select normalmente #}
+        <span class="fa fa-venus-mars"></span> {# Exemplo de ícone para gênero #}
+        {% else %}
+        {# Campo genérico se não corresponder aos específicos acima #}
+        <input type="text" class="form-control" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-info-circle"></span> {# Ícone genérico #}
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <div class="auth-actions">
+        <button type="submit" class="btn-primary">
+          <i class="fa fa-user-plus"></i> Registrar
+        </button>
+        <a href="{% url 'account_login' %}" class="btn-flat">
+          <i class="fa fa-sign-in"></i> Iniciar Sessão
+        </a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Centralização dinâmica
+  function centerAuthContainer() {
+    const authContainer = document.querySelector(".auth-container");
+    if (authContainer) {
+      const windowHeight = window.innerHeight;
+      const containerHeight = authContainer.offsetHeight;
+      // Calculate top offset to center vertically
+      const offset = (windowHeight - containerHeight) / 2;
+      authContainer.style.position = "absolute";
+      authContainer.style.top = `${offset}px`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    centerAuthContainer();
+    window.addEventListener("resize", centerAuthContainer);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% load static %}
+<aside class="main-sidebar">
+  <section class="sidebar">
+    <div class="user-panel">
+      <div class="pull-left image">
+        <img
+          {# AQUI ESTÁ A ALTERAÇÃO: Carrega a profile_image do usuário ou a imagem padrão #}
+          src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}"
+          class="img-circle"
+          alt="User Image"
+        />
+      </div>
+      <div class="pull-left info">
+        {# Exibindo o primeiro e último nome, ou o email se não existirem #}
+        <p>
+          {% if request.user.first_name and request.user.last_name %}
+            {{ request.user.first_name }} {{ request.user.last_name }}
+          {% else %}
+            {{ request.user.email }}
+          {% endif %}
+        </p>
+        <a><i class="fa fa-circle text-success"></i> Online</a>
+      </div>
+    </div>
+    <ul class="sidebar-menu" data-widget="tree">
+      {% if request.user.user_type == '1' %}
+
+      <li class="header">RELATÓRIOS</li>
+
+      <li class="">
+        <a href="{% url 'adminDashboard' %}">
+          <i class="fa fa-dashboard"></i> <span>Painel de Controlo</span>
+        </a>
+      </li>
+
+      <li class="">
+        <a href="{% url 'viewVotes' %}">
+          <i class="glyphicon glyphicon-lock"></i> <span>Votoss</span>
+        </a>
+      </li>
+
+      <li class="header">GERIR</li>
+      <li class="">
+        <a href="{% url 'adminViewVoters' %}"
+          ><i class="fa fa-users"></i> <span>Eleitores</span></a
+        >
+      </li>
+      <li class="">
+        <a href="{% url 'viewPositions' %}"
+          ><i class="fa fa-tasks"></i> <span>Posições</span></a
+        >
+      </li>
+      <li class="">
+        <a href="{% url 'viewCandidates' %}"
+          ><i class="fa fa-black-tie"></i> <span>Candidatos</span></a
+        >
+      </li>
+      <li class="header">CONFIGURAÇÕES</li>
+      <li class="">
+        <a href="{% url 'ballot_position' %}"
+          ><i class="fa fa-file-text"></i>
+          <span>Posição na Cédula Eleitoral</span></a
+        >
+      </li>
+      <li class="">
+        <a href="#config" data-toggle="modal"
+          ><i class="fa fa-cog"></i> <span>Título da Eleição</span></a
+        >
+      </li>
+
+      {% endif %}
+
+      <li class="header">Sair</li>
+      <li class="">
+        <a href="{% url 'account_logout' %}"
+          ><i class="fa fa-arrow-left"></i> <span>Terminar Sessão</span></a
+        >
+      </li>
+    </ul>
+  </section>
+</aside>

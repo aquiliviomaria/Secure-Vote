@@ -1,0 +1,782 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  {# Inclui seu header.html aqui. Garanta que ele não define estilos de tema concorrentes. #}
+  {% include 'header.html' %} 
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link
+  rel="icon"
+  type="image/x-icon"
+  href="{% static 'images/logo_sv.png' %}"
+/>
+  <title>{{ election_setting.title|default:"SecureVote" }}</title> {# Garante que o título aqui também use election_setting.title #}
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style>
+    /* * As variáveis devem ser a sua fonte primária de cores.
+     * Ajustei-as para focar em tons de azul e verde, removendo preto puro.
+     */
+    :root {
+      --card-bg: #FFFFFF; /* Fundo principal para cartões/contêineres (branco) */
+      --page-bg: #F8F9FA; /* Fundo geral da página (um cinza muito, muito claro) */
+      
+      /* Tons de Azul */
+      --primary-blue: #0077B5; /* Azul principal mais vibrante para destaque, botões, ícones principais */
+      --secondary-blue: #0096C7; /* Azul um pouco mais claro, para textos de menu, headers */
+      --tertiary-blue: #ADD8E6; /* Azul bem claro para fundos de hover sutis */
+      --dark-blue: #005A8D; /* Um azul mais escuro para contraste no hover ou texto importante */
+
+      /* Tons de Verde */
+      --success-green: #28a745; /* Verde padrão para "Online" e botões de sucesso */
+      --vibrant-green: #2ecc71; /* Verde mais vibrante, para brilho se desejado */
+      
+      /* Cores Neutras / Bordas - Ajustadas para não serem pretas */
+      --text-neutral: #555; /* Um cinza médio para textos que não são azul/verde, para legibilidade */
+      --border-light: #E0E0E0; /* Borda clara */
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave para elementos (mantida ligeiramente escura para visibilidade) */
+
+      /* Variáveis de brilho (usadas no footer) */
+      --quantum-blue: #00b4d8; 
+      --secure-green: #2ecc71; 
+
+      /* Cores para o modal de configuração */
+      --gradient-start: #0077B5; /* Cor inicial para gradiente do header do modal */
+      --gradient-end: #0096C7;   /* Cor final para gradiente do header do modal */
+      --danger-red: #dc3545; /* Vermelho para "eleição terminou" */
+
+      /* Adicionado para o contador no ballot.html - Estas variáveis já estão no ballot.html, mas é bom ter aqui para consistência. */
+      --countdown-active: #28A745; /* Verde para eleição ativa */
+      --countdown-ended: #DC3545; /* Vermelho para eleição terminada */
+      --countdown-pending: #007BFF; /* Azul para eleição pendente */
+    }
+
+    /* ******************************************* */
+    /* *** AJUSTES PARA O LAYOUT GLOBAL / BODY *** */
+    /* ******************************************* */
+    body {
+      background: var(--page-bg) !important; 
+      color: var(--text-neutral) !important; /* Texto geral do corpo em cinza neutro */
+      overflow-x: hidden; /* Evita scroll horizontal indesejado */
+    }
+
+    /* O WRAPPER do AdminLTE gerencia o layout principal */
+    .wrapper {
+      background: transparent !important;
+    }
+
+    /* ******************************************* */
+    /* *** AJUSTES PARA O CONTEÚDO PRINCIPAL *** */
+    /* ******************************************* */
+    .content-wrapper {
+      background: var(--card-bg) !important; 
+      border-radius: 10px;
+      margin: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px var(--shadow-light); 
+      border: 1px solid var(--border-light); 
+      color: var(--text-neutral) !important; /* Texto do conteúdo principal em cinza neutro */
+      
+      /* *** MUITO IMPORTANTE PARA O FOOTER FIXO *** */
+      /* Este padding cria espaço para o footer fixo. Ajuste conforme a altura real do seu footer. */
+      /* Altura do footer (aprox. 80px) + um pouco de respiro (20px) = 100px */
+      padding-bottom: 100px !important; 
+    }
+    
+    /* Garante que todos os títulos e parágrafos dentro do content-wrapper tenham texto neutro */
+    .content-wrapper h1,
+    .content-wrapper h2,
+    .content-wrapper h3,
+    .content-wrapper h4,
+    .content-wrapper h5,
+    .content-wrapper h6,
+    .content-wrapper p,
+    .content-wrapper span,
+    .content-wrapper div:not(.form-control):not(.dataTables_wrapper) { 
+        color: var(--text-neutral) !important;
+    }
+    /* Exceção para o título da página no content-header, se quiser azul */
+    .content-header h1 {
+        color: var(--primary-blue) !important;
+    }
+
+
+    /* ******************************************* */
+    /* *** AJUSTES GERAIS DO ADMINLTE (Navbar, Logo, Modal, Botões) *** */
+    /* ******************************************* */
+    .main-header .navbar {
+        background-color: var(--card-bg) !important; 
+        border-bottom: 1px solid var(--border-light) !important;
+    }
+    .main-header .navbar .sidebar-toggle {
+        color: var(--primary-blue) !important; 
+    }
+    .main-header .navbar .nav > li > a {
+        color: var(--primary-blue) !important; 
+    }
+    .main-header .logo {
+        background-color: var(--primary-blue) !important; 
+        color: #fff !important; 
+        border-bottom: 1px solid var(--primary-blue) !important;
+    }
+    .main-header .logo:hover {
+        background-color: var(--dark-blue) !important; 
+    }
+
+    /* Estilos para o modal de configuração */
+    .modal-content.config-modal {
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        background: var(--card-bg) !important;
+        color: var(--text-neutral) !important;
+        border: 1px solid var(--border-light) !important;
+    }
+    .modal-header.config-header {
+        background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        color: #fff;
+        border-bottom: none;
+        padding: 20px 25px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .modal-header.config-header .modal-title {
+        color: #fff !important; /* Force white text */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .modal-header.config-header .close {
+        color: #fff;
+    }
+    .modal-footer.config-footer {
+        border-top: 1px solid var(--border-light);
+        padding: 20px 25px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .btn-default {
+      background: var(--page-bg) !important; 
+      border-color: var(--border-light) !important;
+      color: var(--text-neutral) !important; 
+    }
+    .btn-default:hover {
+      background: var(--border-light) !important; 
+      color: var(--text-neutral) !important; 
+    }
+    
+    .btn-success {
+      background-color: var(--success-green) !important;
+      border-color: var(--success-green) !important;
+      color: #fff !important; 
+    }
+    .btn-danger {
+      background-color: #dc3545 !important; 
+      border-color: #dc3545 !important;
+      color: #fff !important; 
+    }
+    .btn-success:hover, .btn-danger:hover {
+      filter: brightness(90%); 
+    }
+
+    /* Estilo para o botão Salvar do modal de configuração */
+    .btn-config-save {
+        background: linear-gradient(45deg, var(--secure-green), var(--quantum-blue)) !important;
+        border: none !important;
+        color: #fff !important;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .btn-config-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 180, 216, 0.4);
+        filter: brightness(105%);
+    }
+
+    /* Ajuste para a tabela */
+    .table-container {
+      /* Altura máxima da tabela, descontando header, padding do content-wrapper e footer */
+      max-height: calc(100vh - 200px - 100px); 
+      overflow-y: auto; 
+      margin-bottom: 20px; 
+    }
+    .table {
+      color: var(--text-neutral) !important; 
+    }
+    .table-bordered > thead > tr > th,
+    .table-bordered > tbody > tr > td {
+        border: 1px solid var(--border-light) !important; 
+        color: var(--text-neutral) !important; 
+    }
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+        background-color: var(--tertiary-blue) !important; 
+        color: var(--text-neutral) !important; 
+    }
+
+    /* Garante que os links (a tags) dentro do conteúdo sejam azuis e não pretos */
+    a {
+        color: var(--primary-blue) !important; 
+    }
+    a:hover, a:focus {
+        color: var(--dark-blue) !important; 
+        text-decoration: underline; 
+    }
+    
+    /* ******************************************* */
+    /* *** AJUSTES PARA O FOOTER (FIXO E LARGURA) *** */
+    /* ******************************************* */
+    .main-footer {
+      background: var(--card-bg) !important; 
+      border-top: 1px solid var(--border-light) !important; 
+      padding: 20px; 
+      color: var(--text-neutral) !important; 
+      box-shadow: 0 -2px 10px var(--shadow-light) !important; 
+
+      position: fixed !important; 
+      bottom: 0 !important;       
+      left: 0 !important;         
+      width: 100% !important;     
+      z-index: 1030 !important;   
+      height: 80px !important;    
+      transition: margin-left .3s ease-in-out; 
+    }
+
+    /* Estilos para desktop e tablets (telas maiores que 768px - breakpoint padrão do AdminLTE para sidebar) */
+    @media (min-width: 768px) {
+        body:not(.sidebar-collapse) .main-footer {
+            margin-left: 230px !important; 
+            width: calc(100% - 230px) !important; 
+        }
+
+        body.sidebar-collapse .main-footer {
+            margin-left: 50px !important; 
+            width: calc(100% - 50px) !important; 
+        }
+    }
+
+    /* Estilos para telas menores que 768px (celulares) - FOOTER RESPONSIVO AQUI */
+    @media (max-width: 767px) {
+        .main-footer {
+            margin-left: 0 !important; 
+            width: 100% !important;
+            /* Se o conteúdo do footer quebrar, pode ser necessário ajustar a altura ou permitir que o footer cresça */
+            height: auto !important; /* Permite que o footer se ajuste à altura do conteúdo em mobile */
+            padding: 10px 15px !important; /* Reduz o padding em telas pequenas */
+            position: relative !important; /* Pode ser 'relative' para fluir com o conteúdo em mobile */
+            /* Se for 'relative', o padding-bottom do content-wrapper não precisa ser ajustado dinamicamente para ele */
+            /* Se quiser fixo em mobile e com problemas de sobreposição, manter fixed e ajustar padding-bottom do body */
+        }
+        .content-wrapper {
+            padding-bottom: 20px !important; /* Reduz o padding para mobile, já que o footer pode ser relative ou menor */
+        }
+    }
+
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between; 
+      align-items: center;
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 20px; 
+      flex-wrap: wrap; 
+      gap: 15px; /* Espaçamento entre os itens flex */
+    }
+
+    /* Centralização e empilhamento em telas muito pequenas para o footer */
+    @media (max-width: 480px) {
+        .footer-content {
+            flex-direction: column; 
+            text-align: center;
+            gap: 10px; 
+        }
+        .footer-left {
+            text-align: center;
+        }
+        .social-icons {
+            justify-content: center; 
+            margin-top: 10px;
+            width: 100%; /* Ocupa a largura total para centralizar */
+        }
+    }
+
+
+    .footer-left strong {
+      font-size: 1.5rem;
+      color: var(--text-neutral) !important; 
+    }
+
+    .footer-left p {
+      font-size: 1.3rem;
+      margin: 5px 0 0;
+      color: var(--text-neutral) !important; 
+    }
+
+    /* Gradiente e animação para o nome do desenvolvedor - MANTIDO como azul/verde vibrante */
+    .footer-left p strong {
+      background: linear-gradient(
+        45deg,
+        var(--secure-green),
+        var(--quantum-blue)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent !important; 
+      font-weight: 600;
+      animation: logoGlow 3s infinite; 
+    }
+
+    @keyframes logoGlow {
+      0% { text-shadow: 0 0 5px var(--quantum-blue); }
+      50% { text-shadow: 0 0 10px var(--secure-green); }
+      100% { text-shadow: 0 0 5px var(--quantum-blue); }
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 20px; 
+    }
+
+    .social-icons a {
+      color: var(--primary-blue) !important; 
+      font-size: 1.8rem; 
+      transition: all 0.3s ease;
+      animation: none !important; 
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Cores de hover específicas para ícones sociais */
+    .whatsapp-icon:hover { color: #25d366 !important; }
+    .linkedin-icon:hover { color: #0077b5 !important; }
+    .github-icon:hover { 
+      color: #555 !important; /* Um cinza escuro, mas não preto puro */
+    } 
+    .instagram-icon:hover { color: #C13584 !important; }
+
+    /* ******************************************* */
+    /* *** AJUSTES PARA A SIDEBAR (CORES SEM PRETO E ÍCONES) *** */
+    /* ******************************************* */
+    .main-sidebar {
+      background: var(--card-bg) !important; 
+      border-right: 1px solid var(--border-light) !important; 
+      box-shadow: 0 0 10px var(--shadow-light) !important; 
+    }
+
+    .user-panel {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-light) !important; 
+    }
+
+    /* Nome do usuário na sidebar - SEM PRETO */
+    .user-panel .info p {
+      color: var(--dark-blue) !important; 
+      font-weight: 600 !important; 
+    }
+
+    .user-panel .info a {
+      color: var(--success-green) !important; 
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .sidebar-menu {
+      padding: 20px 0;
+    }
+
+    /* Cabeçalhos de seção (li.header) - SEM PRETO - MAIOR ESPECIFICIDADE */
+    .sidebar-menu > .header { /* Adicionado ">" para maior especificidade */
+        color: var(--primary-blue) !important; 
+        font-size: 0.9rem;
+        font-weight: normal !important; 
+        padding: 10px 20px;
+        text-transform: uppercase;
+        background-color: transparent !important; /* Garante que o fundo não seja preto */
+    }
+
+
+    /* Links do menu - SEM PRETO */
+    .sidebar-menu li a {
+      color: var(--secondary-blue) !important; 
+      padding: 10px 20px;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-menu li a:hover {
+      background: var(--tertiary-blue) !important; 
+      color: var(--dark-blue) !important; 
+      transform: translateX(3px); 
+    }
+    
+    /* Ícones do menu (fa e glyphicon) - SEM PRETO e visibilidade ao minimizar */
+    .sidebar-menu li a i.fa, /* Específico para Font Awesome */
+    .sidebar-menu li a span.glyphicon { /* Específico para Glyphicons */
+      margin-right: 10px;
+      color: var(--primary-blue) !important; 
+      animation: none !important; 
+      min-width: 20px; 
+      text-align: center; 
+      /* Essas propriedades já ajudam na visibilidade */
+      display: inline-block !important; /* Garante que o ícone seja um bloco para centralização */
+    }
+
+    .sidebar-menu li a:hover i.fa,
+    .sidebar-menu li a:hover span.glyphicon {
+      color: var(--dark-blue) !important; 
+    }
+
+    /* Regras para item de menu ativo */
+    .sidebar-menu li.active > a {
+        background-color: var(--primary-blue) !important; 
+        color: #fff !important; 
+    }
+    .sidebar-menu li.active > a i,
+    .sidebar-menu li.active > a span.glyphicon {
+        color: #fff !important; 
+    }
+
+    /* --- REGRAS CRÍTICAS PARA ÍCONES AO MINIMIZAR O MENU --- */
+    /* Quando a sidebar está minimizada (body.sidebar-collapse) */
+    body.sidebar-collapse .sidebar-menu li a {
+        padding-left: 15px !important; /* Ajusta o padding para centralizar o ícone */
+        text-align: center !important; /* Centraliza tudo no item */
+    }
+
+    body.sidebar-collapse .sidebar-menu li a i.fa,
+    body.sidebar-collapse .sidebar-menu li a span.glyphicon {
+        margin-right: 0 !important; /* Remove margem para ícone */
+        width: auto !important;     /* Auto largura */
+        font-size: 1.5em !important; /* Aumenta o ícone para destaque */
+        line-height: 1.5; /* Ajusta altura da linha para centralização vertical */
+    }
+    /* O texto (span) do item de menu precisa ser escondido quando minimizado */
+    body.sidebar-collapse .sidebar-menu li a span:not(.glyphicon):not(.pull-right-container) {
+        display: none !important;
+    }
+    /* Setas de dropdown (pull-right-container) também devem ser escondidas */
+    body.sidebar-collapse .sidebar-menu li a .pull-right-container {
+        display: none !important;
+    }
+
+
+    /* Ocultar scrollbar da sidebar */
+    .sidebar::-webkit-scrollbar {
+        width: 0 !important;
+        display: none !important;
+    }
+    .sidebar {
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+    }
+
+    /* Estilo para o contador regressivo */
+    #countdown-timer {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        border: 2px solid var(--border-light);
+        border-radius: 8px;
+        background-color: var(--page-bg);
+        box-shadow: 0 2px 5px var(--shadow-light);
+    }
+    #countdown-timer.election-ended {
+        color: var(--danger-red);
+    }
+    #countdown-timer.election-active {
+        color: var(--success-green);
+    }
+    #countdown-timer.election-not-started { /* Novo estado */
+        color: var(--countdown-pending); /* Use a cor pendente */
+    }
+
+  </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+  <div class="wrapper">
+
+    {% include "navbar.html" %}
+    {% include "sidebar.html" %}
+
+    <div class="modal fade" id="config">
+      <div class="modal-dialog">
+        <div class="modal-content config-modal"> {# Adicionei classe para estilo #}
+          <div class="modal-header config-header"> {# Adicionei classe para estilo #}
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title"><b>Configuração da Eleição</b></h4> {# Mudei o título #}
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              {# ATENÇÃO: ACTION APONTA PARA A VIEW ballot_title QUE AGORA PROCESSA TUDO #}
+              <form class="form-horizontal" method="POST" action="{% url 'ballot_title' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="title" class="col-sm-3 control-label">Título da Eleição</label>
+                  <div class="col-sm-9">
+                    {# ATENÇÃO: value agora vem do objeto election_setting #}
+                    <input type="text" class="form-control" required id="title" name="title" 
+                           value="{{ election_setting.title|default:'SecureVote' }}">
+                  </div>
+                </div>
+
+                {# NOVO: CAMPO DE DATA/HORA DE INÍCIO #}
+                <div class="form-group">
+                    <label for="start_time" class="col-sm-3 control-label">Início da Votação</label>
+                    <div class="col-sm-9">
+                        <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                               value="{{ election_setting.start_time|date:'Y-m-d\TH:i' }}">
+                    </div>
+                </div>
+
+                {# NOVO: CAMPO DE DATA/HORA DE FIM #}
+                <div class="form-group">
+                    <label for="end_time" class="col-sm-3 control-label">Fim da Votação</label>
+                    <div class="col-sm-9">
+                        <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                               value="{{ election_setting.end_time|date:'Y-m-d\TH:i' }}">
+                    </div>
+                </div>
+
+                {# NOVO: CAMPO IS_ACTIVE #}
+                <div class="form-group">
+                    <label for="is_active" class="col-sm-3 control-label">Eleição Ativa?</label>
+                    <div class="col-sm-9">
+                        <input type="checkbox" id="is_active" name="is_active" value="True"
+                               {% if election_setting.is_active %}checked{% endif %}>
+                    </div>
+                </div>
+
+                {# NOVO: EXIBIÇÃO DO CONTADOR REGRESSIVO NO MODAL (OPCIONAL, mas útil para admin) #}
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <p id="modal-countdown-timer" class="text-center" style="font-size: 1.5rem; font-weight: bold; margin-top: 20px;"></p>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer config-footer"> {# Adicionei classe para estilo #}
+            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Fechar</button>
+            {# ATENÇÃO: SUBSTITUI btn-success POR btn-config-save para um estilo consistente #}
+            <button type="submit" class="btn btn-config-save btn-flat" name="save"><i class="fa fa-save"></i> Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <section class="content-header">
+        <h1>
+          {{ page_title }}
+        </h1>
+        <ol class="breadcrumb">
+          <li class="active">{{ page_title }}</li>
+        </ol>
+      </section>
+
+      {# NOVO: O CONTADOR REGRESSIVO PODE SER EXIBIDO EM CIMA DO SEU BLOCO DE CONTEÚDO #}
+      <div id="countdown-timer"></div>
+      
+      {% block content %}
+      <div class="table-container">
+        <table id="example1" class="table table-bordered">
+          <thead>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Ações</th>
+          </thead>
+          <tbody>
+            {% for voter in voters %}
+            <tr>
+              <td>{{ voter.admin.last_name }}</td>
+              <td>{{ voter.admin.email }}</td>
+              <td>
+                <button class='btn btn-success btn-sm edit btn-flat' data-id='{{ voter.id }}'><i class='fa fa-edit'></i> Editar</button>
+                <button class='btn btn-danger btn-sm delete btn-sm btn-flat' data-id='{{ voter.id }}'><i class='fa fa-trash'></i> Eliminar</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endblock content %}
+    </div>
+
+    {# Inclua seu footer.html aqui #}
+    {% include "footer.html" %} 
+    {% block modal %}
+    {% endblock modal %}
+  </div>
+
+  {% include "scripts.html" %}
+  {% block custom_js %}
+  {% endblock custom_js %}
+
+  <script>
+    // Ajuste para o nome "Secure Vote" e abreviação "SV"
+    document.addEventListener("DOMContentLoaded", function() {
+      const logo = document.querySelector('.main-sidebar .logo .logo-lg');
+      const logoMini = document.querySelector('.main-sidebar .logo .logo-mini');
+
+      if (logo) {
+        logo.textContent = "Secure Vote";
+      }
+
+      if (logoMini) {
+        logoMini.textContent = "SV";
+      }
+    });
+
+    // JavaScript para o CONTADOR REGRESSIVO NO ROOT.HTML (PARA O ADMIN)
+    $(document).ready(function() {
+        const electionStartTimeStr = "{{ election_setting.start_time|date:'Y-m-d\TH:i:s' }}";
+        const electionEndTimeStr = "{{ election_setting.end_time|date:'Y-m-d\TH:i:s' }}";
+        const isElectionActive = {{ election_setting.is_active|yesno:"true,false" }};
+
+        const electionStartTime = electionStartTimeStr ? new Date(electionStartTimeStr) : null;
+        const electionEndTime = electionEndTimeStr ? new Date(electionEndTimeStr) : null;
+
+        const countdownTimerDiv = $('#countdown-timer'); // Timer geral do admin
+        const modalCountdownTimerDiv = $('#modal-countdown-timer'); // Timer dentro do modal de config
+
+        function updateAdminCountdown() {
+            const now = new Date();
+            let message = "";
+            let statusClass = "";
+
+            if (!isElectionActive || !electionStartTime || !electionEndTime || isNaN(electionStartTime.getTime()) || isNaN(electionEndTime.getTime())) {
+                message = "Eleição desativada ou não configurada.";
+                statusClass = ""; // Nenhuma classe de cor especial para este estado
+            } else if (now < electionStartTime) {
+                const timeToStart = electionStartTime - now;
+                const secondsToStart = Math.floor((timeToStart / 1000) % 60);
+                const minutesToStart = Math.floor((timeToStart / 1000 / 60) % 60);
+                const hoursToStart = Math.floor((timeToStart / (1000 * 60 * 60)) % 24);
+                const daysToStart = Math.floor(timeToStart / (1000 * 60 * 60 * 24));
+
+                message = "Início em: ";
+                if (daysToStart > 0) {
+                    message += daysToStart + (daysToStart === 1 ? " dia, " : " dias, ")+ " ";
+                }
+                message += 
+                    (hoursToStart < 10 ? "0" : "") + hoursToStart + ":" +
+                    (minutesToStart < 10 ? "0" : "") + minutesToStart + ":" +
+                    (secondsToStart < 10 ? "0" : "") + secondsToStart;
+                statusClass = 'election-not-started';
+            } else if (now > electionEndTime) {
+                message = "VOTAÇÃO ENCERRADA!";
+                statusClass = 'election-ended';
+                clearInterval(adminCountdownInterval);
+            } else {
+                const timeRemaining = electionEndTime - now;
+                const seconds = Math.floor((timeRemaining / 1000) % 60);
+                const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
+                const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+
+                message = "TEMPO RESTANTE: ";
+                if (days > 0) {
+                    message += days + (days === 1 ? " dia, " : " dias, ");
+                }
+                message += 
+                    (hours < 10 ? "0" : "") + hours + ":" +
+                    (minutes < 10 ? "0" : "") + minutes + ":" +
+                    (seconds < 10 ? "0" : "") + seconds;
+                statusClass = 'election-active';
+            }
+
+            countdownTimerDiv.text(message);
+            modalCountdownTimerDiv.text(message); // Atualiza também o timer no modal
+            countdownTimerDiv.removeClass('election-active election-ended election-not-started').addClass(statusClass);
+            modalCountdownTimerDiv.removeClass('election-active election-ended election-not-started').addClass(statusClass);
+        }
+
+        const adminCountdownInterval = setInterval(updateAdminCountdown, 1000);
+        updateAdminCountdown(); // Chamada inicial
+    });
+
+    // JavaScript para ajustar o padding do content-wrapper E o footer dinamicamente
+    // ... (sua lógica existente para ajustar padding e footer) ...
+    $(function(){
+        function getFooterHeight() {
+            // Em mobile, o footer pode não ser fixo e sua altura pode variar.
+            // Se ele for 'relative', não precisa de padding-bottom dinâmico do content-wrapper.
+            // Se mantiver 'fixed', é crucial.
+            if ($(window).width() <= 767 && $('.main-footer').css('position') === 'relative') {
+                return 0; // Se for relative, o content-wrapper não precisa de padding extra.
+            }
+            return $('.main-footer').outerHeight(true); 
+        }
+
+        function adjustContentPadding() {
+            var currentFooterHeight = getFooterHeight();
+            // Apenas adiciona padding se o footer for fixo. Se for relative, o layout já se ajusta.
+            if ($('.main-footer').css('position') === 'fixed') {
+                $('.content-wrapper').css('padding-bottom', currentFooterHeight + 20 + 'px'); 
+            } else {
+                 $('.content-wrapper').css('padding-bottom', '20px'); /* Padding padrão se não for fixo */
+            }
+        }
+
+        function adjustFooterPosition() {
+            var sidebarWidthExpanded = 230; 
+            var sidebarWidthCollapsed = 50;  
+            var windowWidth = $(window).width();
+
+            if (windowWidth >= 768) {
+                // Modo desktop/tablet
+                if ($('body').hasClass('sidebar-collapse')) {
+                    // Sidebar minimizada
+                    $('.main-footer').css({
+                        'margin-left': sidebarWidthCollapsed + 'px',
+                        'width': 'calc(100% - ' + sidebarWidthCollapsed + 'px)'
+                    });
+                } else {
+                    // Sidebar expandida
+                    $('.main-footer').css({
+                        'margin-left': sidebarWidthExpanded + 'px',
+                        'width': 'calc(100% - ' + sidebarWidthExpanded + 'px)'
+                    });
+                }
+            } else {
+                // Modo mobile (tela < 768px)
+                $('.main-footer').css({
+                    'margin-left': '0', 
+                    'width': '100%'
+                });
+            }
+        }
+
+        $('body').on('expanded.pushmenu collapsed.pushmenu', function() {
+            adjustContentPadding(); 
+            adjustFooterPosition(); 
+        });
+
+        adjustContentPadding();
+        adjustFooterPosition();
+
+        $(window).resize(function() {
+            adjustContentPadding();
+            adjustFooterPosition();
+        });
+    });
+  </script>
+</body>
+</html>

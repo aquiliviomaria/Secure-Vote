@@ -1,0 +1,562 @@
+{% extends 'root.html' %} 
+
+{% block content %}
+<style>
+  /* Variáveis do Tema Claro (para garantir consistência) */
+  :root {
+    --card-bg: #FFFFFF !important; 
+    --page-bg: #F8F9FA !important; /* Fundo da página, um cinza bem claro */
+    --primary-blue: #0077B5 !important; /* Azul principal para cabeçalhos, botões, links */
+    --secondary-blue: #0096C7 !important; /* Um azul secundário */
+    --tertiary-blue: #ADD8E6 !important; /* Um azul mais claro para hover/seleções suaves */
+    --dark-blue: #005A8D !important; /* Um azul mais escuro, bom para texto de destaque */
+    --success-green: #28a745 !important; /* Verde para sucesso/ícones */
+    --vibrant-green: #2ecc71 !important; /* Verde mais vibrante para gradientes */
+    --danger-red: #dc3545 !important; /* Vermelho para erros/ações perigosas */
+    --warning-yellow: #ffc107 !important; /* Amarelo para avisos */
+    --info-cyan: #17a2b8 !important; /* Ciano para informações */
+    --text-dark: #333333 !important; /* Texto escuro mais legível (não preto puro) */
+    --text-neutral: #555555 !important; /* Cinza médio para textos secundários */
+    --border-light: #E0E0E0 !important; /* Borda clara */
+    --shadow-light: rgba(0, 0, 0, 0.08) !important; /* Sombra suave para elementos */
+
+    /* Cores de destaque para gradientes/brilhos */
+    --quantum-blue: #00b4d8 !important; 
+    --secure-green: #2ecc71 !important; 
+    --cyber-purple: #6c5ce7 !important;
+    --golden-yellow: #ffd700 !important; 
+
+    /* Gradientes usados na página */
+    --gradient-table-header: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)) !important;
+    --gradient-danger-header: linear-gradient(90deg, var(--danger-red), #e74c3c) !important; 
+  }
+
+  /* Main content area */
+  .content {
+    padding: 25px !important; /* Aumenta o padding */
+    background: var(--page-bg) !important; 
+    border-radius: 12px !important; 
+    margin: 25px !important; /* Aumenta a margem */
+    box-shadow: 0 5px 25px var(--shadow-light) !important; 
+    color: var(--text-dark) !important; 
+  }
+
+  /* Box (geral) */
+  .box {
+    background: var(--card-bg) !important; 
+    border: 1px solid var(--border-light) !important; 
+    border-radius: 12px !important;
+    color: var(--text-dark) !important; 
+    box-shadow: 0 2px 10px var(--shadow-light) !important; 
+    overflow: hidden !important; 
+  }
+
+  .box-header {
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 20px !important; /* Aumenta o padding do header */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background-color: var(--page-bg) !important; 
+  }
+
+  .box-title {
+    color: var(--primary-blue) !important; 
+    font-size: 1.6rem !important; /* Aumenta o tamanho do título */
+    font-weight: 600 !important;
+  }
+
+  .box-body {
+    padding: 20px !important;
+    color: var(--text-neutral) !important; 
+  }
+
+  /* Tabela */
+  .table {
+    width: 100% !important;
+    margin-bottom: 0 !important; 
+    background-color: transparent !important; 
+    color: var(--text-dark) !important; 
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+
+  .table th,
+  .table td {
+    padding: 14px !important; /* Aumenta o padding das células */
+    vertical-align: middle !important;
+    border: 1px solid var(--border-light) !important; 
+    font-size: 1.15rem !important; /* Aumenta o tamanho da fonte para os dados da tabela */
+    line-height: 1.6 !important; /* Melhora a legibilidade do texto nas células */
+  }
+
+  .table thead th {
+    background: var(--gradient-table-header) !important; 
+    color: #fff !important; 
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    border-color: var(--primary-blue) !important; 
+    font-size: 1.1rem !important; /* Aumenta o tamanho da fonte dos cabeçalhos da tabela */
+  }
+  .box .table thead th:first-child { border-top-left-radius: 12px !important; }
+  .box .table thead th:last-child { border-top-right-radius: 12px !important; }
+
+  /* Estilo de hover para linhas da tabela */
+  .table tbody tr:hover {
+    background-color: var(--tertiary-blue) !important; 
+    cursor: pointer;
+  }
+
+  /* Botões */
+  .btn {
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+    color: #fff !important; 
+    padding: 12px 25px !important; /* Aumenta o padding para melhor toque */
+    font-size: 1.05rem !important; /* Aumenta o tamanho da fonte do botão */
+    display: inline-flex !important; 
+    align-items: center !important;
+    gap: 10px !important; /* Aumenta o espaçamento entre ícone e texto */
+  }
+
+  .btn-sm {
+    padding: 10px 20px !important; /* Ajusta o padding para botões pequenos */
+    font-size: 0.95rem !important; /* Ajusta o tamanho da fonte para botões pequenos */
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-purple)) !important;
+    border: none !important;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--secure-green), var(--quantum-blue)) !important;
+    border: none !important;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--danger-red), #e74c3c) !important; 
+    border: none !important;
+  }
+  
+  /* Botão padrão (Fechar) */
+  .btn-default {
+    background-color: var(--page-bg) !important; 
+    border: 1px solid var(--border-light) !important; 
+    color: var(--text-dark) !important; 
+  }
+  .btn-default:hover {
+    background-color: var(--border-light) !important; 
+    color: var(--text-dark) !important;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 90, 141, 0.2) !important; 
+  }
+  
+  /* Removendo .btn-flat para evitar sobrescrever os estilos de gradiente */
+  .btn-flat { /* Adicionado para sobrescrever qualquer estilo padrão do AdminLTE */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    /* Remover padding/font-size se eles estiverem afetando o estilo primário do .btn */
+    padding: 0 !important; /* Para garantir que o padding seja controlado por .btn */
+    font-size: inherit !important; /* Para garantir que o font-size seja controlado por .btn */
+  }
+
+  /* Modals */
+  .modal-content {
+    background: var(--card-bg) !important; 
+    border-radius: 12px !important; 
+    border: 1px solid var(--border-light) !important; 
+    color: var(--text-dark) !important; 
+    box-shadow: 0 10px 30px var(--shadow-light) !important; 
+  }
+
+  .modal-header {
+    border-bottom: 1px solid var(--border-light) !important; 
+    padding: 20px !important; /* Aumenta o padding do header do modal */
+    background-color: var(--page-bg) !important; 
+  }
+
+  .modal-footer {
+    border-top: 1px solid var(--border-light) !important; 
+    padding: 20px !important; /* Aumenta o padding do footer do modal */
+    background-color: var(--page-bg) !important; 
+  }
+  
+  .modal-title {
+    color: var(--primary-blue) !important; 
+    font-weight: 600 !important;
+    font-size: 1.4rem !important; /* Aumenta o tamanho do título do modal */
+  }
+
+  /* Formulários dentro do modal */
+  .form-control {
+    background: var(--page-bg) !important; 
+    border: 1px solid var(--border-light) !important; 
+    border-radius: 8px !important; 
+    color: var(--text-dark) !important; 
+    padding: 12px 18px !important; /* Aumenta o padding do input */
+    font-size: 1.05rem !important; /* Aumenta o tamanho da fonte do input */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05) !important; 
+  }
+
+  .form-control:focus {
+    border-color: var(--secure-green) !important;
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.15) !important; 
+  }
+  
+  /* Labels dos formulários */
+  .form-group label {
+      color: var(--dark-blue) !important; 
+      font-weight: 600 !important;
+      margin-bottom: 8px !important; /* Aumenta a margem */
+      display: block !important; 
+      font-size: 1.05rem !important; /* Aumenta o tamanho do label */
+  }
+
+  /* Texto de erro de validação */
+  .text-danger {
+      color: var(--danger-red) !important; 
+      font-size: 0.95em !important; /* Aumenta ligeiramente */
+      display: block !important; 
+      margin-top: 8px !important; 
+  }
+
+  /* Texto bold no modal */
+  .modal-body .bold {
+      color: var(--dark-blue) !important; 
+      font-weight: 700 !important;
+      margin-top: 20px !important; /* Aumenta a margem */
+      font-size: 1.6em !important; /* Aumenta o tamanho */
+  }
+  
+  /* Botão de fechar (X) do modal */
+  .modal-header .close {
+    color: var(--text-neutral) !important; 
+    opacity: 0.7 !important;
+    transition: opacity 0.3s ease !important;
+    font-size: 2.0rem !important; /* Aumenta o tamanho do 'x' */
+  }
+  .modal-header .close:hover {
+    opacity: 1 !important;
+    color: var(--danger-red) !important; 
+  }
+
+  /* Estilo específico para o texto no modal de delete */
+  #delete .modal-body p {
+      color: var(--text-neutral) !important;
+      font-size: 1.15em !important; /* Aumenta a fonte */
+      margin-bottom: 12px !important; 
+  }
+  #delete .modal-title {
+      color: var(--danger-red) !important; 
+  }
+
+  /* Imagens de Avatar na Tabela */
+  .table img {
+      border-radius: 50% !important; /* Torna a imagem circular */
+      border: 2px solid var(--border-light) !important; /* Borda clara */
+      object-fit: cover !important; /* Garante que a imagem preencha o espaço sem distorcer */
+      width: 80px !important; /* Tamanho fixo para consistência */
+      height: 80px !important; /* Tamanho fixo para consistência */
+  }
+
+  /* Ajustes para alinhar labels e inputs nos modais, removendo col-sm-X */
+  .modal-body .form-horizontal .form-group label {
+      width: 100% !important;
+      text-align: left !important;
+      padding-top: 0 !important;
+      margin-bottom: 8px !important;
+  }
+
+  .modal-body .form-horizontal .form-group .col-sm-9 { /* Apesar de ter removido no HTML, a regra cobre casos futuros */
+      width: 100% !important;
+      float: none !important;
+  }
+
+</style>
+
+<section class="content">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Gerenciamento de Candidatos</h3>
+          <a
+            href="#addnew"
+            data-toggle="modal"
+            class="btn btn-primary btn-sm" {# Removido btn-flat para usar estilos globais #}
+            ><i class="fa fa-plus"></i> Novo Candidato</a
+          >
+        </div>
+        <div class="box-body">
+          <table id="example1" class="table table-bordered table-hover"> {# Adicionado table-hover #}
+            <thead>
+              <tr>
+                <th>Nome Completo</th>
+                <th>Posição</th>
+                <th>Biografia</th>
+                <th>Avatar</th>
+                <th>Acção</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for candidate in candidates %}
+              <tr>
+                <td>{{ candidate.fullname }}</td>
+                <td>{{ candidate.position }}</td>
+                <td>{{ candidate.bio }}</td>
+                <td>
+                  <img
+                    src="/media/{{ candidate.photo }}"
+                    alt="{{ candidate.fullname }}'s Avatar"
+                  /> {# Removido width/height/class para que o CSS controle #}
+                </td>
+                <td>
+                  <button
+                    class="btn btn-success btn-sm edit" {# Removido btn-flat para usar estilos globais #}
+                    data-id="{{ candidate.id }}"
+                  >
+                    <i class="fa fa-edit"></i> Editar
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm delete" {# Removido btn-flat para usar estilos globais #}
+                    data-id="{{ candidate.id }}"
+                  >
+                    <i class="fa fa-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %} 
+
+{% block modal %}
+<div class="modal fade" id="addnew">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Fechar"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>Adicionar Novo Candidato</b></h4>
+      </div>
+      <div class="modal-body">
+        <form
+          class="form-horizontal"
+          enctype="multipart/form-data"
+          method="POST"
+          action="{% url 'viewCandidates' %}"
+        >
+          {% csrf_token %}
+          {% for field in form1 %}
+          <div class="form-group has-feedback">
+            <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label> {# Removido col-sm-3 #}
+            <div> {# Removido col-sm-9 #}
+              <span class="text-danger">{{ field.errors }}</span>
+              {{ field }}
+            </div>
+          </div>
+          {% endfor %}
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-default pull-left" {# Removido btn-flat #}
+              data-dismiss="modal"
+            >
+              <i class="fa fa-close"></i> Fechar
+            </button>
+            <button type="submit" class="btn btn-primary" name="add"> {# Removido btn-flat #}
+              <i class="fa fa-save"></i> Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Fechar"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>Editar Candidato</b></h4>
+      </div>
+      <div class="modal-body">
+        <form
+          class="form-horizontal"
+          enctype="multipart/form-data"
+          method="POST"
+          action="{% url 'updateCandidate' %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" class="id" name="id" />
+          <p class="display_form"></p>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-default pull-left" {# Removido btn-flat #}
+              data-dismiss="modal"
+            >
+              <i class="fa fa-close"></i> Fechar
+            </button>
+            <button type="submit" class="btn btn-success" name="edit"> {# Removido btn-flat #}
+              <i class="fa fa-check-square-o"></i> Actualizar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Fechar"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title"><b>Eliminar Candidato</b></h4>
+      </div>
+      <div class="modal-body">
+        <form
+          class="form-horizontal"
+          method="POST"
+          action="{% url 'deleteCandidate' %}"
+        >
+          <input type="hidden" class="id" name="id" />
+          {% csrf_token %}
+          <div class="text-center">
+            <p>Tem certeza de que deseja eliminar o candidato:</p>
+            <h2 class="bold fullname"></h2>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-default pull-left" {# Removido btn-flat #}
+              data-dismiss="modal"
+            >
+              <i class="fa fa-close"></i> Fechar
+            </button>
+            <button type="submit" class="btn btn-danger" name="delete"> {# Removido btn-flat #}
+              <i class="fa fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modal %} 
+
+{% block custom_js %}
+<script>
+  $(function () {
+    // Verifica se já existe uma instância do DataTables na tabela
+    // e a destrói antes de inicializar novamente.
+    if ($.fn.DataTable.isDataTable('#example1')) {
+      $('#example1').DataTable().destroy();
+    }
+
+    // Configuração do DataTables para a tabela de candidatos
+    $('#example1').DataTable({
+      'responsive' : true,
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      "language": { // Configurações de idioma para o DataTables
+            "sEmptyTable": "Nenhum registo encontrado",
+            "sInfo": "A mostrar de _START_ a _END_ de um total de _TOTAL_ registos",
+            "sInfoEmpty": "A mostrar 0 a 0 de 0 registos",
+            "sInfoFiltered": "(filtrado de um total de _MAX_ registos)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Mostrar _MENU_ registos",
+            "sLoadingRecords": "A carregar...",
+            "sProcessing": "A processar...",
+            "sSearch": "Pesquisar:",
+            "sZeroRecords": "Não foram encontrados resultados",
+            "oPaginate": {
+                "sFirst": "Primeiro",
+                "sLast": "Último",
+                "sNext": "Seguinte",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": ordenar colunas de forma ascendente",
+                "sSortDescending": ": ordenar colunas de forma descendente"
+            }
+        }
+    });
+
+    $(document).on("click", ".edit", function (e) {
+      e.preventDefault();
+      $("#edit").modal("show");
+      var id = $(this).data("id");
+      getRow(id);
+    });
+
+    $(document).on("click", ".delete", function (e) {
+      e.preventDefault();
+      $("#delete").modal("show");
+      var id = $(this).data("id");
+      getRow(id);
+    });
+  });
+
+  function getRow(id) {
+    $.ajax({
+      type: "GET",
+      url: '{% url "viewCandidate" %}',
+      data: {
+        id: id,
+      },
+      dataType: "json",
+      success: function (response) {
+        $(".id").val(id);
+        // Assuming response.form contains the HTML for the form fields
+        // and response.fullname contains the full name for the delete modal
+        $("#edit .display_form").html(response.form); 
+        $("#delete .fullname").html(response.fullname);
+      },
+      error: function(xhr, status, error) {
+        console.error("Erro ao obter dados do candidato:", error);
+        alert("Não foi possível carregar os dados do candidato. Por favor, tente novamente.");
+      }
+    });
+  }
+</script>
+{% endblock custom_js %}

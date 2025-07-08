@@ -1,0 +1,128 @@
+{% load static %}
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    name="viewport"
+  />
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="{% static 'images/logo_sv.png' %}"
+  />
+  <title>Secure Vote</title>
+  <link
+    rel="stylesheet"
+    href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}"
+  />
+  <link
+    rel="stylesheet"
+    href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}"
+  />
+  <link rel="stylesheet" href="{% static 'plugins/iCheck/all.css' %}" />
+  <link
+    rel="stylesheet"
+    href="{% static 'bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}"
+  />
+  <link
+    rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-daterangepicker/daterangepicker.css' %}"
+  />
+  <link
+    rel="stylesheet"
+    href="{% static 'plugins/timepicker/bootstrap-timepicker.min.css' %}"
+  />
+  <link
+    rel="stylesheet"
+    href="{% static 'bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}"
+  />
+  <link
+    rel="stylesheet"
+    href="{% static 'dist/css/skins/_all-skins.min.css' %}"
+  />
+  <link rel="stylesheet" href="{% static 'toastr/toastr.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}" />
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+  />
+
+  <style>
+    /* Variáveis do tema claro - Consistente com base.html e navbar.html */
+    :root {
+      --card-bg: #ffffff; /* Fundo principal para cartões/contêineres */
+      --primary-blue: #005a8d; /* Azul principal para cabeçalhos, botões, links */
+      --text-dark: #212529; /* Cor principal do texto - quase preto */
+      --text-light: #495057; /* Cor do texto secundário/neutro */
+      --success-green: #28a745; /* Verde para sucesso/ícones */
+      --border-light: #e0e0e0; /* Borda clara */
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave */
+
+      /* Mantendo as cores para o gradiente da logo/título que funcionam bem em tema claro */
+      --quantum-blue: #00b4d8;
+      --secure-green: #2ecc71;
+      /* --deep-space e --cyber-purple não são usados diretamente aqui para cor/fundo,
+         mas são mantidos para consistência se forem referenciados em outros lugares. */
+    }
+
+    /* Animação do nome da logo - Mantida inalterada, pois o gradiente se adapta */
+    @keyframes logoGlow {
+      0% {
+        text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue);
+      }
+      50% {
+        text-shadow: 0 0 20px var(--secure-green), 0 0 40px var(--secure-green);
+      }
+      100% {
+        text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue);
+      }
+    }
+
+    /* Título da Aplicação (app-title) - Mantém o gradiente e a animação */
+    .app-title {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(
+        45deg,
+        var(--secure-green),
+        var(--quantum-blue)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent; /* Necessário para o background-clip */
+      animation: logoGlow 3s infinite;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    /* Estilos gerais */
+    .bold {
+      font-weight: bold;
+    }
+
+    #candidate_list {
+      margin-top: 20px;
+      /* As cores do texto aqui serão herdadas do body (var(--text-dark)) ou de outras regras mais específicas */
+    }
+
+    #candidate_list ul {
+      list-style-type: none;
+    }
+
+    #candidate_list ul li {
+      margin: 0 30px 30px 0;
+      vertical-align: top;
+    }
+
+    .clist {
+      margin-left: 20px;
+    }
+
+    .cname {
+      font-size: 25px;
+      /* A cor do texto aqui será herdada do body (var(--text-dark)) */
+    }
+  </style>
+</head>
