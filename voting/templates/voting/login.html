@@ -1,21 +1,25 @@
-{% extends "voting/base.html" %} {% load static %} {% block content %}
+{% extends "voting/base.html" %}
+{% load static %}
+{% block content %}
 <style>
-  /* Override or add specific styles for login.html to fit the light theme */
+  /* Seus estilos CSS, como você forneceu */
+  :root {
+    --card-bg: #ffffff;
+    --primary-blue: #005a8d;
+    --success-green: #28a745;
+  }
   .login-box {
     width: 100%;
     max-width: 420px;
     margin: 0 auto;
     padding: 0;
   }
-
   .login-box-body {
     background: transparent;
     border-radius: 8px;
     padding: 0;
     box-shadow: none;
   }
-
-  /* Container Principal do Formulário de Login */
   .securevote-login-container {
     background-color: var(--card-bg);
     border-radius: 10px;
@@ -24,23 +28,18 @@
     text-align: center;
     transition: box-shadow 0.3s ease;
   }
-
   .securevote-login-container:hover {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   }
-
-  /* Área do Logo no Topo */
   .logo-area {
     margin-bottom: 30px;
   }
-
   .logo-area img {
     max-width: 140px;
     height: auto;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     animation: fadeIn 0.5s ease-in-out;
   }
-
   @keyframes fadeIn {
     0% {
       opacity: 0;
@@ -51,27 +50,21 @@
       transform: scale(1);
     }
   }
-
-  /* Títulos e Mensagens */
   .securevote-login-container h2 {
     color: var(--primary-blue);
     font-weight: 700;
     font-size: 1.8em;
     margin: 15px 0 8px;
   }
-
   .securevote-login-container .login-box-msg {
     color: #4a4a4a;
     font-size: 0.95em;
     margin-bottom: 25px;
   }
-
-  /* Campos de Input */
   .securevote-form-group {
     margin-bottom: 25px;
     position: relative;
   }
-
   .securevote-form-group .form-control {
     border: 1px solid #d1d5db;
     border-radius: 6px;
@@ -81,16 +74,13 @@
     color: #1f2a44;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
-
   .securevote-form-group .form-control:focus {
     border-color: var(--primary-blue);
     box-shadow: 0 0 0 0.15rem rgba(0, 90, 141, 0.3);
   }
-
   .securevote-form-group .form-control:not(:placeholder-shown) {
     background-color: #f8fafc;
   }
-
   .securevote-form-group .fa {
     position: absolute;
     left: 12px;
@@ -99,16 +89,12 @@
     color: #6b7280;
     font-size: 1em;
   }
-
-  /* Foco visível */
   .securevote-form-group .form-control:focus,
   .securevote-button-group .btn:focus,
   .forgot-password-link:focus {
     outline: 2px solid var(--primary-blue);
     outline-offset: 2px;
   }
-
-  /* Link de Recuperação de Senha */
   .forgot-password-link {
     display: block;
     text-align: right;
@@ -118,20 +104,16 @@
     color: #4a4a4a;
     transition: color 0.2s ease, text-decoration 0.2s ease;
   }
-
   .forgot-password-link:hover {
     color: var(--primary-blue);
     text-decoration: underline;
   }
-
-  /* Botões de Ação */
   .securevote-button-group {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     gap: 15px;
   }
-
   .securevote-button-group .btn {
     padding: 12px;
     font-size: 1.05em;
@@ -144,32 +126,26 @@
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
-
   .securevote-button-group .btn-primary {
     background: linear-gradient(135deg, var(--primary-blue) 0%, #006d9f 100%);
     border: none;
     color: #fff;
   }
-
   .securevote-button-group .btn-primary:hover {
     background: linear-gradient(135deg, #004c75 0%, #005f8a 100%);
     box-shadow: 0 6px 15px rgba(0, 90, 141, 0.2);
     transform: translateY(-2px);
   }
-
   .securevote-button-group .btn-outline-primary {
     border: 1px solid var(--primary-blue);
     color: var(--primary-blue);
     background-color: transparent;
   }
-
   .securevote-button-group .btn-outline-primary:hover {
     background: var(--primary-blue);
     color: #fff;
     box-shadow: 0 6px 15px rgba(0, 90, 141, 0.2);
   }
-
-  /* Conexão Segura Footer */
   .secure-connection-footer {
     position: fixed;
     bottom: 20px;
@@ -187,7 +163,6 @@
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
     z-index: 1000;
   }
-
   .secure-connection-footer .dot {
     width: 8px;
     height: 8px;
@@ -195,7 +170,6 @@
     border-radius: 50%;
     animation: pulse-green 2s infinite;
   }
-
   @keyframes pulse-green {
     0% {
       box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.3);
@@ -209,31 +183,24 @@
       opacity: 1;
     }
   }
-
-  /* Responsividade */
   @media (max-width: 576px) {
     .login-box {
       max-width: 90%;
       padding: 15px;
     }
-
     .securevote-login-container {
       padding: 25px 20px;
     }
-
     .securevote-button-group .btn {
       font-size: 0.95em;
       padding: 10px;
     }
-
     .secure-connection-footer {
       bottom: 15px;
       font-size: 0.85em;
       padding: 8px 15px;
     }
   }
-
-  /* AdminLTE login-page handles centralizing */
   .login-page {
     display: flex;
     justify-content: center;
@@ -254,6 +221,15 @@
 
     <form action="{% url 'account_login' %}" method="POST">
       {% csrf_token %}
+      {# Mensagens de erro globais do formulário (não de campo específico) #}
+      {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+              {% for error in form.non_field_errors %}
+                  {{ error }}
+              {% endfor %}
+          </div>
+      {% endif %}
+
       <div class="form-group has-feedback securevote-form-group">
         <input
           type="email"
@@ -264,6 +240,8 @@
           aria-label="E-mail"
         />
         <span class="fa fa-envelope form-control-feedback"></span>
+        {# Acessar erros do campo 'email' se houver #}
+        {% if form.email.errors %}<div class="text-danger">{{ form.email.errors }}</div>{% endif %}
       </div>
       <div class="form-group has-feedback securevote-form-group">
         <input
@@ -275,9 +253,11 @@
           aria-label="Senha"
         />
         <span class="fa fa-lock form-control-feedback"></span>
+        {# Acessar erros do campo 'password' se houver #}
+        {% if form.password.errors %}<div class="text-danger">{{ form.password.errors }}</div>{% endif %}
       </div>
 
-      <a href="" class="forgot-password-link">Esqueceu sua senha?</a>
+      <a href="{% url 'password_reset' %}" class="forgot-password-link">Esqueceu sua senha?</a>
 
       <div class="row securevote-button-group">
         <div class="col-xs-12">

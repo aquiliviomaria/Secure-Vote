@@ -1,9 +1,5 @@
 # 🗳️ Sistema SecureVote: Votação Eletrónica Segura
 
-[](https://www.python.org/)
-[](https://www.djangoproject.com/)
-[](https://opensource.org/licenses/MIT)
-
 **SecureVote: A urna, no seu bolso... a sua voz, aqui é validada!**
 
 Um sistema de votação eletrónica robusto e seguro, desenvolvido com Django, que garante a integridade, privacidade e acessibilidade do processo eleitoral. Este projeto é ideal para gerir votações de forma eficiente e transparente.
@@ -33,7 +29,7 @@ Siga os passos abaixo para configurar e executar o projeto localmente:
 ### 1\. Clonar o Repositório
 
 ```bash
-git clone https://github.com/nadeali0999/e-voting-system.git
+git clone https://github.com/aquiliviomaria/secure-vote.git
 cd e-voting-system
 ```
 

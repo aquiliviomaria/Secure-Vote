@@ -1,11 +1,10 @@
-# voting/context_processors.py
-from account.models import ElectionSetting # Correct: Import from account.models
+from account.models import ElectionSetting 
 import logging
 from django.utils import timezone # Adicionar esta importação para timezone.now()
 
 logger = logging.getLogger(__name__)
 
-def election_settings_processor(request): # <-- THIS IS THE FUNCTION DJANGO IS LOOKING FOR
+def election_settings_processor(request): 
     context = {}
     try:
         election_setting = ElectionSetting.load()

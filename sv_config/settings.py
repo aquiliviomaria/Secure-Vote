@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # My Created Applications
     'account.apps.AccountConfig',
@@ -56,7 +57,7 @@ MIDDLEWARE = [
     'account.middleware.AccountCheckMiddleWare',
 ]
 
-ROOT_URLCONF = 'e_voting.urls'
+ROOT_URLCONF = 'sv_config.urls'
 
 TEMPLATES = [
     {
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'e_voting.wsgi.application'
+WSGI_APPLICATION = 'sv_config.wsgi.application'
 
 
 # Database
@@ -153,3 +154,25 @@ ELECTION_TITLE_PATH = os.path.join(
 SEND_OTP = False  # If you toggle this to False, Kindly use 0000 as your OTP
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# --- Configurações de E-MAIL (MUITO IMPORTANTE PARA REDEFINIÇÃO DE SENHA) ---
+
+# Em DESENVOLVIMENTO (para testes): Os e-mails aparecerão no seu console/terminal.
+# Isso é "gratuito" e imediato para testar o fluxo.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@securevote.com' # Remetente padrão para e-mails do sistema
+SERVER_EMAIL = 'errors@securevote.com'       # E-mail para erros do servidor
+
+# Para produção gratuita com Gmail (usando "senhas de app"):
+# Descomente e preencha com suas credenciais para PRODUCÃO
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'teuemail@gmail.com' # Seu endereço de e-mail do Gmail
+# EMAIL_HOST_PASSWORD = 'tua_senha_de_app' # A senha de app que você gerou no Google
+# DEFAULT_FROM_EMAIL = 'SecureVote <teuemail@gmail.com>' # Como o remetente aparecerá
+# SERVER_EMAIL = 'teuemail@gmail.com'
+
+# --- Configuração do Django Sites Framework ---
+SITE_ID = 1 # <--- Defina o ID do site padrão.

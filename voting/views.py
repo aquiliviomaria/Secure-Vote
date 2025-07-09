@@ -30,7 +30,7 @@ def generate_ballot(display_controls=False):
         candidates = Candidate.objects.filter(position=position)
         for candidate in candidates:
             if position.max_vote > 1:
-                instruction = "Podes selecionar até" + \
+                instruction = "Podes selecionar até " + \
                     str(position.max_vote) + " candidatos"
                 input_box = '<input type="checkbox" value="'+str(candidate.id)+'" class="flat-red ' + \
                     position_name+'" name="' + \
@@ -40,7 +40,7 @@ def generate_ballot(display_controls=False):
                 input_box = '<input value="'+str(candidate.id)+'" type="radio" class="flat-red ' + \
                     position_name+'" name="'+position_name+'">'
             image = "/media/" + str(candidate.photo)
-            candidates_data = candidates_data + '<li>' + input_box + '<button type="button" class="btn btn-primary btn-sm btn-flat clist platform" data-fullname="'+candidate.fullname+'" data-bio="'+candidate.bio+'"><i class="fa fa-search"></i> Platform</button><img src="' + \
+            candidates_data = candidates_data + '<li>' + input_box + '<button type="button" class="btn btn-primary btn-sm btn-flat clist platform" data-fullname="'+candidate.fullname+'" data-bio="'+candidate.bio+'"><i class="fa fa-search"></i> Plataforma</button><img src="' + \
                 image+'" height="100px" width="100px" class="clist"><span class="cname clist">' + \
                 candidate.fullname+'</span></li>'
         up = ''
@@ -49,21 +49,21 @@ def generate_ballot(display_controls=False):
         down = ''
         if position.priority == positions.count():
             down = 'disabled'
-        output = output + f"""<div class="row">	<div class="col-xs-12"><div class="box box-solid" id="{position.id}">
+        output = output + f"""<div class="row"> <div class="col-xs-12"><div class="box box-solid" id="{position.id}">
              <div class="box-header with-border">
             <h3 class="box-title"><b>{name}</b></h3>"""
 
         if display_controls:
             output = output + f""" <div class="pull-right box-tools">
-        <button type="button" class="btn btn-default btn-sm moveup" data-id="{position.id}" {up}><i class="fa fa-arrow-up"></i> </button>
-        <button type="button" class="btn btn-default btn-sm movedown" data-id="{position.id}" {down}><i class="fa fa-arrow-down"></i></button>
+        <button type="button" class="btn btn-default btn-sm moveup" data-id="{position.id}" {up}><i class="fa fa-arrow-up"></i> Mover para Cima</button>
+        <button type="button" class="btn btn-default btn-sm movedown" data-id="{position.id}" {down}><i class="fa fa-arrow-down"></i> Mover para Baixo</button>
         </div>"""
 
         output = output + f"""</div>
         <div class="box-body">
         <p>{instruction}
         <span class="pull-right">
-        <button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="{position_name}"><i class="fa fa-refresh"></i> Reset</button>
+        <button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="{position_name}"><i class="fa fa-refresh"></i> Resetar</button>
         </span>
         </p>
         <div id="candidate_list">
@@ -101,18 +101,18 @@ def generate_otp():
 
 def dashboard(request):
     user = request.user
-    # * Check if this voter has been verified
+    # * Verificar se este eleitor foi verificado
     if user.voter.otp is None or user.voter.verified == False:
         if not settings.SEND_OTP:
-            # Bypass
+            # Bypass (Ignorar)
             msg = bypass_otp()
             messages.success(request, msg)
             return redirect(reverse('show_ballot'))
         else:
             return redirect(reverse('voterVerify'))
     else:
-        if user.voter.voted:  # * User has voted
-            # To display election result or candidates I voted for ?
+        if user.voter.voted:  # * Usuário já votou
+            # Para exibir o resultado da eleição ou os candidatos em que votei?
             context = {
                 'my_votes': Votes.objects.filter(voter=user.voter),
             }
@@ -129,9 +129,9 @@ def verify(request):
 
 
 def resend_otp(request):
-    """API para SMS  
-Usei a API https://www.multitexter.com/ para enviar SMS  
-Podes não querer usar esta API ou este serviço pode não estar disponível no teu país  
+    """API para SMS
+Usei a API https://www.multitexter.com/ para enviar SMS
+Podes não querer usar esta API ou este serviço pode não estar disponível no teu país
 Para um acesso rápido e fácil, altera o `SEND_OTP` de `True` para `False` no `settings.py`
     """
     user = request.user
@@ -143,20 +143,20 @@ Para um acesso rápido e fácil, altera o `SEND_OTP` de `True` para `False` no `
             response = "Solicitaste OTP três vezes. Não podes fazer isso novamente! Por favor, introduz o OTP enviado anteriormente."
         else:
             phone = voter.phone
-            # Now, check if an OTP has been generated previously for this voter
+            # Agora, verifica se um OTP foi gerado anteriormente para este eleitor
             otp = voter.otp
             if otp is None:
-                # Generate new OTP
+                # Gerar novo OTP
                 otp = generate_otp()
                 voter.otp = otp
                 voter.save()
             try:
                 msg = "Caro(a) " + str(user) + ", Por favor, utiliza " + \
-                    str(otp) + " as your OTP"
+                    str(otp) + " como o teu OTP" 
                 message_is_sent = send_sms(phone, msg)
-                if message_is_sent:  # * OTP was sent successfully
-                    # Update how many OTP has been sent to this voter
-                    # Limited to Three so voters don't exhaust OTP balance
+                if message_is_sent:  # * OTP foi enviado com sucesso
+                    # Atualizar quantos OTP foram enviados para este eleitor
+                    # Limitado a Três para que os eleitores não esgotem o saldo de OTP
                     voter.otp_sent = voter.otp_sent + 1
                     voter.save()
 
@@ -165,13 +165,13 @@ Para um acesso rápido e fácil, altera o `SEND_OTP` de `True` para `False` no `
                     error = True
                     response = "OTP não enviado. Por favor, tenta novamente."
             except Exception as e:
-                response = "O OTP não pôde ser enviado.." + str(e)
+                response = "O OTP não pôde ser enviado: " + str(e) # Ajustado para ficar mais natural
 
-                # * Send OTP
+                # * Enviar OTP
     else:
-        #! Update all Voters record and set OTP to 0000
-        #! Bypass OTP verification by updating verified to 1
-        #! Redirect voters to ballot page
+        #! Atualizar todos os registos de Eleitores e definir OTP para 0000
+        #! Ignorar a verificação de OTP ao definir 'verified' para 1 (True)
+        #! Redirecionar eleitores para a página de votação
         response = bypass_otp()
     return JsonResponse({"data": response, "error": error})
 
@@ -193,7 +193,7 @@ def send_sms(phone_number, msg):
     email = os.environ.get('SMS_EMAIL')
     password = os.environ.get('SMS_PASSWORD')
     if email is None or password is None:
-        raise Exception("O Email/Password não pode ser nulo.")
+        raise Exception("O Email/Password não pode ser nulo.") 
     url = "https://app.multitexter.com/v2/app/sms"
     data = {"email": email, "password": password, "message": msg,
             "sender_name": "OTP", "recipients": phone_number, "forcednd": 1}
@@ -210,20 +210,21 @@ def send_sms(phone_number, msg):
 def verify_otp(request):
     error = True
     if request.method != 'POST':
-        messages.error(request, "Acesso negado.")
+        messages.error(request, "Acesso negado.") 
     else:
         otp = request.POST.get('otp')
         if otp is None:
-            messages.error(request, "Por favor, forneça um OTP válido.")
+            messages.error(request, "Por favor, forneça um OTP válido.") 
         else:
-            # Get User OTP
+            # Obter o OTP do usuário
             voter = request.user.voter
             db_otp = voter.otp
             if db_otp != otp:
-                messages.error(request, "O OTP fornecido não é válido.")
+                messages.error(request, "O OTP fornecido não é válido.") 
             else:
                 messages.success(
-                    request, "Agora estás verificado. Por favor, emite o teu voto.")
+                    request, "Agora estás verificado. Por favor, emite o teu voto." 
+                )
                 voter.verified = True
                 voter.save()
                 error = False
@@ -234,7 +235,7 @@ def verify_otp(request):
 
 def show_ballot(request):
     if request.user.voter.voted:
-        messages.error(request, "Já votaste.")
+        messages.error(request, "Já votaste.") 
         return redirect(reverse('voterDashboard'))
     ballot = generate_ballot(display_controls=False)
     context = {
@@ -246,11 +247,11 @@ def show_ballot(request):
 def preview_vote(request):
     if request.method != 'POST':
         error = True
-        response = "Por favor, navega pelo sistema corretamente."
+        response = "Por favor, navega pelo sistema corretamente." 
     else:
         output = ""
         form = dict(request.POST)
-        # We don't need to loop over CSRF token
+        # Não precisamos iterar sobre o token CSRF
         form.pop('csrfmiddlewaretoken', None)
         error = False
         data = []
@@ -266,17 +267,16 @@ def preview_vote(request):
                     continue
                 if len(form_position) > max_vote:
                     error = True
-                    response = "Só podes escolher" + \
-                        str(max_vote) + " candidatos para " + position.name
+                    response = "Só podes escolher " + \
+                        str(max_vote) + " candidatos para " + position.name 
                 else:
                     # for key, value in form.items():
                     start_tag = f"""
                        <div class='row votelist' style='padding-bottom: 2px'>
-		                      	<span class='col-sm-4'><span class='pull-right'><b>{position.name} :</b></span></span>
-		                      	<span class='col-sm-8'>
+                                <span class='col-sm-4'><span class='pull-right'><b>{position.name} :</b></span></span>
+                                <span class='col-sm-8'>
                                 <ul style='list-style-type:none; margin-left:-40px'>
-                                
-                    
+
                     """
                     end_tag = "</ul></span></div><hr/>"
                     data = ""
@@ -285,32 +285,31 @@ def preview_vote(request):
                             candidate = Candidate.objects.get(
                                 id=form_candidate_id, position=position)
                             data += f"""
-		                      	<li><i class="fa fa-check-square-o"></i> {candidate.fullname}</li>
+                                <li><i class="fa fa-check-square-o"></i> {candidate.fullname}</li>
                             """
                         except:
                             error = True
-                            response = "Por favor, navega pelo sistema corretamente."
+                            response = "Por favor, navega pelo sistema corretamente." 
                     output += start_tag + data + end_tag
-            else:
+            else: # Max Vote == 1
                 this_key = pos
                 form_position = form.get(this_key)
                 if form_position is None:
                     continue
-                # Voto Maximo == 1
                 try:
                     form_position = form_position[0]
                     candidate = Candidate.objects.get(
                         position=position, id=form_position)
                     output += f"""
                             <div class='row votelist' style='padding-bottom: 2px'>
-		                      	<span class='col-sm-4'><span class='pull-right'><b>{position.name} :</b></span></span>
-		                      	<span class='col-sm-8'><i class="fa fa-check-circle-o"></i> {candidate.fullname}</span>
-		                    </div>
+                                <span class='col-sm-4'><span class='pull-right'><b>{position.name} :</b></span></span>
+                                <span class='col-sm-8'><i class="fa fa-check-circle-o"></i> {candidate.fullname}</span>
+                            </div>
                       <hr/>
                     """
                 except Exception as e:
                     error = True
-                    response = "Por favor, navega pelo sistema corretamente."
+                    response = "Por favor, navega pelo sistema corretamente." 
     context = {
         'error': error,
         'list': output
@@ -320,22 +319,22 @@ def preview_vote(request):
 
 def submit_ballot(request):
     if request.method != 'POST':
-        messages.error(request, "Por favor, navega pelo sistema corretamente.")
+        messages.error(request, "Por favor, navega pelo sistema corretamente.") 
         return redirect(reverse('show_ballot'))
 
-    # Verify if the voter has voted or not
+    # Verificar se o eleitor já votou ou não
     voter = request.user.voter
     if voter.voted:
-        messages.error(request, "Já votaste.")
+        messages.error(request, "Já votaste.") 
         return redirect(reverse('voterDashboard'))
 
     form = dict(request.POST)
-    form.pop('csrfmiddlewaretoken', None)  # Pop CSRF Token
-    form.pop('submit_vote', None)  # Pop Submit Button
+    form.pop('csrfmiddlewaretoken', None)  # Remover Token CSRF
+    form.pop('submit_vote', None)  # Remover Botão de Envio
 
-    # Ensure at least one vote is selected
+    # Garantir que pelo menos um voto seja selecionado
     if len(form.keys()) < 1:
-        messages.error(request, "Por favor, seleciona pelo menos um candidato.")
+        messages.error(request, "Por favor, seleciona pelo menos um candidato.") 
         return redirect(reverse('show_ballot'))
     positions = Position.objects.all()
     form_count = 0
@@ -350,7 +349,7 @@ def submit_ballot(request):
                 continue
             if len(form_position) > max_vote:
                 messages.error(request, "Só podes escolher " +
-                               str(max_vote) + " candidatos para " + position.name)
+                               str(max_vote) + " candidatos para " + position.name) 
                 return redirect(reverse('show_ballot'))
             else:
                 for form_candidate_id in form_position:
@@ -365,14 +364,13 @@ def submit_ballot(request):
                         vote.save()
                     except Exception as e:
                         messages.error(
-                            request, "Por favor, navega pelo sistema corretamente." + str(e))
+                            request, "Por favor, navega pelo sistema corretamente. Erro: " + str(e))
                         return redirect(reverse('show_ballot'))
-        else:
+        else: # Max Vote == 1
             this_key = pos
             form_position = form.get(this_key)
             if form_position is None:
                 continue
-            # Max Vote == 1
             form_count += 1
             try:
                 form_position = form_position[0]
@@ -385,20 +383,19 @@ def submit_ballot(request):
                 vote.save()
             except Exception as e:
                 messages.error(
-                    request, "Por favor, navega pelo sistema corretamente." + str(e))
+                    request, "Por favor, navega pelo sistema corretamente. Erro: " + str(e)) 
                 return redirect(reverse('show_ballot'))
-    # Count total number of records inserted
-    # Check it viz-a-viz form_count
+    # Contar o número total de registos inseridos
+    # Verificar em relação ao form_count
     inserted_votes = Votes.objects.filter(voter=voter)
     if (inserted_votes.count() != form_count):
-        # Delete
+        # Apagar
         inserted_votes.delete()
-        messages.error(request, "Por favor, tenta votar novamente!")
+        messages.error(request, "Por favor, tenta votar novamente!") 
         return redirect(reverse('show_ballot'))
     else:
-        # Update Voter profile to voted
+        # Atualizar o perfil do Eleitor para votado
         voter.voted = True
         voter.save()
-        messages.success(request, "Obrigado por votar!")
+        messages.success(request, "Obrigado por votar!") 
         return redirect(reverse('voterDashboard'))
-

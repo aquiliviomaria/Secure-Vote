@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from account.views import account_login # Assuming this is your custom login view
-from voting.models import Position, Candidate, Voter, Votes # Keep these from voting app
-from account.models import ElectionSetting # <-- MUDANÇA CRÍTICA AQUI: Importar de account.models
-
+from account.views import account_login 
+from voting.models import Position, Candidate, Voter, Votes 
+from account.models import ElectionSetting 
 import logging
 
 logger = logging.getLogger(__name__)
@@ -54,4 +53,4 @@ def admin_dashboard(request): # <-- RENOMEADO PARA CLAREZA (se não o fez, faça
     else:
         context['voted_percentage'] = 0
 
-    return render(request, "admin/home.html", context) # Assume que seu template do dashboard é admin/home.html
+    return render(request, "admin/home.html", context) 
