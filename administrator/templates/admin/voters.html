@@ -5,191 +5,257 @@
   /* Variáveis do Tema Claro (apenas para garantir que este arquivo tenha acesso, o root.html é a fonte primária) */
   :root {
     --card-bg: #FFFFFF !important; 
-    --page-bg: #F8F9FA !important; /* Fundo da página, um cinza bem claro */
-    --primary-blue: #0077B5 !important; /* Azul principal para cabeçalhos, botões, links */
-    --secondary-blue: #0096C7 !important; /* Um azul secundário */
-    --tertiary-blue: #ADD8E6 !important; /* Um azul mais claro para hover/seleções suaves */
-    --dark-blue: #005A8D !important; /* Um azul mais escuro, bom para texto de destaque */
-    --success-green: #28a745 !important; /* Verde para sucesso/ícones */
-    --vibrant-green: #2ecc71 !important; /* Verde mais vibrante para gradientes */
-    --danger-red: #dc3545 !important; /* Vermelho para erros/ações perigosas */
-    --warning-yellow: #ffc107 !important; /* Amarelo para avisos */
-    --info-cyan: #17a2b8 !important; /* Ciano para informações */
-    --text-dark: #333333 !important; /* Texto escuro mais legível (não preto puro) */
-    --text-neutral: #555555 !important; /* Cinza médio para textos secundários */
-    --border-light: #E0E0E0 !important; /* Borda clara */
-    --shadow-light: rgba(0, 0, 0, 0.08) !important; /* Sombra suave para elementos */
-
-    /* Cores de destaque para gradientes/brilhos */
+    --page-bg: #F8F9FA !important;
+    --primary-blue: #0077B5 !important;
+    --secondary-blue: #0096C7 !important;
+    --tertiary-blue: #ADD8E6 !important;
+    --dark-blue: #005A8D !important;
+    --success-green: #28a745 !important;
+    --vibrant-green: #2ecc71 !important;
+    --danger-red: #dc3545 !important;
+    --warning-yellow: #ffc107 !important;
+    --info-cyan: #17a2b8 !important;
+    --text-dark: #333333 !important;
+    --text-neutral: #555555 !important;
+    --border-light: #E0E0E0 !important;
+    --shadow-light: rgba(0, 0, 0, 0.08) !important;
     --quantum-blue: #00b4d8 !important; 
     --secure-green: #2ecc71 !important; 
     --cyber-purple: #6c5ce7 !important;
     --golden-yellow: #ffd700 !important; 
-
-    /* Gradientes usados na página */
     --gradient-table-header: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)) !important;
-    --gradient-danger-header: linear-gradient(90deg, var(--danger-red), #e74c3c) !important; /* Ajustei o segundo ponto do gradiente */
+    --gradient-danger-header: linear-gradient(90deg, var(--danger-red), #e74c3c) !important;
   }
 
-  /* Main content area */
-  .content {
-    padding: 25px !important; /* Aumenta o padding */
+  /* Estilos gerais mantidos do código original */
+  body { 
     background: var(--page-bg) !important; 
-    border-radius: 12px !important; 
-    margin: 25px !important; /* Aumenta a margem */
-    box-shadow: 0 5px 25px var(--shadow-light) !important; 
     color: var(--text-dark) !important; 
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif !important; 
+    font-size: 16px !important; 
+    line-height: 1.6 !important; 
+    -webkit-font-smoothing: antialiased; 
+    margin: 0; 
+    padding: 0;
   }
 
-  /* Box (geral) */
-  .box {
-    background: var(--card-bg) !important; 
-    border: 1px solid var(--border-light) !important; 
-    border-radius: 12px !important;
-    color: var(--text-dark) !important; 
-    box-shadow: 0 2px 10px var(--shadow-light) !important; 
-    overflow: hidden !important; 
-  }
-
-  .box-header {
-    border-bottom: 1px solid var(--border-light) !important;
-    padding: 20px !important; /* Aumenta o padding do header */
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    background-color: var(--page-bg) !important; 
-  }
-
-  .box-title {
+  h1, h2, h3, h4, h5, h6 { 
     color: var(--primary-blue) !important; 
-    font-size: 1.6rem !important; /* Aumenta o tamanho do título */
-    font-weight: 600 !important;
+    line-height: 1.3 !important; 
+    margin-bottom: 0.6em !important; 
+    font-weight: 700; 
   }
 
-  .box-body {
-    padding: 20px !important;
+  p { 
+    font-size: 1rem !important; 
+    line-height: 1.7 !important; 
     color: var(--text-neutral) !important; 
+    margin-bottom: 1em !important; 
   }
 
-  /* Tabela */
-  .table {
-    width: 100% !important;
-    margin-bottom: 0 !important; 
-    background-color: transparent !important; 
+  label { 
+    font-size: 0.95rem !important; 
+    font-weight: 600 !important; 
+    margin-bottom: 0.5em !important; 
+    display: block !important; 
     color: var(--text-dark) !important; 
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
   }
 
-  .table th,
-  .table td {
-    padding: 14px !important; /* Aumenta o padding das células */
-    vertical-align: middle !important;
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  input[type="number"], 
+  textarea, 
+  select { 
+    padding: 12px 16px !important; 
+    font-size: 1rem !important; 
+    border-radius: 8px !important; 
     border: 1px solid var(--border-light) !important; 
-    font-size: 1.15rem !important; /* Aumenta o tamanho da fonte para os dados da tabela */
-    line-height: 1.6 !important; /* Melhora a legibilidade do texto nas células */
+    color: var(--text-dark) !important; 
+    background-color: var(--card-bg) !important; 
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important; 
+    width: 100%; 
+    box-sizing: border-box; 
   }
-
-  .table thead th {
-    background: var(--gradient-table-header) !important; 
-    color: #fff !important; 
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
+  input[type="text"]:focus, 
+  input[type="email"]:focus, 
+  input[type="password"]:focus, 
+  input[type="number"]:focus, 
+  textarea:focus, 
+  select:focus { 
     border-color: var(--primary-blue) !important; 
-    font-size: 1.1rem !important; /* Aumenta o tamanho da fonte dos cabeçalhos da tabela */
-  }
-  .box .table thead th:first-child { border-top-left-radius: 12px !important; }
-  .box .table thead th:last-child { border-top-right-radius: 12px !important; }
-
-  /* Estilo de hover para linhas da tabela */
-  .table tbody tr:hover {
-    background-color: var(--tertiary-blue) !important; 
-    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2) !important; 
+    outline: none !important; 
   }
 
-  /* Botões */
-  .btn {
-    border-radius: 12px !important;
-    transition: all 0.3s ease !important;
-    color: #fff !important; 
-    padding: 12px 25px !important; /* Aumenta o padding para melhor toque */
-    font-size: 1.05rem !important; /* Aumenta o tamanho da fonte do botão */
+  .content { 
+    padding: 25px !important; 
+    background: var(--page-bg) !important;  
+    border-radius: 12px !important;  
+    margin: 25px auto !important; 
+    max-width: 1200px; 
+    box-shadow: 0 5px 25px var(--shadow-light) !important;  
+    color: var(--text-dark) !important;  
+  } 
+
+  .box { 
+    background: var(--card-bg) !important;  
+    border: 1px solid var(--border-light) !important;  
+    border-radius: 12px !important; 
+    color: var(--text-dark) !important;  
+    box-shadow: 0 2px 10px var(--shadow-light) !important;  
+    overflow: hidden !important;  
+    margin-bottom: 25px; 
+  } 
+
+  .box-header { 
+    border-bottom: 1px solid var(--border-light) !important; 
+    padding: 20px !important; 
+    display: flex !important; 
+    justify-content: space-between !important; 
+    align-items: center !important; 
+    background-color: var(--page-bg) !important;  
+  } 
+
+  .box-title { 
+    color: var(--primary-blue) !important;  
+    font-size: 1.6rem !important; 
+    font-weight: 600 !important; 
+  } 
+
+  .box-body { 
+    padding: 20px !important; 
+    color: var(--text-neutral) !important;  
+  } 
+
+  .table { 
+    width: 100% !important; 
+    margin-bottom: 0 !important;  
+    background-color: transparent !important;  
+    color: var(--text-dark) !important;  
+    border-collapse: separate !important; 
+    border-spacing: 0 !important; 
+  } 
+
+  .table th, 
+  .table td { 
+    padding: 14px !important; 
+    vertical-align: middle !important; 
+    border: 1px solid var(--border-light) !important;  
+    font-size: 1.15rem !important; 
+    line-height: 1.6 !important; 
+  } 
+
+  .table thead th { 
+    background: var(--gradient-table-header) !important;  
+    color: #fff !important;  
+    font-weight: 600 !important; 
+    text-transform: uppercase !important; 
+    border-color: var(--primary-blue) !important;  
+    font-size: 1.1rem !important; 
+  } 
+  .box .table thead th:first-child { border-top-left-radius: 12px !important; } 
+  .box .table thead th:last-child { border-top-right-radius: 12px !important; } 
+
+  .table tbody tr:hover { 
+    background-color: var(--tertiary-blue) !important;  
+    cursor: pointer; 
+  } 
+
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  #example1_wrapper {
+      width: 100%;
+  }
+  #example1 {
+      width: 100% !important;
+      min-width: 600px;
+  }
+
+  .btn { 
+    border-radius: 12px !important; 
+    transition: all 0.3s ease !important; 
+    color: #fff !important;  
+    padding: 12px 25px !important; 
+    font-size: 1.05rem !important; 
     display: inline-flex !important; 
-    align-items: center !important;
-    gap: 10px !important; /* Aumenta o espaçamento entre ícone e texto */
-  }
+    align-items: center !important; 
+    gap: 10px !important; 
+  } 
 
   .btn-sm {
-    padding: 10px 20px !important; /* Ajusta o padding para botões pequenos */
-    font-size: 0.95rem !important; /* Ajusta o tamanho da fonte para botões pequenos */
+    padding: 10px 20px !important;
+    font-size: 0.95rem !important;
   }
 
-  .btn-primary {
-    background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-purple)) !important;
-    border: none !important;
-  }
+  .btn-primary { 
+    background: linear-gradient(135deg, var(--quantum-blue), var(--cyber-purple)) !important; 
+    border: none !important; 
+  } 
 
-  .btn-success {
-    background: linear-gradient(135deg, var(--secure-green), var(--quantum-blue)) !important;
-    border: none !important;
-  }
+  .btn-success { 
+    background: linear-gradient(135deg, var(--secure-green), var(--quantum-blue)) !important; 
+    border: none !important; 
+  } 
 
-  .btn-danger {
+  .btn-danger { 
     background: linear-gradient(135deg, var(--danger-red), #e74c3c) !important; 
-    border: none !important;
-  }
-  
-  /* Botão padrão (Fechar) */
-  .btn-default {
-    background-color: var(--page-bg) !important; 
-    border: 1px solid var(--border-light) !important; 
+    border: none !important; 
+  } 
+
+  .btn-default { 
+    background-color: var(--page-bg) !important;  
+    border: 1px solid var(--border-light) !important;  
+    color: var(--text-dark) !important;  
+  } 
+  .btn-default:hover { 
+    background-color: var(--border-light) !important;  
     color: var(--text-dark) !important; 
-  }
-  .btn-default:hover {
-    background-color: var(--border-light) !important; 
-    color: var(--text-dark) !important;
-  }
+  } 
 
-  .btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(0, 90, 141, 0.2) !important; 
-  }
-  
-  /* Modals */
-  .modal-content {
-    background: var(--card-bg) !important; 
-    border-radius: 12px !important; 
-    border: 1px solid var(--border-light) !important; 
-    color: var(--text-dark) !important; 
-    box-shadow: 0 10px 30px var(--shadow-light) !important; 
-  }
+  .btn:hover { 
+    transform: translateY(-2px) !important; 
+    box-shadow: 0 8px 25px rgba(0, 90, 141, 0.2) !important;  
+  } 
 
-  .modal-header {
-    border-bottom: 1px solid var(--border-light) !important; 
-    padding: 20px !important; /* Aumenta o padding do header do modal */
-    background-color: var(--page-bg) !important; 
-  }
+  .modal-content { 
+    background: var(--card-bg) !important;  
+    border-radius: 12px !important;  
+    border: 1px solid var(--border-light) !important;  
+    color: var(--text-dark) !important;  
+    box-shadow: 0 10px 30px var(--shadow-light) !important;  
+  } 
 
-  .modal-footer {
-    border-top: 1px solid var(--border-light) !important; 
-    padding: 20px !important; /* Aumenta o padding do footer do modal */
-    background-color: var(--page-bg) !important; 
-  }
-  
-  .modal-title {
-    color: var(--primary-blue) !important; 
-    font-weight: 600 !important;
-    font-size: 1.4rem !important; /* Aumenta o tamanho do título do modal */
-  }
+  .modal-header { 
+    border-bottom: 1px solid var(--border-light) !important;  
+    padding: 20px !important; 
+    background-color: var(--page-bg) !important;  
+  } 
 
-  /* Formulários dentro do modal */
+  .modal-footer { 
+    border-top: 1px solid var(--border-light) !important;  
+    padding: 20px !important; 
+    background-color: var(--page-bg) !important;  
+  } 
+
+  .modal-title { 
+    color: var(--primary-blue) !important;  
+    font-weight: 600 !important; 
+    font-size: 1.4rem !important; 
+  } 
+
   .form-control {
     background: var(--page-bg) !important; 
     border: 1px solid var(--border-light) !important; 
     border-radius: 8px !important; 
     color: var(--text-dark) !important; 
-    padding: 12px 18px !important; /* Aumenta o padding do input */
-    font-size: 1.05rem !important; /* Aumenta o tamanho da fonte do input */
+    padding: 12px 18px !important; 
+    font-size: 1.05rem !important; 
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.05) !important; 
   }
 
@@ -198,64 +264,159 @@
     box-shadow: 0 0 15px rgba(46, 204, 113, 0.15) !important; 
   }
 
-  /* Labels dos formulários */
   .form-group label {
       color: var(--dark-blue) !important; 
       font-weight: 600 !important;
-      margin-bottom: 8px !important; /* Aumenta a margem */
+      margin-bottom: 8px !important;
       display: block !important; 
-      font-size: 1.05rem !important; /* Aumenta o tamanho do label */
+      font-size: 1.05rem !important;
   }
 
-  /* Texto de erro de validação */
   .text-danger {
       color: var(--danger-red) !important; 
-      font-size: 0.95em !important; /* Aumenta ligeiramente */
+      font-size: 0.95em !important;
       display: block !important; 
       margin-top: 8px !important; 
   }
 
-  /* Texto bold no modal de delete */
   .modal-body .bold {
       color: var(--dark-blue) !important; 
       font-weight: 700 !important;
-      margin-top: 20px !important; /* Aumenta a margem */
-      font-size: 1.6em !important; /* Aumenta o tamanho para destaque */
+      margin-top: 20px !important;
+      font-size: 1.6em !important;
   }
-  
-  /* Botão de fechar (X) do modal */
+
   .modal-header .close {
     color: var(--text-neutral) !important; 
     opacity: 0.7 !important;
     transition: opacity 0.3s ease !important;
-    font-size: 2.0rem !important; /* Aumenta o tamanho do 'x' */
+    font-size: 2.0rem !important;
   }
   .modal-header .close:hover {
     opacity: 1 !important;
     color: var(--danger-red) !important; 
   }
 
-  /* Ajuste para o texto padrão no modal de delete */
   #delete .modal-body p {
       color: var(--text-neutral) !important;
-      font-size: 1.15em !important; /* Aumenta a fonte */
-      margin-bottom: 12px !important; /* Aumenta a margem */
+      font-size: 1.15em !important;
+      margin-bottom: 12px !important;
   }
   #delete .modal-title {
       color: var(--danger-red) !important; 
   }
 
-  /* Removendo col-sm-X para labels e inputs de formulário em modais
-     para que eles se adaptem à largura total do modal-body */
   .modal-body .form-horizontal .form-group label {
-      width: 100% !important; /* Força o label a ocupar a largura total */
-      text-align: left !important; /* Alinha o texto do label à esquerda */
-      padding-top: 0 !important; /* Remove padding top que pode vir do AdminLTE */
+      width: 100% !important;
+      text-align: left !important;
+      padding-top: 0 !important;
   }
 
-  .modal-body .form-horizontal .form-group .col-sm-9 {
-      width: 100% !important; /* Força o input a ocupar a largura total */
-      float: none !important; /* Remove float que pode vir do AdminLTE */
+  .modal-body .form-horizontal .form-group input {
+      width: 100% !important; 
+      box-sizing: border-box;
+  }
+  .modal-body .form-horizontal .col-sm-9,
+  .modal-body .form-horizontal .col-sm-3 {
+      width: 100% !important;
+      float: none !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+  }
+
+  @media (max-width: 575.98px) {
+    .content {
+      padding: 15px !important;
+      margin: 15px auto !important;
+    }
+    
+    .box-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px !important;
+      text-align: left;
+    }
+
+    .box-title {
+      font-size: 1.3rem !important;
+      margin-bottom: 10px !important;
+      width: 100%;
+    }
+
+    .btn-sm, .btn {
+      width: 100%;
+      text-align: center;
+      padding: 10px 15px !important;
+      font-size: 0.9rem !important;
+      margin-top: 5px;
+      gap: 5px !important;
+    }
+
+    .table th, .table td {
+      padding: 8px !important;
+      font-size: 0.85rem !important;
+    }
+
+    .modal-content {
+      margin: 15px !important;
+    }
+    .modal-header, .modal-footer, .modal-body {
+      padding: 15px !important;
+    }
+    .modal-title {
+      font-size: 1.2rem !important;
+    }
+    .modal-header .close {
+      font-size: 1.8rem !important;
+    }
+    .modal-body .bold {
+        font-size: 1.2em !important;
+    }
+    #delete .modal-body p {
+        font-size: 1em !important;
+    }
+
+    .form-group label {
+        font-size: 0.9rem !important;
+        margin-bottom: 5px !important;
+    }
+    .form-control {
+        padding: 10px 12px !important;
+        font-size: 0.95rem !important;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .content {
+      padding: 20px !important;
+      margin: 20px auto !important;
+    }
+
+    .box-title {
+      font-size: 1.4rem !important;
+    }
+
+    .btn {
+      padding: 10px 20px !important;
+      font-size: 0.95rem !important;
+    }
+
+    .table th, .table td {
+      padding: 10px !important;
+      font-size: 0.95rem !important;
+    }
+
+    .box-header .btn {
+      margin-top: 10px;
+      width: auto;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .col-xs-12 {
+      width: 100%;
+      float: left;
+    }
   }
 </style>
 
@@ -270,41 +431,43 @@
           </a>
         </div>
         <div class="box-body">
-          <table id="example1" class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Primeiro Nome</th> {# Corrigido para Primeiro Nome #}
-                <th>Apelido</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for voter in voters %}
-              <tr>
-                <td>{{ voter.admin.first_name }}</td> {# Corrigido para exibir first_name #}
-                <td>{{ voter.admin.last_name }}</td>
-                <td>{{ voter.admin.email }}</td>
-                <td>{{ voter.phone }}</td>
-                <td>
-                  <button
-                    class="btn btn-success btn-sm edit"
-                    data-id="{{ voter.id }}"
-                  >
-                    <i class="fa fa-edit"></i> Editar
-                  </button>
-                  <button
-                    class="btn btn-danger btn-sm delete"
-                    data-id="{{ voter.id }}"
-                  >
-                    <i class="fa fa-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table id="example1" class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Primeiro Nome</th>
+                  <th>Apelido</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for voter in voters %}
+                <tr>
+                  <td>{{ voter.admin.first_name }}</td>
+                  <td>{{ voter.admin.last_name }}</td>
+                  <td>{{ voter.admin.email }}</td>
+                  <td>{{ voter.phone }}</td>
+                  <td>
+                    <button
+                      class="btn btn-success btn-sm edit"
+                      data-id="{{ voter.id }}"
+                    >
+                      <i class="fa fa-edit"></i> Editar
+                    </button>
+                    <button
+                      class="btn btn-danger btn-sm delete"
+                      data-id="{{ voter.id }}"
+                    >
+                      <i class="fa fa-trash"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -319,7 +482,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title"><b>Adicionar Novo Eleitor</b></h4>
       </div>
@@ -328,14 +491,17 @@
           class="form-horizontal"
           method="POST"
           action="{% url 'adminViewVoters' %}"
+          enctype="multipart/form-data"
         >
           {% csrf_token %}
-          {# As classes form-group e has-feedback devem ser suficientes com os estilos CSS globais #}
           {% for field in form1 %}
             <div class="form-group has-feedback">
               <span class="text-danger">{{ field.errors }}</span>
               {{ field.label_tag }} 
               {{ field }}
+              {% if field.help_text %}
+                <small class="help-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
             </div>
           {% endfor %} 
           {% for field in form2 %}
@@ -345,7 +511,6 @@
               {{ field }}
             </div>
           {% endfor %}
-          
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
               <i class="fa fa-close"></i> Fechar
@@ -365,7 +530,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title"><b>Editar Eleitor</b></h4>
       </div>
@@ -374,14 +539,12 @@
           class="form-horizontal"
           method="POST"
           action="{% url 'updateVoter' %}"
+          enctype="multipart/form-data"
         >
           {% csrf_token %}
           <input type="hidden" class="id" name="id" />
           <div class="form-group">
-            <label for="edit_firstname" class="control-label"
-              >Primeiro Nome</label
-            >
-            {# Removendo col-sm-9 e envolvendo input diretamente para que ele pegue 100% da largura do pai #}
+            <label for="edit_firstname" class="control-label">Primeiro Nome</label>
             <div>
               <input
                 type="text"
@@ -392,9 +555,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="edit_lastname" class="control-label"
-              >Apelido</label
-            >
+            <label for="edit_lastname" class="control-label">Apelido</label>
             <div>
               <input
                 type="text"
@@ -416,9 +577,31 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="edit_phone" class="control-label"
-              >Telefone</label
-            >
+            <label for="edit_password" class="control-label">Nova Senha (opcional)</label>
+            <div>
+              <input
+                type="password"
+                class="form-control"
+                id="edit_password"
+                name="password"
+                placeholder="Deixe em branco para manter a senha atual"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="edit_password_confirm" class="control-label">Confirmar Nova Senha</label>
+            <div>
+              <input
+                type="password"
+                class="form-control"
+                id="edit_password_confirm"
+                name="password_confirm"
+                placeholder="Confirme a nova senha"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="edit_phone" class="control-label">Telefone</label>
             <div>
               <input
                 type="text"
@@ -428,12 +611,23 @@
               />
             </div>
           </div>
+          <div class="form-group">
+            <label for="edit_profile_image" class="control-label">Foto de Perfil (opcional)</label>
+            <div>
+              <input
+                type="file"
+                class="form-control"
+                id="edit_profile_image"
+                name="profile_image"
+              />
+            </div>
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
               <i class="fa fa-close"></i> Fechar
             </button>
             <button type="submit" class="btn btn-success" name="edit">
-              <i class="fa fa-check-square-o"></i> Atualizar
+              <i class="fa fa-check-square-o"></i> Actualizar
             </button>
           </div>
         </form>
@@ -447,7 +641,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title"><b>Confirmar Eliminação</b></h4>
       </div>
@@ -482,17 +676,14 @@
 {% block custom_js %}
 <script>
   $(function () {
-    // Verifica se já existe uma instância do DataTables na tabela
-    // e a destrói antes de inicializar novamente.
     if ($.fn.DataTable.isDataTable('#example1')) {
       $('#example1').DataTable().destroy();
     }
 
-    // Inicializa o DataTables para a tabela de eleitores
     $("#example1").DataTable({
       responsive: true,
-      autoWidth: false, 
-      // Tradução completa para o português
+      autoWidth: false,
+      order: [],
       language: {
         "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -525,7 +716,6 @@
       }
     });
 
-    // Evento para abrir o modal de edição
     $(document).on("click", ".edit", function (e) {
       e.preventDefault();
       $("#edit").modal("show");
@@ -533,7 +723,6 @@
       getRow(id);
     });
 
-    // Evento para abrir o modal de exclusão
     $(document).on("click", ".delete", function (e) {
       e.preventDefault();
       $("#delete").modal("show");
@@ -542,7 +731,6 @@
     });
   });
 
-  // Função AJAX para obter os dados do eleitor para edição ou exclusão
   function getRow(id) {
     $.ajax({
       type: "GET",
@@ -552,17 +740,15 @@
       },
       dataType: "json",
       success: function (response) {
-        // Preenche os campos do modal de edição
         $(".id").val(response.id);
         $("#edit_firstname").val(response.first_name);
         $("#edit_lastname").val(response.last_name);
         $("#edit_phone").val(response.phone);
         $("#edit_email").val(response.email);
-        // Exibe o nome completo no modal de exclusão
         $(".fullname").html(response.first_name + " " + response.last_name);
       },
       error: function(xhr, status, error) {
-        console.error("Erro ao obter dados do eleitor:", error);
+        console.error("Erro ao obter dados do eleitor:", status, error);
         alert("Não foi possível carregar os dados do eleitor. Por favor, tente novamente.");
       }
     });

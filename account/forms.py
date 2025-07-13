@@ -1,4 +1,3 @@
-# account/forms.py
 from django import forms
 from .models import CustomUser, ElectionSetting 
 
@@ -8,26 +7,33 @@ class FormSettings(forms.ModelForm):
         for field in self.visible_fields():
             field.field.widget.attrs['class'] = 'form-control'
 
-
 class CustomUserForm(FormSettings):
-    email = forms.EmailField(required=True)
-    # Removemos o campo 'password' do formulário diretamente aqui.
-    # Ele será tratado separadamente na view.
-    # Os campos de senha no HTML não corresponderão a um campo no ModelForm,
-    # mas serão lidos diretamente do request.POST na view.
+    email = forms.EmailField(required=True, label="E-mail")
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label="Senha",
+        min_length=8,
+        help_text="A senha deve ter pelo menos 8 caracteres."
+    )
+    password_confirm = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label="Confirmar Senha"
+    )
 
     def __init__(self, *args, **kwargs):
         super(CustomUserForm, self).__init__(*args, **kwargs)
-        
         if kwargs.get('instance'):
-            # Manter first_name e last_name como required=True no formulário para consistência com o modelo NOT NULL
+            # Para edição, os campos de senha não são obrigatórios
+            self.fields['password'].required = False
+            self.fields['password_confirm'].required = False
             self.fields['first_name'].required = True 
             self.fields['last_name'].required = True  
-        else: # Criação de novo usuário (Registro)
+        else:
+            # Para criação, todos os campos são obrigatórios
             self.fields['first_name'].required = True
             self.fields['last_name'].required = True
-            # Se fosse um formulário de registro, o campo 'password' seria adicionado aqui.
-            # Mas este CustomUserForm agora é mais para os outros campos do usuário.
 
     def clean_email(self):
         formEmail = self.cleaned_data['email'].lower()
@@ -41,14 +47,36 @@ class CustomUserForm(FormSettings):
                     raise forms.ValidationError("O email fornecido já está registado.")
         return formEmail
 
-    # Removemos a função clean_password daqui, ela será tratada na view.
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.instance.pk:  # Apenas para novos usuários
+            password = cleaned_data.get('password')
+            password_confirm = cleaned_data.get('password_confirm')
+            if password and password_confirm and password != password_confirm:
+                self.add_error('password_confirm', "As senhas não coincidem.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if not user.pk:  # Novo usuário
+            user.set_password(self.cleaned_data['password'])  # Usa a senha fornecida
+            user.is_active = True  # Garante usuário ativo
+            user.user_type = '2'  # Define como Voter
+        # Para edição, não alteramos a senha se os campos estiverem vazios
+        elif self.cleaned_data.get('password'):
+            user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
 
     class Meta:
         model = CustomUser
-        # O campo 'password' NÃO deve estar aqui. A senha será manipulada diretamente pela view.
-        # Adicione 'profile_image' aqui.
-        fields = ['first_name', 'last_name', 'email', 'profile_image'] 
-
+        fields = ['first_name', 'last_name', 'email', 'profile_image', 'password', 'password_confirm']
+        labels = {
+            'first_name': 'Primeiro Nome',
+            'last_name': 'Apelido',
+            'profile_image': 'Foto de Perfil'
+        }
 
 class ElectionSettingForm(forms.ModelForm):
     start_time = forms.DateTimeField(

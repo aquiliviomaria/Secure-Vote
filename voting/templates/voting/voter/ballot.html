@@ -1,60 +1,50 @@
 {% extends 'root.html' %}
+{% load static %}
+
 {% block content %}
 <style>
-  /* Variáveis do Tema Claro - Otimizadas para UX/UI */
   :root {
-    --page-bg: #F0F2F5; /* Fundo da página, cinza muito claro e moderno */
-    --card-bg: #FFFFFF; /* Fundo principal para cartões/contêineres */
-    --primary-accent: #007BFF; /* Azul vibrante e consistente para destaque */
-    --secondary-accent: #6C757D; /* Cinza médio para elementos secundários */
-    --text-dark: #212529; /* Cor principal do texto (quase preto) */
-    --text-light: #495057; /* Cor do texto secundário, para parágrafos e detalhes */
-    --border-light: #DEE2E6; /* Borda clara e sutil */
-    --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra suave para elevação */
-    
-    --success-color: #28A745; /* Verde para sucesso */
-    --danger-color: #DC3545; /* Vermelho para erros/ações perigosas */
-    --warning-color: #FFC107; /* Amarelo para avisos */
-    --info-color: #17A2B8; /* Ciano para informações */
-
-    /* Cores do gradiente para elementos decorativos ou de destaque */
-    --gradient-start: #007bff; /* Azul suave */
-    --gradient-end: #00c7e5; /* Ciano brilhante */
-
-    /* Adicionado para o contador no ballot.html */
-    --countdown-active: var(--success-color); /* Verde para eleição ativa */
-    --countdown-ended: var(--danger-color); /* Vermelho para eleição terminada */
-    --countdown-pending: var(--primary-accent); /* Azul para eleição pendente */
+    --page-bg: #F0F2F5;
+    --card-bg: #FFFFFF;
+    --primary-accent: #007BFF;
+    --secondary-accent: #6C757D;
+    --text-dark: #212529;
+    --text-light: #495057;
+    --border-light: #DEE2E6;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --success-color: #28A745;
+    --danger-color: #DC3545;
+    --warning-color: #FFC107;
+    --info-color: #17A2B8;
+    --gradient-start: #007bff;
+    --gradient-end: #00c7e5;
+    --countdown-active: var(--success-color);
+    --countdown-ended: var(--danger-color);
+    --countdown-pending: var(--primary-accent);
   }
 
-  /*
-  **********************************************************
-  AJUSTES GERAIS DE BASE (LEGIBILIDADE E FLUIDEZ)
-  **********************************************************
-  */
   body {
     background: var(--page-bg) !important;
     color: var(--text-dark) !important;
-    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif !important; /* Fonte mais clean e legível */
-    font-size: 16px !important; /* Tamanho de fonte base otimizado */
-    line-height: 1.6 !important; /* Espaçamento entre linhas confortável para leitura */
-    -webkit-font-smoothing: antialiased; /* Suavização de fonte */
-    margin: 0; /* Garante que não há margem extra no corpo */
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
     padding: 0;
   }
 
-  /* Ajustes para todos os tipos de texto */
   h1, h2, h3, h4, h5, h6 {
     color: var(--primary-accent) !important;
     line-height: 1.3 !important;
-    margin-bottom: 0.6em !important; /* Espaçamento padrão para títulos */
-    font-weight: 700; /* Mais peso para títulos */
+    margin-bottom: 0.6em !important;
+    font-weight: 700;
   }
 
   p {
-    font-size: 1rem !important; /* Tamanho confortável para parágrafos */
+    font-size: 1rem !important;
     line-height: 1.7 !important;
-    color: var(--text-light) !important; /* Parágrafos com cor de texto secundário */
+    color: var(--text-light) !important;
     margin-bottom: 1em !important;
   }
 
@@ -63,26 +53,26 @@
     font-weight: 600 !important;
     margin-bottom: 0.5em !important;
     display: block !important;
-    color: var(--text-dark) !important; 
+    color: var(--text-dark) !important;
   }
 
-  /* Inputs de Formulário (Melhor Interação) */
   input[type="text"],
   input[type="email"],
   input[type="password"],
   input[type="number"],
   textarea,
   select {
-    padding: 12px 16px !important; /* Padding generoso */
+    padding: 12px 16px !important;
     font-size: 1rem !important;
-    border-radius: 8px !important; /* Cantos arredondados e modernos */
+    border-radius: 8px !important;
     border: 1px solid var(--border-light) !important;
     color: var(--text-dark) !important;
     background-color: var(--card-bg) !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important; /* Transição suave para foco */
-    width: 100%; /* Ocupa a largura total */
-    box-sizing: border-box; /* Inclui padding e borda na largura */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    width: 100%;
+    box-sizing: border-box;
   }
+
   input[type="text"]:focus,
   input[type="email"]:focus,
   input[type="password"]:focus,
@@ -90,92 +80,98 @@
   textarea:focus,
   select:focus {
     border-color: var(--primary-accent) !important;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2) !important; /* Efeito de foco mais suave */
-    outline: none !important; /* Remove outline padrão */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2) !important;
+    outline: none !important;
   }
 
-  /*
-  **********************************************************
-  ESTILOS ESPECÍFICOS DO LAYOUT E COMPONENTES (UX/UI)
-  **********************************************************
-  */
   .content {
-    padding: 40px; /* Mais padding interno para conteúdo */
+    padding: 40px;
     background: var(--card-bg) !important;
-    border-radius: 12px; /* Arredondamento suave */
-    margin: 40px auto; /* Centraliza o conteúdo com margem automática */
-    max-width: 960px; /* Limita a largura para melhor legibilidade em telas grandes */
-    box-shadow: 0 8px 25px var(--shadow-light); /* Sombra mais destacada para elevação */
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 960px;
+    box-shadow: 0 8px 25px var(--shadow-light);
   }
 
   .page-header {
-    font-size: 2.8rem; /* Tamanho do título principal */
-    font-weight: 800; /* Mais ousado */
+    font-size: 2.8rem;
+    font-weight: 800;
     text-align: center;
     margin-bottom: 35px !important;
     color: var(--primary-accent);
     position: relative;
-    padding-bottom: 20px; /* Espaço para a linha */
+    padding-bottom: 20px;
   }
-  .page-header::after { /* Linha decorativa abaixo do título */
+
+  .page-header::after {
     content: '';
     display: block;
-    width: 100px; /* Largura da linha */
+    width: 100px;
     height: 4px;
-    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end)); /* Gradiente na linha */
-    margin: 15px auto 0; /* Centraliza a linha */
+    background: linear-gradient(90deg, var(--gradient-start), var--gradient-end);
+    margin: 15px auto 0;
     border-radius: 5px;
   }
 
-  /* Animação de entrada suave */
   @keyframes fadeInScale {
-    from { opacity: 0; transform: translateY(20px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
-  .content, .modal { animation: fadeInScale 0.7s ease-out forwards; } /* `forwards` mantém o estado final */
 
-  /* Alertas (Feedback claro) */
+  .content,
+  .modal {
+    animation: fadeInScale 0.7s ease-out forwards;
+  }
+
   .alert {
     border-radius: 8px;
     padding: 15px 20px;
     font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 25px; /* Mais espaço para alertas */
-    display: flex; /* Para alinhar o botão de fechar */
+    margin-bottom: 25px;
+    display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   .alert-danger {
     background-color: rgba(220, 53, 69, 0.1);
     border: 1px solid rgba(220, 53, 69, 0.2);
     color: var(--danger-color);
   }
+
   .alert-danger .close {
     color: var(--danger-color) !important;
     opacity: 0.7 !important;
     font-size: 1.6rem !important;
     transition: opacity 0.2s ease, transform 0.2s ease !important;
-    padding: 0 5px; /* Adiciona padding ao 'x' */
-  }
-  .alert-danger .close:hover {
-    opacity: 1 !important;
-    transform: rotate(90deg); /* Pequena rotação no hover */
+    padding: 0 5px;
   }
 
-  /* Botões (Chamada para ação clara) */
+  .alert-danger .close:hover {
+    opacity: 1 !important;
+    transform: rotate(90deg);
+  }
+
   .btn {
-    border-radius: 30px; /* Botões mais "pílula" */
-    padding: 14px 32px; /* Padding generoso para facilitar o clique */
+    border-radius: 30px;
+    padding: 14px 32px;
     font-size: 1.05rem;
-    font-weight: 700; /* Mais peso */
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Mais espaço entre ícone e texto */
-    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); /* Curva de animação mais suave */
-    text-transform: uppercase; /* Texto em maiúsculas */
-    letter-spacing: 0.05em; /* Espaçamento entre letras */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra mais visível */
+    gap: 10px;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   .btn-success {
@@ -191,9 +187,9 @@
   }
 
   .btn:hover {
-    transform: translateY(-4px); /* Efeito de elevação mais pronunciado */
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); /* Sombra mais intensa no hover */
-    filter: brightness(110%); /* Leve brilho no hover */
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+    filter: brightness(110%);
   }
 
   .btn-default {
@@ -202,181 +198,355 @@
     color: var(--text-dark) !important;
     box-shadow: none !important;
   }
+
   .btn-default:hover {
     background: var(--border-light) !important;
     color: var(--primary-accent) !important;
     border-color: var(--primary-accent) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
   }
 
-  /* Modais (Experiência Consistente e Elegante) */
   .modal-content {
     background: var(--card-bg) !important;
     border-radius: 12px;
     border: 1px solid var(--border-light);
     color: var(--text-dark);
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25); /* Sombra mais forte para destaque */
-    overflow: hidden; /* Garante que os cantos arredondados funcionem */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
   }
 
-  .modal-header, .modal-footer {
-    border-color: var(--border-light) !important;
-    padding: 20px 30px; /* Padding consistente e generoso */
-    background: var(--page-bg); /* Fundo sutil */
-  }
-  .modal-header {
-      border-bottom: 1px solid var(--border-light) !important;
-  }
+  .modal-header,
   .modal-footer {
-      border-top: 1px solid var(--border-light) !important;
+    border-color: var(--border-light) !important;
+    padding: 20px 30px;
+    background: var(--page-bg);
+  }
+
+  .modal-header {
+    border-bottom: 1px solid var(--border-light) !important;
+  }
+
+  .modal-footer {
+    border-top: 1px solid var(--border-light) !important;
   }
 
   .modal-title {
-    font-size: 1.8rem; /* Título do modal maior e mais legível */
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--primary-accent);
   }
 
   .modal-body {
     color: var(--text-light);
-    padding: 30px; /* Mais padding no corpo do modal */
+    padding: 30px;
     font-size: 1rem;
     line-height: 1.6;
+  }
+
+  .modal-body #plat_view {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-dark);
   }
 
   .modal-header .close {
     color: var(--secondary-accent) !important;
     opacity: 0.8 !important;
-    font-size: 2.5rem !important; /* Tamanho grande do 'x' para facilitar o clique */
+    font-size: 2.5rem !important;
     transition: all 0.2s ease !important;
-    text-shadow: none; /* Remove a sombra de texto padrão */
+    text-shadow: none;
   }
+
   .modal-header .close:hover {
     opacity: 1 !important;
     color: var(--danger-color) !important;
-    transform: rotate(90deg) scale(1.1); /* Efeito de rotação e leve escala no hover */
+    transform: rotate(90deg) scale(1.1);
   }
 
-  /*
-  **********************************************************
-  AJUSTES PARA ELEMENTOS DE ESCOLHA DE VOTO (UX/UI)
-  **********************************************************
-  */
-  /* Os estilos abaixo são mais genéricos para coexistir com iCheck,
-     que irá aplicar seus próprios visuais. */
-
-  /* Para garantir que o iCheck se adapte ao tema claro */
   .icheckbox_flat-green,
   .iradio_flat-green {
-      background-color: var(--card-bg); /* Fundo padrão do input iCheck */
-      border: 1px solid var(--border-light); /* Borda padrão */
-      border-radius: 4px; /* Cantos levemente arredondados */
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
   }
 
   .iradio_flat-green {
-      border-radius: 50%; /* Faz a forma de rádio */
+    border-radius: 50%;
   }
 
-  /* Quando checked */
   .icheckbox_flat-green.checked,
   .iradio_flat-green.checked {
-      background-color: var(--primary-accent); /* Fundo azul quando marcado */
-      border-color: var(--primary-accent); /* Borda azul quando marcado */
+    background-color: var(--primary-accent);
+    border-color: var(--primary-accent);
   }
 
-  /* Adaptação de cores para o ícone de check/radio do iCheck */
   .icheckbox_flat-green.checked::after,
   .iradio_flat-green.checked::after {
-      background-color: #FFFFFF; /* Cor do ícone interno (marca de seleção/ponto) */
+    background-color: #FFFFFF;
   }
 
-  /* Focus state */
   .icheckbox_flat-green.focus,
   .iradio_flat-green.focus {
-      border-color: var(--primary-accent); /* Borda azul no foco */
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* Efeito de foco suave */
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
   }
 
-  /* Disabled state */
   .icheckbox_flat-green.disabled,
   .iradio_flat-green.disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
-  /* Hover state */
   .icheckbox_flat-green:hover,
   .iradio_flat-green:hover {
-      border-color: var(--primary-accent); /* Leve indicação de hover */
+    border-color: var(--primary-accent);
   }
 
-  /* Animação ao escolher o candidato (se iCheck permitir e se você ainda quiser via JS customizado) */
-  /* Nota: iCheck já tem suas próprias animações internas. Esta é mais para containers. */
   @keyframes pulseSelected {
-    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2); }
-    50% { transform: scale(1.01); box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); }
-    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2); }
+    0% {
+      transform: scale(1);
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
+    50% {
+      transform: scale(1.01);
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
   }
 
-  /* Estilo para o novo contador regressivo no ballot.html */
-  #ballot-countdown-timer {
-      font-size: 1.8rem; /* Tamanho ligeiramente menor que o do admin */
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 25px; /* Espaçamento abaixo do timer */
-      padding: 12px 20px;
-      border: 2px solid var(--border-light);
-      border-radius: 10px;
-      background-color: var(--card-bg);
-      box-shadow: 0 4px 15px var(--shadow-light);
-      color: var(--countdown-pending); /* Cor padrão antes de começar */
-  }
-  #ballot-countdown-timer.election-ended {
-      color: var(--countdown-ended);
-      border-color: var(--countdown-ended);
-  }
-  #ballot-countdown-timer.election-active {
-      color: var(--countdown-active);
-      border-color: var(--countdown-active);
-  }
-  #ballot-countdown-timer.election-not-started {
-      color: var(--countdown-pending);
-      border-color: var(--countdown-pending);
-  }
-
-  /* Estilos para quando a votação está desabilitada */
   .voting-disabled #ballotForm .icheckbox_flat-green,
   .voting-disabled #ballotForm .iradio_flat-green {
-      opacity: 0.5; /* Reduz a opacidade dos inputs */
-      cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
   }
+
   .voting-disabled #ballotForm input[type="radio"],
   .voting-disabled #ballotForm input[type="checkbox"] {
-      pointer-events: none; /* Impede cliques */
+    pointer-events: none;
   }
+
   .voting-disabled #ballotForm button {
-      cursor: not-allowed;
-      opacity: 0.6;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .box {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+  }
+
+  .clist {
+    display: inline-block;
+    margin: 10px;
+    vertical-align: middle;
+  }
+
+  .cname {
+    font-size: 1.6rem; /* Aumentado para melhor legibilidade */
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 10px 0;
+    display: inline-block;
+    flex-wrap: wrap;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .btn-primary.btn-sm {
+    background-color: var(--info-color) !important;
+    border-color: var(--info-color) !important;
+    color: white !important;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary.btn-sm:hover {
+    background-color: var(--primary-accent) !important;
+    box-shadow: 0 8px 20px rgba(23, 162, 184, 0.3);
+  }
+
+  .icheck-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-accent);
+    cursor: pointer;
+  }
+
+  .icheck-label .iradio_flat-green,
+  .icheck-label .icheckbox_flat-green {
+    margin-right: 10px;
+    position: relative;
+    top: 2px;
+  }
+
+  @media (max-width: 767px) {
+    .content {
+      padding: 20px;
+      margin: 20px auto;
+    }
+
+    .page-header {
+      font-size: 2rem;
+      margin-bottom: 25px !important;
+      padding-bottom: 15px;
+    }
+
+    .page-header::after {
+      width: 70px;
+      height: 3px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      gap: 8px;
+    }
+
+    .text-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .modal-header,
+    .modal-footer {
+      padding: 15px 20px;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+    }
+
+    .modal-body {
+      padding: 20px;
+      font-size: 0.95rem;
+    }
+
+    .modal-body #plat_view {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .modal-header .close {
+      font-size: 2rem !important;
+    }
+
+    .col-xs-12 {
+      width: 100%;
+      float: none;
+      margin-bottom: 20px;
+    }
+
+    .box {
+      padding: 15px;
+    }
+
+    .clist img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 5px; /* Reduzido para aproximar o nome da foto */
+    }
+
+    .cname {
+      font-size: 1.2rem; /* Aumentado para melhor legibilidade */
+      max-width: 100%;
+      flex-wrap: wrap;
+      margin: 5px 0; /* Reduzido para aproximar o nome da foto */
+    }
+
+    .btn-primary.btn-sm {
+      font-size: 0.85rem;
+      padding: 6px 12px;
+    }
+
+    .icheckbox_flat-green,
+    .iradio_flat-green {
+      transform: scale(0.9);
+      margin: 10px auto;
+    }
+
+    .icheck-label {
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .content {
+      padding: 15px;
+      margin: 15px auto;
+    }
+
+    .page-header {
+      font-size: 1.8rem;
+    }
+
+    .btn {
+      padding: 8px 15px;
+      font-size: 0.85rem;
+    }
+
+    .clist img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 3px; /* Reduzido ainda mais */
+    }
+
+    .cname {
+      font-size: 1.3rem; /* Aumentado para melhor legibilidade */
+      max-width: 100%;
+      flex-wrap: wrap;
+      margin: 5px 0; /* Reduzido para aproximar o nome da foto */
+    }
+
+    .btn-primary.btn-sm {
+      font-size: 0.8rem;
+      padding: 5px 10px;
+    }
+
+    .icheck-label {
+      font-size: 0.9rem;
+    }
+
+    .modal-body #plat_view {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
   }
 </style>
 
 <section class="content">
   <h1 class="page-header text-center title"><b>{{ TITLE }}</b></h1>
-  <div class="row">
-    
 
-      <form method="POST" id="ballotForm" action="{% url 'submit_ballot' %}">
-        {% csrf_token %}
-        {# O "ballot|safe" é onde o conteúdo do formulário de votação é injetado. #}
-        {# Para iCheck funcionar, seus inputs devem ter a estrutura correta: <input type="radio/checkbox" class="minimal"> ou similar, e o label associado. #}
-        {{ ballot|safe }}
-        <div class="text-center" style="margin-top: 40px;">
-          <button type="button" class="btn btn-success" id="preview"><i class="fa fa-file-text"></i> Pré-visualizar</button>
-          <button type="submit" class="btn btn-primary" name="submit_vote"><i class="fa fa-check-square-o"></i> Submeter</button>
-        </div>
-      </form>
-    </div>
+  <div class="row">
+    <form method="POST" id="ballotForm" action="{% url 'submit_ballot' %}">
+      {% csrf_token %}
+      {{ ballot|safe }}
+      <div class="text-center" style="margin-top: 40px;">
+        <button type="button" class="btn btn-success" id="preview"><i class="fa fa-file-text"></i> Pré-visualizar</button>
+        <button type="submit" class="btn btn-primary" name="submit_vote"><i class="fa fa-check-square-o"></i> Submeter</button>
+      </div>
+    </form>
   </div>
 </section>
 {% endblock content %}
@@ -384,38 +554,34 @@
 {% block custom_js %}
 <script>
   $(function() {
-    // ******************************************************
-    // LÓGICA ORIGINAL DO iCheck RESTAURADA AQUI
-    // ******************************************************
+    // Initialize iCheck
     $('.content').iCheck({
       checkboxClass: 'icheckbox_flat-green',
       radioClass: 'iradio_flat-green'
     });
 
-    // Lógica de reset original (depende do iCheck)
+    // Reset logic
     $(document).on('click', '.reset', function(e) {
       e.preventDefault();
       var desc = $(this).data('desc');
       $('.' + desc).iCheck('uncheck');
     });
 
-    // Evento para abrir o modal de biografia
+    // Biography modal
     $(document).on('click', '.platform', function(e) {
       e.preventDefault();
       $('#bio').modal('show');
-      var platform = $(this).data('bio');
+      var bioContent = $(this).data('bio');
       var fullname = $(this).data('fullname');
       $('.candidate').html(fullname);
-      $('#plat_view').html(platform);
+      $('#plat_view').html(bioContent);
     });
 
-    // Evento para pré-visualizar o voto
+    // Preview vote
     $('#preview').click(function(e) {
       e.preventDefault();
       var form = $('#ballotForm').serialize();
-      console.log(form); // Para depuração
-
-      if (form.search("&") < 0 || form == '') { // Sua lógica original de validação
+      if (form.search("&") < 0 || form == '') {
         toastr.error('Você deve votar em pelo menos um candidato', "Erro de Pré-visualização");
       } else {
         $.ajax({
@@ -426,12 +592,12 @@
           success: function(response) {
             if (response.error) {
               let errmsg = '';
-              if (Array.isArray(response.message)) { // Verifica se a mensagem é um array
+              if (Array.isArray(response.message)) {
                 response.message.forEach(msg => {
                   errmsg += msg + '<br>';
                 });
               } else {
-                errmsg = response.message; // Se for uma string simples
+                errmsg = response.message;
               }
               toastr.error(errmsg, "Erro de Pré-visualização");
             } else {
@@ -447,111 +613,80 @@
       }
     });
 
-    // ******************************************************
-    // LÓGICA DO TEMPORIZADOR E DESATIVAÇÃO DA VOTAÇÃO
-    // ******************************************************
-    // Obtenha a data/hora de início e fim da eleição do contexto Django
-    // Certifique-se de que `election_setting` é passado para este template via view.
-    const electionStartTimeStr = "{{ election_setting.start_time|date:'Y-m-d\TH:i:s' }}";
-    const electionEndTimeStr = "{{ election_setting.end_time|date:'Y-m-d\TH:i:s' }}";
-    const isElectionActiveInitial = {{ election_setting.is_active|yesno:"true,false" }}; // Status inicial
-
-    const electionStartTime = new Date(electionStartTimeStr);
-    const electionEndTime = new Date(electionEndTimeStr);
-    const ballotCountdownTimerDiv = $('#ballot-countdown-timer');
+    // Voting disable/enable logic
     const ballotForm = $('#ballotForm');
     const submitButton = ballotForm.find('button[type="submit"]');
     const previewButton = $('#preview');
 
     function disableVoting() {
-        // Desabilita todos os inputs de rádio/checkbox e botões
-        ballotForm.find('input[type="radio"], input[type="checkbox"]').each(function() {
-            $(this).iCheck('disable'); // Desabilita iCheck
-            $(this).prop('disabled', true); // Desabilita o input nativo também
-        });
-        submitButton.prop('disabled', true).text('Votação Encerrada');
-        previewButton.prop('disabled', true);
-        ballotForm.addClass('voting-disabled'); // Adiciona classe para estilos CSS de desabilitação
+      ballotForm.find('input[type="radio"], input[type="checkbox"]').each(function() {
+        $(this).iCheck('disable');
+        $(this).prop('disabled', true);
+      });
+      submitButton.prop('disabled', true).text('Votação Encerrada');
+      previewButton.prop('disabled', true);
+      ballotForm.addClass('voting-disabled');
     }
 
     function enableVoting() {
-        // Habilita todos os inputs de rádio/checkbox e botões
-        ballotForm.find('input[type="radio"], input[type="checkbox"]').each(function() {
-            $(this).iCheck('enable'); // Habilita iCheck
-            $(this).prop('disabled', false); // Habilita o input nativo
-        });
-        submitButton.prop('disabled', false).text('Submeter');
-        previewButton.prop('disabled', false);
-        ballotForm.removeClass('voting-disabled');
+      ballotForm.find('input[type="radio"], input[type="checkbox"]').each(function() {
+        $(this).iCheck('enable');
+        $(this).prop('disabled', false);
+      });
+      submitButton.prop('disabled', false).text('Submeter');
+      previewButton.prop('disabled', false);
+      ballotForm.removeClass('voting-disabled');
     }
 
-    function updateBallotCountdown() {
-        const now = new Date();
-        
-        // Verifica se a eleição está ativada no admin, ou se datas são válidas
-        if (!isElectionActiveInitial || isNaN(electionStartTime) || isNaN(electionEndTime) || electionStartTimeStr === "" || electionEndTimeStr === "") {
-            ballotCountdownTimerDiv.text("A eleição não está configurada ou ativa.");
-            ballotCountdownTimerDiv.removeClass('election-active election-ended election-not-started');
-            disableVoting(); // Sempre desabilita se não estiver configurada ou ativa
-            return;
-        }
+    const isElectionCurrentlyActive = {{ election_setting.is_active|yesno:"true,false" }};
+    const electionEndTimeStr = "{{ election_setting.end_time|date:'Y-m-d\TH:i:s' }}";
+    const electionEndTime = new Date(electionEndTimeStr);
+    const now = new Date();
 
-        if (now < electionStartTime) {
-            // Eleição ainda não começou
-            const timeToStart = electionStartTime - now;
-            const secondsToStart = Math.floor((timeToStart / 1000) % 60);
-            const minutesToStart = Math.floor((timeToStart / 1000 / 60) % 60);
-            const hoursToStart = Math.floor((timeToStart / (1000 * 60 * 60)) % 24);
-            const daysToStart = Math.floor(timeToStart / (1000 * 60 * 60 * 24));
-
-            let startCountdownText = "Votação inicia em: ";
-            if (daysToStart > 0) {
-                startCountdownText += daysToStart + (daysToStart === 1 ? " dia, " : " dias, ");
-            }
-            startCountdownText += 
-                (hoursToStart < 10 ? "0" : "") + hoursToStart + ":" +
-                (minutesToStart < 10 ? "0" : "") + minutesToStart + ":" +
-                (secondsToStart < 10 ? "0" : "") + secondsToStart;
-
-            ballotCountdownTimerDiv.text(startCountdownText);
-            ballotCountdownTimerDiv.removeClass('election-active election-ended').addClass('election-not-started');
-            disableVoting(); // Desabilita enquanto não começou
-
-        } else if (now > electionEndTime) {
-            // Eleição terminou
-            ballotCountdownTimerDiv.text("A VOTAÇÃO TERMINOU!");
-            ballotCountdownTimerDiv.removeClass('election-active election-not-started').addClass('election-ended');
-            disableVoting(); // Desabilita quando termina
-            clearInterval(ballotCountdownInterval); // Para o contador
-        } else {
-            // Eleição em andamento
-            ballotCountdownTimerDiv.addClass('election-active').removeClass('election-ended election-not-started');
-            enableVoting(); // Habilita enquanto em andamento
-
-            const timeRemaining = electionEndTime - now;
-            const seconds = Math.floor((timeRemaining / 1000) % 60);
-            const minutes = Math.floor((timeRemaining / 1000 / 60) % 60);
-            const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-
-            let countdownText = "";
-            if (days > 0) {
-                countdownText += days + (days === 1 ? " dia, " : " dias, ");
-            }
-            countdownText += 
-                (hours < 10 ? "0" : "") + hours + ":" +
-                (minutes < 10 ? "0" : "") + minutes + ":" +
-                (seconds < 10 ? "0" : "") + seconds;
-
-            ballotCountdownTimerDiv.text("TEMPO RESTANTE: " + countdownText);
-        }
+    if (!isElectionCurrentlyActive || isNaN(electionEndTime) || now > electionEndTime) {
+      disableVoting();
+    } else {
+      enableVoting();
     }
 
-    // Atualiza a cada segundo
-    const ballotCountdownInterval = setInterval(updateBallotCountdown, 1000);
+    // Dynamic font size adjustment for candidate names
+    function adjustCandidateNameFont() {
+      $('.cname').each(function() {
+        const $name = $(this);
+        const containerWidth = $name.closest('.box').width() - 40; // Account for padding
+        let fontSize = parseFloat($name.css('font-size')); // Current font size
+        const maxFontSize = window.innerWidth <= 480 ? 20 : window.innerWidth <= 767 ? 22 : 24; // Aumentado
+        const minFontSize = window.innerWidth <= 480 ? 12 : 14; // Aumentado
 
-    // Chamada inicial para evitar atraso de 1 segundo
-    updateBallotCountdown();
+        // Create a hidden span to measure text width
+        const $measure = $('<span>').text($name.text()).css({
+          position: 'absolute',
+          visibility: 'hidden',
+          whiteSpace: 'normal',
+          fontSize: fontSize + 'px',
+          fontWeight: $name.css('font-weight'),
+          fontFamily: $name.css('font-family'),
+          lineHeight: $name.css('line-height'),
+          width: containerWidth + 'px'
+        }).appendTo('body');
+
+        while ($measure.height() > 48 && fontSize > minFontSize) {
+          fontSize -= 0.5;
+          $measure.css('font-size', fontSize + 'px');
+        }
+
+        if (fontSize > maxFontSize) {
+          fontSize = maxFontSize;
+        }
+
+        $name.css('font-size', fontSize + 'px');
+        $measure.remove();
+      });
+    }
+
+    // Run on load and window resize
+    adjustCandidateNameFont();
+    $(window).resize(adjustCandidateNameFont);
   });
 </script>
 {% endblock custom_js %}
@@ -562,9 +697,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title"><b><span class="candidate"></b></h4>
+        <h4 class="modal-title"><b><span class="candidate"></span></b></h4>
       </div>
       <div class="modal-body">
         <p id="plat_view"></p>
@@ -581,7 +716,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title">Pré-visualização do Voto</h4>
       </div>

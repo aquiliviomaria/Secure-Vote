@@ -217,9 +217,9 @@ def updateVoter(request):
         voter = VoterForm(request.POST or None, instance=instance)
         user.save()
         voter.save()
-        messages.success(request, "Biografia do eleitor atualizada com sucesso!")
+        messages.success(request, "Biografia do eleitor actualizada com sucesso!")
     except Exception as e:
-        messages.error(request, f"Erro ao atualizar o eleitor: {e}")
+        messages.error(request, f"Erro ao actualizar o eleitor: {e}")
     return redirect(reverse('adminViewVoters'))
 
 
@@ -261,7 +261,7 @@ def updatePosition(request):
         instance = Position.objects.get(id=request.POST.get('id'))
         pos = PositionForm(request.POST or None, instance=instance)
         pos.save()
-        messages.success(request, "A posição foi atualizada com sucesso!")
+        messages.success(request, "A posição foi actualizada com sucesso!")
     except Exception as e:
         messages.error(request, f"Erro ao atualizar a posição: {e}")
     return redirect(reverse('viewPositions'))
@@ -306,7 +306,7 @@ def updateCandidate(request):
                              request.FILES or None, instance=candidate)
         if form.is_valid():
             form.save()
-            messages.success(request, "Dados do Candidato atualizados com sucesso!")
+            messages.success(request, "Dados do Candidato actualizados com sucesso!")
         else:
             messages.error(request, "O formulário contém erros. Por favor, corrija-os.")
     except Exception as e:
@@ -400,7 +400,7 @@ def ballot_title(request):
 
             # Lógica para não encurtar o tempo
             if current_end_time and new_end_time and new_end_time < current_end_time:
-                messages.error(request, "Não é possível encurtar o tempo de votação. A data/hora final deve ser maior ou igual à atual.")
+                messages.error(request, "Não é possível encurtar o tempo de votação. A data/hora final deve ser maior ou igual à actual.")
                 return redirect(reverse('adminDashboard')) # Redireciona para a dashboard com a mensagem
             
             form.save()

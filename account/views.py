@@ -2,10 +2,10 @@
 from django.shortcuts import render, redirect, reverse
 from .email_backend import EmailBackend
 from django.contrib import messages
-from .forms import CustomUserForm # Certifique-se de que este é o CustomUserForm atualizado
-from voting.forms import VoterForm # Importe VoterForm se ele for usado no registro
-from django.contrib.auth import login, logout, update_session_auth_hash # Importe update_session_auth_hash
-from .models import CustomUser # Importe seu CustomUser model
+from .forms import CustomUserForm 
+from voting.forms import VoterForm 
+from django.contrib.auth import login, logout, update_session_auth_hash 
+from .models import CustomUser
 from django.contrib.auth.decorators import login_required 
 from django.conf import settings
 import os
@@ -56,6 +56,14 @@ def account_register(request):
                 'form2': voterForm
             }
             return render(request, "voting/reg.html", context)
+        
+        if len(password_input) < 8:
+                    messages.error(request, "A senha deve ter pelo menos 8 caracteres.")
+                    context = {
+                        'form1': userForm,
+                        'form2': voterForm
+                    }
+                    return render(request, "voting/reg.html", context)
 
         if password_input != confirm_password_input:
             messages.error(request, "A senha e a confirmação de senha não coincidem.")
@@ -63,6 +71,7 @@ def account_register(request):
                 'form1': userForm,
                 'form2': voterForm
             }
+        
             return render(request, "voting/reg.html", context)
         # =======================================
 
