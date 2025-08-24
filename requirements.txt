@@ -11,3 +11,4 @@ social-auth-app-django
 social-auth-core
 python-dateutil
 requests
+whitenoise-6.9.0
