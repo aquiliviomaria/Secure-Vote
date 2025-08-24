@@ -40,55 +40,62 @@ def account_login(request):
     return render(request, "voting/login.html", context)
 
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 def account_register(request):
     if request.method == 'POST':
-        userForm = CustomUserForm(request.POST, request.FILES) # Inclua FILES para registro de foto (se aplicável)
+        logger.info("POST request received for account_register")
+        logger.info(f"Request POST data: {request.POST}")
+        logger.info(f"Request FILES data: {request.FILES}")
+
+        # Inicialize o formulário com os dados do POST e FILES
+        userForm = CustomUserForm(request.POST, request.FILES)
         voterForm = VoterForm(request.POST)
 
-        password_input = request.POST.get('password') 
-        confirm_password_input = request.POST.get('confirm_password')
+        password_input = request.POST.get('password')
+        confirm_password_input = request.POST.get('password_confirm')
 
-        # === Validação de Senha para Registro ===
+        logger.info(f"Password input: {password_input}, Confirm password input: {confirm_password_input}")
+
+        # Validação manual de senha
         if not password_input:
+            logger.info("Password is empty, showing error")
             messages.error(request, "A senha é obrigatória para o registro.")
-            context = {
-                'form1': userForm,
-                'form2': voterForm
-            }
+            context = {'form1': userForm, 'form2': voterForm}
             return render(request, "voting/reg.html", context)
         
         if len(password_input) < 8:
-                    messages.error(request, "A senha deve ter pelo menos 8 caracteres.")
-                    context = {
-                        'form1': userForm,
-                        'form2': voterForm
-                    }
-                    return render(request, "voting/reg.html", context)
-
-        if password_input != confirm_password_input:
-            messages.error(request, "A senha e a confirmação de senha não coincidem.")
-            context = {
-                'form1': userForm,
-                'form2': voterForm
-            }
-        
+            logger.info("Password length less than 8, showing error")
+            messages.error(request, "A senha deve ter pelo menos 8 caracteres.")
+            context = {'form1': userForm, 'form2': voterForm}
             return render(request, "voting/reg.html", context)
-        # =======================================
+        
+        if password_input != confirm_password_input:
+            logger.info("Passwords do not match, showing error")
+            messages.error(request, "A senha e a confirmação de senha não coincidem.")
+            context = {'form1': userForm, 'form2': voterForm}
+            return render(request, "voting/reg.html", context)
 
+        # Forçar os campos de senha no formulário para evitar erros de validação
         if userForm.is_valid() and voterForm.is_valid():
+            logger.info("Forms are valid, proceeding to save")
             user = userForm.save(commit=False)
             voter = voterForm.save(commit=False)
             
-            # Define e hasheia a senha para o novo usuário
-            user.set_password(password_input) 
-            
+            # Use a senha validada manualmente
+            user.set_password(password_input)
             voter.admin = user
-            user.save() # Salva o CustomUser
-            voter.save() # Salva o Voter que tem a FK para o CustomUser
-            messages.success(request, "Conta criada com sucesso! Você já pode fazer login.") 
+            user.save()
+            voter.save()
+            messages.success(request, "Conta criada com sucesso! Você já pode fazer login.")
             return redirect(reverse('account_login'))
         else:
-            # Se a validação dos formulários falhar (exceto senha que tratamos acima)
+            logger.info("Forms are invalid")
+            logger.info(f"UserForm errors: {userForm.errors}")
+            logger.info(f"VoterForm errors: {voterForm.errors}")
+            # Exiba erros de validação dos formulários
             for field, errors in userForm.errors.items():
                 for error in errors:
                     messages.error(request, f"Erro no campo {field.replace('_', ' ').capitalize()}: {error}")
@@ -96,18 +103,13 @@ def account_register(request):
                 for error in errors:
                     messages.error(request, f"Erro no campo {field.replace('_', ' ').capitalize()}: {error}")
             
-            context = {
-                'form1': userForm,
-                'form2': voterForm
-            }
+            context = {'form1': userForm, 'form2': voterForm}
             return render(request, "voting/reg.html", context)
-    else: # request.method == 'GET'
-        userForm = CustomUserForm() 
-        voterForm = VoterForm()     
-        context = {
-            'form1': userForm,
-            'form2': voterForm
-        }
+    else:
+        logger.info("GET request received for account_register")
+        userForm = CustomUserForm()
+        voterForm = VoterForm()
+        context = {'form1': userForm, 'form2': voterForm}
         return render(request, "voting/reg.html", context)
 
 
@@ -123,63 +125,56 @@ def account_logout(request):
     return redirect(reverse("account_login"))
 
 
-@login_required 
+@login_required
 def profile_update(request):
     user = request.user
 
     if request.method == 'POST':
-        # Instancie o formulário APENAS com os campos de profile_image, first_name, last_name, email.
-        # A senha será tratada fora do ModelForm.
+        # Inicialize o formulário apenas com os campos que devem ser sempre atualizados (exclua os campos de senha)
         form = CustomUserForm(request.POST, request.FILES, instance=user)
 
-        # Obtenha os campos de senha diretamente do POST, pois eles não estão no CustomUserForm
+        # Obtenha os campos de senha diretamente do POST
         current_password_input = request.POST.get('password')
         new_password_input = request.POST.get('new_password')
         confirm_password_input = request.POST.get('confirm_password')
 
-        password_changed = False # Flag para saber se a senha foi alterada
+        password_changed = False
 
-        # === Validação e Lógica da Senha para Atualização ===
-        if new_password_input: # Se uma nova senha foi fornecida, significa que o usuário quer alterar
+        # Processe a lógica de senha apenas se uma nova senha for fornecida
+        if new_password_input:
             if new_password_input != confirm_password_input:
                 messages.error(request, 'A nova senha e a confirmação não coincidem.')
                 return redirect(request.META.get('HTTP_REFERER', reverse('adminDashboard')))
             
-            # Verifica a senha atual antes de permitir a alteração
             if not user.check_password(current_password_input):
                 messages.error(request, 'A senha atual está incorreta.')
                 return redirect(request.META.get('HTTP_REFERER', reverse('adminDashboard')))
             
-            # Se as validações passarem, define a nova senha para o usuário
-            user.set_password(new_password_input) # Isso hasheia a senha
-            password_changed = True # Marca que a senha foi alterada
+            user.set_password(new_password_input)
+            password_changed = True
+        else:
+            # Se nenhuma nova senha for fornecida, remova os campos de senha da validação
+            form.fields.pop('password', None)
+            form.fields.pop('password_confirm', None)
 
-        # === Validação e Lógica dos Outros Campos (first_name, last_name, email, profile_image) ===
+        # Valide e salve o formulário (apenas campos não relacionados à senha se não houver alteração de senha)
         if form.is_valid():
             try:
-                # Salva o formulário para os campos que ele gerencia (nome, email, foto de perfil)
-                form.save() 
-                
-                # Se a senha foi alterada, salve o usuário novamente (se já não foi salvo por set_password)
-                # e atualize o hash da sessão.
+                form.save()
                 if password_changed:
-                    user.save() # Salva a nova senha hasheada
-                    # IMPORTANTE: Isso atualiza o hash de autenticação da sessão.
-                    # É VITAL para que o usuário não seja deslogado imediatamente.
-                    update_session_auth_hash(request, user) 
-                
+                    user.save()
+                    update_session_auth_hash(request, user)
                 messages.success(request, 'Perfil atualizado com sucesso!')
             except Exception as e:
                 logger.error(f"Erro ao salvar perfil do usuário {user.email}: {e}")
                 messages.error(request, f'Erro ao atualizar o perfil: {e}')
         else:
-            # Se o formulário (campos de nome, email, foto) não for válido
             logger.error(f"Erros de validação do formulário de perfil para {user.email}: {form.errors}")
             for field, errors in form.errors.items():
                 field_name = field.replace('_', ' ').capitalize()
                 for error in errors:
                     messages.error(request, f"{field_name}: {error}")
-        
+
         return redirect(request.META.get('HTTP_REFERER', reverse('adminDashboard')))
 
     return redirect(request.META.get('HTTP_REFERER', reverse('adminDashboard')))

@@ -1,18 +1,9 @@
-{% extends "voting/base.html" %} 
-{% load static %} 
+{% extends "voting/base.html" %}
+{% load static %}
 {% block content %}
-<link
-  href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.19/dist/tailwind.min.css"
-  rel="stylesheet"
-/>
-<link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-/>
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  rel="stylesheet"
-/>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 
 <style>
   /* Variáveis CSS para consistência com login.html */
@@ -24,14 +15,8 @@
 
   /* Animações */
   @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
   }
 
   /* Container Principal do Formulário */
@@ -102,19 +87,19 @@
   .form-group.has-feedback input[type="email"],
   .form-group.has-feedback input[type="password"] {
     width: 100%;
-    padding: 14px 16px 14px 40px; /* Aumenta o padding esquerdo */
+    padding: 14px 16px 14px 40px;
     background: #fff;
     border: 1px solid #d1d5db;
     border-radius: 8px;
     color: #1f2a44;
-    font-size: 1.05rem; /* Ajustado para melhor legibilidade */
+    font-size: 1.05rem;
     transition: all 0.3s ease;
   }
 
   /* Estilo específico para input type="file" */
   .form-group.has-feedback input[type="file"] {
     width: 100%;
-    padding: 12px 15px; /* Padding padrão, sem ícone interno */
+    padding: 12px 15px;
     background: #fff;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -135,12 +120,12 @@
   /* Estilo do ícone dentro do input de texto/email/password */
   .form-group.has-feedback .fa {
     position: absolute;
-    left: 15px; /* Posição do ícone */
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #6b7280;
-    font-size: 1em; /* Tamanho do ícone */
-    pointer-events: none; /* Garante que o ícone não atrapalhe o clique no input */
+    font-size: 1em;
+    pointer-events: none;
   }
 
   /* Foco visível */
@@ -191,7 +176,7 @@
     padding: 14px;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 1.1rem; /* Ajustado para consistência com o botão primário */
+    font-size: 1.1rem;
     transition: all 0.3s ease;
     flex: 1;
     display: flex;
@@ -222,7 +207,7 @@
     align-items: center;
     gap: 8px;
     color: var(--success-green);
-    font-size: 0.9em; /* Ajustado para consistência */
+    font-size: 0.9em;
     font-weight: 500;
     padding: 10px 20px;
     background: rgba(40, 167, 69, 0.15);
@@ -241,67 +226,24 @@
   }
 
   @keyframes pulse-green {
-    0% {
-      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.3);
-    }
-    70% {
-      box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
-      opacity: 0.7;
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-      opacity: 1;
-    }
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.3); }
+    70% { box-shadow: 0 0 0 8px rgba(40, 167, 69, 0); opacity: 0.7; }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); opacity: 1; }
   }
 
   /* Responsividade */
   @media (max-width: 576px) {
-    .auth-container {
-      max-width: 90%;
-      padding: 1.5rem;
-    }
-
-    .secure-header h1 {
-      font-size: 1.8rem;
-    }
-
-    .secure-header .login-box-msg {
-      font-size: 1rem;
-    }
-
-    .form-group.has-feedback label,
-    .form-group.has-feedback input,
-    .text-danger {
-      font-size: 0.95rem;
-    }
-
-    .auth-actions .btn-primary,
-    .auth-actions .btn-flat {
-      font-size: 1rem;
-      padding: 12px;
-    }
-
-    .secure-connection-footer {
-      bottom: 15px;
-      font-size: 0.9rem;
-      padding: 8px 15px;
-    }
+    .auth-container { max-width: 90%; padding: 1.5rem; }
+    .secure-header h1 { font-size: 1.8rem; }
+    .secure-header .login-box-msg { font-size: 1rem; }
+    .form-group.has-feedback label, .form-group.has-feedback input, .text-danger { font-size: 0.95rem; }
+    .auth-actions .btn-primary, .auth-actions .btn-flat { font-size: 1rem; padding: 12px; }
+    .secure-connection-footer { bottom: 15px; font-size: 0.9rem; padding: 8px 15px; }
   }
 
   /* Centralização da página */
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    background-color: #f4f6f9;
-  }
-
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
+  html, body { height: 100%; margin: 0; background-color: #f4f6f9; }
+  body { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
 </style>
 
 <div class="auth-container">
@@ -319,12 +261,6 @@
       {# Loop para o CustomUserForm (form1) #}
       {% for field in form1 %}
       <div class="form-group has-feedback">
-        {# Exibe erros específicos do campo #}
-        {% if field.errors %}
-        <span class="text-danger">{{ field.errors }}</span>
-        {% endif %}
-
-        {# Renderiza o campo com placeholder e ícone, conforme o nome do campo #}
         {% if field.name == 'first_name' %}
         <input type="text" class="form-control" name="{{ field.name }}" placeholder="Primeiro Nome" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
         <span class="fa fa-user"></span>
@@ -335,26 +271,23 @@
         <input type="email" class="form-control" name="{{ field.name }}" placeholder="E-mail" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
         <span class="fa fa-envelope"></span>
         {% elif field.name == 'profile_image' %}
-        {# Para campos de arquivo, não usamos placeholder nem ícone interno da mesma forma #}
-        {# Você pode adicionar um label para "Foto de Perfil" se desejar #}
         <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; color: #4a4a4a; font-size: 0.95em;">Foto de Perfil:</label>
         {{ field }}
-        {# Opcional: Adicionar um ícone ao lado do campo de arquivo, se o design permitir #}
-        {# <span class="fa fa-camera" style="position: relative; top: -2px; left: 5px;"></span> #}
+        {% elif field.name == 'password' %}
+        <input type="password" class="form-control" name="{{ field.name }}" placeholder="Senha" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-lock"></span>
+        {% elif field.name == 'password_confirm' %}
+        <input type="password" class="form-control" name="{{ field.name }}" placeholder="Confirmar Senha" {% if field.field.required %}required{% endif %} />
+        <span class="fa fa-lock"></span>
+        {% endif %}
+
+        {# Exibe erros abaixo do campo #}
+        {% if field.errors %}
+        <span class="text-danger">{{ field.errors }}</span>
         {% endif %}
       </div>
       {% endfor %}
 
-      {# Adiciona os campos de senha manualmente para ter controle total (como o login.html) #}
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="password" placeholder="Senha" required aria-label="Senha" />
-        <span class="fa fa-lock"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="confirm_password" placeholder="Confirmar Senha" required aria-label="Confirmar Senha" />
-        <span class="fa fa-lock"></span>
-      </div>
-      
       {# Exibir mensagens de erro globais do formulário (se houver) #}
       {% if form1.non_field_errors %}
       <div class="text-danger">
@@ -374,13 +307,6 @@
       {# Loop para o VoterForm (form2) #}
       {% for field in form2 %}
       <div class="form-group has-feedback">
-        {% if field.errors %}
-        <span class="text-danger">{{ field.errors }}</span>
-        {% endif %}
-        
-        {# Renderiza o campo com placeholder e ícone, conforme o nome do campo #}
-        {# Você precisará ajustar os tipos de input e placeholders conforme os campos do VoterForm #}
-        {# Exemplo para campos comuns do VoterForm. Adapte conforme seu VoterForm #}
         {% if field.name == 'contact' %}
         <input type="text" class="form-control" name="{{ field.name }}" placeholder="Contacto" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
         <span class="fa fa-phone"></span>
@@ -388,14 +314,17 @@
         <input type="text" class="form-control" name="{{ field.name }}" placeholder="Endereço" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
         <span class="fa fa-map-marker-alt"></span>
         {% elif field.name == 'gender' %}
-        {# Para select/dropdowns, o placeholder não se aplica, e o ícone pode ser diferente #}
         <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; color: #4a4a4a; font-size: 0.95em;">{{ field.label }}:</label>
-        {{ field }} {# Renderiza o campo select normalmente #}
-        <span class="fa fa-venus-mars"></span> {# Exemplo de ícone para gênero #}
+        {{ field }}
+        <span class="fa fa-venus-mars"></span>
         {% else %}
-        {# Campo genérico se não corresponder aos específicos acima #}
         <input type="text" class="form-control" name="{{ field.name }}" placeholder="{{ field.label }}" value="{{ field.value|default_if_none:'' }}" {% if field.field.required %}required{% endif %} />
-        <span class="fa fa-info-circle"></span> {# Ícone genérico #}
+        <span class="fa fa-info-circle"></span>
+        {% endif %}
+
+        {# Exibe erros abaixo do campo #}
+        {% if field.errors %}
+        <span class="text-danger">{{ field.errors }}</span>
         {% endif %}
       </div>
       {% endfor %}
@@ -413,13 +342,11 @@
 </div>
 
 <script>
-  // Centralização dinâmica
   function centerAuthContainer() {
     const authContainer = document.querySelector(".auth-container");
     if (authContainer) {
       const windowHeight = window.innerHeight;
       const containerHeight = authContainer.offsetHeight;
-      // Calculate top offset to center vertically
       const offset = (windowHeight - containerHeight) / 2;
       authContainer.style.position = "absolute";
       authContainer.style.top = `${offset}px`;
