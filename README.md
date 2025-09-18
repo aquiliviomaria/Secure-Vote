@@ -113,13 +113,18 @@ Aqui estão algumas imagens do sistema em funcionamento:
 
 *Painel Administrativo*
 
+
 *Listagem e Gestão de Eleições*
+
 
 *Detalhes da Eleição e Temporizador*
 
+
 *Interface de Votação para o Eleitor*
 
+
 *Tela de Login e Registo de Usuários*
+
 
 -----
 

@@ -1,11 +1,4 @@
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.env
+fly.toml
+.git/
 *.sqlite3
-media/
-static/
+venv

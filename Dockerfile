@@ -1,44 +1,40 @@
-# Use Python 3.11-slim for Django 5.1.4 compatibility
-FROM python:3.11-slim
+ARG PYTHON_VERSION=3.13-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM python:${PYTHON_VERSION}
 
-# Set work directory
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Install system dependencies required for some Python packages
+# install psycopg2 dependencies.
 RUN apt-get update && apt-get install -y \
-    gcc \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libgdk-pixbuf2.0-dev \
+    build-essential \
+    libcairo2 \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libgdk-pixbuf-xlib-2.0-0 \
     libffi-dev \
-    shared-mime-info \
+    libgobject-2.0-0 \
+    libxml2 \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip
-RUN pip install --upgrade pip
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+RUN mkdir -p /code
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+WORKDIR /code
 
-# Copy project files
-COPY . .
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+COPY . /code
 
-# Collect static files
+ENV SECRET_KEY "z2TZ8xPNvGo2IillVDGZW1d33XPywqbHQ3oMYNkMbZ2VQ9623Y"
 RUN python manage.py collectstatic --noinput
 
-# Create non-root user for security
-RUN useradd -u 1000 appuser && chown -R appuser:appuser /app
-USER appuser
-
-# Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "sv_config.wsgi:application"]
+CMD ["gunicorn","--bind",":8000","--workers","2","sv_config.wsgi"]

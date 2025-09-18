@@ -1,8 +1,5 @@
-{% extends "voting/base.html" %}
-{% load static %}
-{% block content %}
+{% extends "voting/base.html" %} {% load static %} {% block content %}
 <style>
-  /* Seus estilos CSS, como você forneceu */
   :root {
     --card-bg: #ffffff;
     --primary-blue: #005a8d;
@@ -89,8 +86,8 @@
     color: #6b7280;
     font-size: 1em;
   }
-  .securevote-form-group .form-control:focus,
   .securevote-button-group .btn:focus,
+  .securevote-form-group .form-control:focus,
   .forgot-password-link:focus {
     outline: 2px solid var(--primary-blue);
     outline-offset: 2px;
@@ -217,17 +214,15 @@
       <img src="{% static 'images/logo_sv.png' %}" alt="Logotipo SecureVote" />
     </div>
     <h2>Bem-vindo(a) de volta!</h2>
-    <p class="login-box-msg">A urna, no seu bolso... a sua voz, aqui é validada!</p>
+    <p class="login-box-msg">
+      A urna, no seu bolso... a sua voz, aqui é validada!
+    </p>
 
     <form action="{% url 'account_login' %}" method="POST">
-      {% csrf_token %}
-      {# Mensagens de erro globais do formulário (não de campo específico) #}
-      {% if form.non_field_errors %}
-          <div class="alert alert-danger" role="alert">
-              {% for error in form.non_field_errors %}
-                  {{ error }}
-              {% endfor %}
-          </div>
+      {% csrf_token %} {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+      </div>
       {% endif %}
 
       <div class="form-group has-feedback securevote-form-group">
@@ -240,9 +235,11 @@
           aria-label="E-mail"
         />
         <span class="fa fa-envelope form-control-feedback"></span>
-        {# Acessar erros do campo 'email' se houver #}
-        {% if form.email.errors %}<div class="text-danger">{{ form.email.errors }}</div>{% endif %}
+        {% if form.email.errors %}
+        <div class="text-danger">{{ form.email.errors }}</div>
+        {% endif %}
       </div>
+
       <div class="form-group has-feedback securevote-form-group">
         <input
           type="password"
@@ -253,11 +250,14 @@
           aria-label="Senha"
         />
         <span class="fa fa-lock form-control-feedback"></span>
-        {# Acessar erros do campo 'password' se houver #}
-        {% if form.password.errors %}<div class="text-danger">{{ form.password.errors }}</div>{% endif %}
+        {% if form.password.errors %}
+        <div class="text-danger">{{ form.password.errors }}</div>
+        {% endif %}
       </div>
 
-      <a href="{% url 'password_reset' %}" class="forgot-password-link">Esqueceu sua senha?</a>
+      <a href="{% url 'password_reset' %}" class="forgot-password-link"
+        >Esqueceu sua senha?</a
+      >
 
       <div class="row securevote-button-group">
         <div class="col-xs-12">
@@ -278,8 +278,4 @@
   </div>
 </div>
 
-<div class="secure-connection-footer" role="alert">
-  <span class="dot"></span>
-  <span>Conexão segura activada</span>
-</div>
 {% endblock %}

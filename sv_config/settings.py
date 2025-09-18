@@ -1,5 +1,9 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Carregar variáveis do .env
+load_dotenv()
 
 # ----------------------------
 # Build paths
@@ -13,13 +17,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'temp-key-for-local-testing-change-me-in-pr
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Hosts
-if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-    CSRF_TRUSTED_ORIGINS = []
-else:
-    # Em produção, leia os hosts permitidos do .env
-    ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '').split(',') if host.strip()]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 
 # SSL / HTTPS settings
 if not DEBUG:
@@ -81,14 +80,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sv_config.wsgi.application'
 
 # ----------------------------
-# Database (SQLite)
+# Database
 # ----------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/var/data/db_data/db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite local para desenvolvimento
     }
 }
+
+# 👉 Alternativa para produção (usar pasta persistente no servidor)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': '/var/data/db_data/db.sqlite3',
+#     }
+# }
 
 # ----------------------------
 # Password validation
@@ -113,13 +120,15 @@ USE_TZ = True
 # Static and Media files
 # ----------------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # destino para collectstatic
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # pastas dev
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# If using S3 / Deta Drive in production:
+# ----------------------------
+# Configuração S3/Deta (produção opcional)
+# ----------------------------
 if not DEBUG and os.getenv('USE_S3', 'False') == 'True':
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -141,7 +150,7 @@ SEND_OTP = False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ----------------------------
-# Email (console for testing)
+# Email (console para teste)
 # ----------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@securevote.com'
