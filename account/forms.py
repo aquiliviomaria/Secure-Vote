@@ -94,4 +94,4 @@ class ElectionSettingForm(forms.ModelForm):
 
     class Meta:
         model = ElectionSetting
-        fields = ['title', 'start_time', 'end_time', 'is_active']
+        fields = ['title', 'start_time', 'end_time', 'is_active', 'show_votes']

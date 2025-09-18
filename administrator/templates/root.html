@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {# Inclui seu header.html aqui. Garanta que ele não define estilos de tema concorrentes. #}
+  
   {% include 'header.html' %} 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -119,17 +119,37 @@
     }
     .main-header .navbar .sidebar-toggle {
         color: var(--primary-blue) !important; 
+        font-size: 18px !important;
+        transition: color 0.3s ease !important;
+    }
+    .main-header .navbar .sidebar-toggle:hover {
+        color: #f8f9fa !important; 
+        background-color: rgba(0, 90, 141, 0.1) !important;
+        font-size: 18px !important;
     }
     .main-header .navbar .nav > li > a {
         color: var(--primary-blue) !important; 
     }
     .main-header .logo {
-        background-color: var(--primary-blue) !important; 
-        color: #fff !important; 
-        border-bottom: 1px solid var(--primary-blue) !important;
+        background-color: #ffffff !important; /* Fundo branco limpo */
+        color: var(--text-dark) !important; 
+        border-bottom: 1px solid #e5e7eb !important;
+        border-right: 1px solid #e5e7eb !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
     .main-header .logo:hover {
-        background-color: var(--dark-blue) !important; 
+        background-color: #f9fafb !important; /* Cinza muito claro no hover */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Sobrescrever skin azul do AdminLTE para o logo */
+    .skin-blue .main-header .logo {
+        background-color: #ffffff !important;
+        color: var(--text-dark) !important;
+        border-bottom: 1px solid #e5e7eb !important;
+    }
+    .skin-blue .main-header .logo:hover {
+        background-color: #f9fafb !important;
     }
 
     /* Estilos para o modal de configuração */
@@ -285,6 +305,34 @@
             margin-left: 0 !important; /* Remove margem em mobile */
             width: 100% !important; /* Ocupa toda a largura */
             padding-bottom: 20px !important; /* Reduz o padding para mobile */
+            margin-top: 10px !important; /* Reduz margem superior para mobile */
+            border-radius: 8px !important; /* Bordas mais suaves em mobile */
+        }
+
+        /* Ajustes para o header em mobile */
+        .main-header {
+            background: #ffffff !important;
+            border-bottom: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Logo com fundo branco limpo */
+        .logo {
+            background: #ffffff !important;
+            border-right: 1px solid #e5e7eb !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Sidebar toggle com melhor contraste */
+        .sidebar-toggle {
+            color: #374151 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .sidebar-toggle:hover {
+            color: var(--primary-blue) !important;
+            background-color: rgba(0, 119, 181, 0.08) !important;
+            transform: scale(1.05) !important;
         }
     }
 
@@ -372,17 +420,72 @@
     .instagram-icon:hover { color: #C13584 !important; }
 
     /* ******************************************* */
-    /* *** AJUSTES PARA A SIDEBAR (CORES SEM PRETO E ÍCONES) *** */
+    /* *** AJUSTES PARA A SIDEBAR - DESIGN LIMPO *** */
     /* ******************************************* */
     .main-sidebar {
-      background: var(--card-bg) !important; 
-      border-right: 1px solid var(--border-light) !important; 
-      box-shadow: 0 0 10px var(--shadow-light) !important; 
+      background: #ffffff !important; /* Fundo branco limpo */
+      border-right: 1px solid #e5e7eb !important; 
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important; 
+    }
+
+    /* Sobrescrever skin azul do AdminLTE */
+    .skin-blue .main-sidebar,
+    .skin-blue .left-side,
+    .skin-blue .wrapper {
+      background-color: #ffffff !important;
+    }
+
+    /* User panel com fundo branco */
+    .skin-blue .user-panel > .info,
+    .skin-blue .user-panel > .info > a {
+      color: var(--text-dark) !important;
+    }
+
+    /* Headers de seção do sidebar */
+    .skin-blue .sidebar-menu > li.header {
+      color: var(--primary-blue) !important;
+      background: transparent !important;
+    }
+
+    /* Links do sidebar */
+    .skin-blue .sidebar-menu > li > a {
+      color: var(--text-dark) !important;
+      border-left: 3px solid transparent !important;
+    }
+
+    .skin-blue .sidebar-menu > li:hover > a,
+    .skin-blue .sidebar-menu > li.active > a,
+    .skin-blue .sidebar-menu > li.menu-open > a {
+      color: #ffffff !important;
+      background-color: var(--primary-blue) !important;
     }
 
     .user-panel {
       padding: 20px;
       border-bottom: 1px solid var(--border-light) !important; 
+    }
+
+    /* Ajustes para o user-panel quando sidebar está colapsado */
+    body.sidebar-collapse .user-panel {
+      padding: 15px 10px !important;
+      text-align: center !important;
+    }
+
+    body.sidebar-collapse .user-panel .pull-left.image {
+      float: none !important;
+      display: block !important;
+      margin: 0 auto 10px auto !important;
+    }
+
+    body.sidebar-collapse .user-panel .pull-left.image img {
+      width: 50px !important;
+      height: 50px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+    }
+
+    body.sidebar-collapse .user-panel .pull-left.info {
+      display: none !important;
     }
 
     /* Nome do usuário na sidebar - SEM PRETO */
@@ -417,12 +520,14 @@
       padding: 10px 20px;
       display: block;
       transition: all 0.3s ease;
+      font-size: 14px !important;
     }
 
     .sidebar-menu li a:hover {
       background: var(--tertiary-blue) !important; 
-      color: var(--dark-blue) !important; 
-      transform: translateX(3px); 
+      color: var(--secondary-blue) !important; 
+      transform: none !important; 
+      font-size: 14px !important;
     }
     
     /* Ícones do menu (fa e glyphicon) - SEM PRETO e visibilidade ao minimizar */
@@ -434,11 +539,13 @@
       min-width: 20px; 
       text-align: center; 
       display: inline-block !important;
+      font-size: 16px !important;
     }
 
     .sidebar-menu li a:hover i.fa,
     .sidebar-menu li a:hover span.glyphicon {
-      color: var(--dark-blue) !important; 
+      color: var(--primary-blue) !important; 
+      font-size: 16px !important;
     }
 
     /* Regras para item de menu ativo */
@@ -455,14 +562,16 @@
     body.sidebar-collapse .sidebar-menu li a {
         padding-left: 15px !important;
         text-align: center !important;
+        font-size: 14px !important;
     }
 
     body.sidebar-collapse .sidebar-menu li a i.fa,
     body.sidebar-collapse .sidebar-menu li a span.glyphicon {
         margin-right: 0 !important;
         width: auto !important;
-        font-size: 1.5em !important;
+        font-size: 16px !important;
         line-height: 1.5;
+        color: var(--primary-blue) !important;
     }
     body.sidebar-collapse .sidebar-menu li a span:not(.glyphicon):not(.pull-right-container) {
         display: none !important;
@@ -575,6 +684,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="show_votes" class="col-sm-3 control-label">Mostrar Votos?</label>
+                    <div class="col-sm-9">
+                        <input type="checkbox" id="show_votes" name="show_votes" value="True"
+                               {% if election_setting.show_votes %}checked{% endif %}>
+                        <small class="help-block text-muted">Desmarque para ocultar o item "Votos" do menu</small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-12">
                         <p id="modal-countdown-timer" class="text-center" style="font-size: 1.5rem; font-weight: bold; margin-top: 20px;"></p>
                     </div>
@@ -636,7 +753,7 @@
   {% endblock custom_js %}
 
   <script>
-    // Ajuste para o nome "Secure Vote" e abreviação "SV"
+    
     document.addEventListener("DOMContentLoaded", function() {
       const logo = document.querySelector('.main-sidebar .logo .logo-lg');
       const logoMini = document.querySelector('.main-sidebar .logo .logo-mini');
@@ -737,7 +854,7 @@
         updateAdminCountdown();
     });
 
-    // JavaScript para ajustar o padding do content-wrapper, footer e sidebar push
+   
     $(function(){
         function getFooterHeight() {
             if ($(window).width() <= 767 && $('.main-footer').css('position') === 'relative') {

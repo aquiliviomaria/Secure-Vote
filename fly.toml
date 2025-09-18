@@ -12,16 +12,34 @@ console_command = '/code/manage.py shell'
 [deploy]
   release_command = 'python manage.py migrate --noinput'
 
+ 
+
 [env]
-  PORT = '8000'
+DATABASE_URL = "sqlite:////var/data/db_data/db.sqlite3"
 
 [http_service]
   internal_port = 8000
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+  min_machines_running = 1
+  processes = ["app"]
+  protocol = "tcp"
+
+
+  # PWA Headers
+  [http_service.headers]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Cache headers for PWA files
+    [http_service.headers.Cache-Control]
+      "/static/manifest.json" = "public, max-age=86400"
+      "/static/sw.js" = "public, max-age=0, must-revalidate"
+      "/static/images/icon-*.png" = "public, max-age=31536000"
+      "/static/offline.html" = "public, max-age=86400"
 
 [[vm]]
   memory = '1gb'
@@ -31,3 +49,9 @@ console_command = '/code/manage.py shell'
 [[statics]]
   guest_path = '/code/static'
   url_prefix = '/static/'
+
+[[mounts]]
+source = "data"
+destination = "/data"
+
+

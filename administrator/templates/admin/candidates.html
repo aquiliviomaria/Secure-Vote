@@ -484,8 +484,8 @@
           >
         </div>
         <div class="box-body">
-          <div class="table-responsive"> {# ADICIONADO O WRAPPER PARA RESPONSIVIDADE #}
-            <table id="example1" class="table table-bordered table-hover"> {# Adicionado table-hover #}
+          <div class="table-responsive"> 
+            <table id="example1" class="table table-bordered table-hover"> 
               <thead>
                 <tr>
                   <th>Nome Completo</th>
@@ -505,7 +505,7 @@
                     <img
                       src="/media/{{ candidate.photo }}"
                       alt="{{ candidate.fullname }}'s Avatar"
-                    /> {# Removido width/height/class para que o CSS controle #}
+                    /> 
                   </td>
                   <td>
                     <button
@@ -525,7 +525,7 @@
                 {% endfor %}
               </tbody>
             </table>
-          </div> {# FIM DO WRAPPER table-responsive #}
+          </div> 
         </div>
       </div>
     </div>
@@ -560,9 +560,9 @@
           {# Itera sobre os campos do formulário para renderizá-los dinamicamente #}
           {% for field in form1 %}
           <div class="form-group has-feedback">
-            <span class="text-danger">{{ field.errors }}</span> {# Exibe erros de validação #}
-            {{ field.label_tag }} {# Renderiza o label do campo #}
-            {{ field }} {# Renderiza o input do campo #}
+            <span class="text-danger">{{ field.errors }}</span> 
+            {{ field.label_tag }} 
+            {{ field }} 
           </div>
           {% endfor %}
           <div class="modal-footer">

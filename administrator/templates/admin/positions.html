@@ -479,14 +479,14 @@
         </div>
         <div class="box-body">
           <div class="table-responsive"> {# ADICIONADO O WRAPPER PARA RESPONSIVIDADE #}
-            <table id="example1" class="table table-bordered table-hover"> {# Adicionado table-hover #}
+            <table id="example1" class="table table-bordered table-hover"> 
               <thead>
                 <tr> {# Alterado para tr para consistência #}
                   <th>Nome</th>
                   <th>Votos Máximos</th>
                   <th>Prioridade</th>
                   <th>Acção</th>
-                </tr> {# Fechado tr #}
+                </tr> 
               </thead>
               <tbody>
                 {% for position in positions %}
@@ -512,7 +512,7 @@
                 {% endfor %}
               </tbody>
             </table>
-          </div> {# FIM DO WRAPPER table-responsive #}
+          </div> 
         </div>
       </div>
     </div>
@@ -546,9 +546,9 @@
           {# Itera sobre os campos do formulário para renderizá-los dinamicamente #}
           {% for field in form1 %}
           <div class="form-group has-feedback">
-            <span class="text-danger">{{ field.errors }}</span> {# Exibe erros de validação #}
-            {{ field.label_tag }} {# Renderiza o label do campo #}
-            {{ field }} {# Renderiza o input do campo #}
+            <span class="text-danger">{{ field.errors }}</span> 
+            {{ field.label_tag }}
+            {{ field }} 
           </div>
           {% endfor %}
           
@@ -593,13 +593,13 @@
           {% csrf_token %}
           <input type="hidden" class="id" name="id" />
           {# Campos para edição (serão preenchidos via JS) #}
-          <div class="form-group has-feedback"> {# Adicionado has-feedback para consistência #}
+          <div class="form-group has-feedback"> 
             <label for="name" class="control-label">Nome</label>
             <div> {# Wrapper para o input, mantido para simular a estrutura do Django form rendering #}
               <input type="text" class="form-control" id="name" name="name" />
             </div>
           </div>
-          <div class="form-group has-feedback"> {# Adicionado has-feedback para consistência #}
+          <div class="form-group has-feedback"> 
             <label for="max_vote" class="control-label"
               >Número Máximo de Votos</label
             >
@@ -612,7 +612,7 @@
               />
             </div>
           </div>
-          <div class="form-group has-feedback"> {# Adicionado para 'priority' #}
+          <div class="form-group has-feedback"> 
             <label for="priority" class="control-label">Prioridade</label>
             <div> {# Wrapper para o input #}
               <input type="text" class="form-control" id="priority" name="priority" />
@@ -648,7 +648,7 @@
         >
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title"><b>Confirmar Eliminação da Posição</b></h4> {# Título mais claro #}
+        <h4 class="modal-title"><b>Confirmar Eliminação da Posição</b></h4> 
       </div>
       <div class="modal-body">
         <form
@@ -659,8 +659,8 @@
           <input type="hidden" class="id" name="id" />
           {% csrf_token %}
           <div class="text-center">
-            <p>Você tem certeza que deseja eliminar a Posição:</p> {# Texto mais claro #}
-            <h2 class="bold name"></h2> {# Alterado para .name para exibir o nome da posição #}
+            <p>Você tem certeza que deseja eliminar a Posição:</p> 
+            <h2 class="bold name"></h2> 
           </div>
           <div class="modal-footer">
             <button
@@ -695,8 +695,8 @@
     $("#example1").DataTable({
       responsive: true,
       autoWidth: false,
-      'order': [], /* Adicionado para evitar ordenação padrão desnecessária ao carregar */
-      // Tradução completa para o português
+      'order': [], 
+     
       language: {
         "sEmptyTable": "Nenhum registro encontrado",
         "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
@@ -754,10 +754,10 @@
       dataType: "json",
       success: function (response) {
         $(".id").val(response.id);
-        $("#edit #name").val(response.name); // Especifique o ID para evitar conflitos
-        $("#edit #max_vote").val(response.max_vote); // Especifique o ID
-        $("#edit #priority").val(response.priority); // Preenche o campo de prioridade
-        $(".name").html(response.name); // Exibe o nome da posição no modal de exclusão (alterado de .fullname para .name)
+        $("#edit #name").val(response.name); 
+        $("#edit #max_vote").val(response.max_vote); 
+        $("#edit #priority").val(response.priority); 
+        $(".name").html(response.name); 
       },
       error: function(xhr, status, error) {
         console.error("Erro ao obter dados da posição:", error);

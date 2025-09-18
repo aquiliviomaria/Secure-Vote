@@ -71,6 +71,9 @@ class ElectionSetting(models.Model):
     
     # Adicionalmente, uma flag para ativar/desativar a eleição
     is_active = models.BooleanField(default=False)
+    
+    # Campo para controlar a visibilidade dos votos
+    show_votes = models.BooleanField(default=True, verbose_name="Mostrar Votos")
 
     class Meta:
         verbose_name = "Configuração Global da Eleição"

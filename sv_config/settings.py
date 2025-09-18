@@ -2,7 +2,9 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+# ----------------------------
 # Carregar variáveis do .env
+# ----------------------------
 load_dotenv()
 
 # ----------------------------
@@ -45,6 +47,9 @@ INSTALLED_APPS = [
     'administrator.apps.AdministratorConfig',
 ]
 
+# ----------------------------
+# Middleware
+# ----------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -59,10 +64,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'sv_config.urls'
 
+# ----------------------------
+# Templates
+# ----------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['voting/templates', 'administrator/templates'],
+        'DIRS': [BASE_DIR / 'voting' / 'templates', BASE_DIR / 'administrator' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,22 +88,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sv_config.wsgi.application'
 
 # ----------------------------
-# Database
+# Database (SQLite no Fly.io)
 # ----------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite local para desenvolvimento
+        'NAME': '/data/db.sqlite3',
     }
 }
-
-# 👉 Alternativa para produção (usar pasta persistente no servidor)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': '/var/data/db_data/db.sqlite3',
-#     }
-# }
 
 # ----------------------------
 # Password validation
@@ -120,8 +120,8 @@ USE_TZ = True
 # Static and Media files
 # ----------------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # destino para collectstatic
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # pastas dev
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -145,7 +145,7 @@ AUTHENTICATION_BACKENDS = ['account.email_backend.EmailBackend']
 # ----------------------------
 # Election settings
 # ----------------------------
-ELECTION_TITLE_PATH = os.path.join(BASE_DIR, 'election_title.txt')
+ELECTION_TITLE_PATH = BASE_DIR / 'election_title.txt'
 SEND_OTP = False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

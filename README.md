@@ -1,141 +1,179 @@
-# 🗳️ Sistema SecureVote: Votação Eletrónica Segura
+
+# 🗳️ SecureVote – Votação Eletrónica Segura
 
 **SecureVote: A urna, no seu bolso... a sua voz, aqui é validada!**
 
-Um sistema de votação eletrónica robusto e seguro, desenvolvido com Django, que garante a integridade, privacidade e acessibilidade do processo eleitoral. Este projeto é ideal para gerir votações de forma eficiente e transparente.
+Um sistema de votação eletrónica **robusto, seguro e moderno**, desenvolvido com **Django**, com suporte a **PWA (Progressive Web App)**, deploy em **Docker + Fly.io**, design **responsivo para mobile** e funcionalidades avançadas de privacidade.
+
+---
 
 ## ✨ Funcionalidades Principais
 
-  * ✅ **Autenticação e Autorização Robusta**: Login e registo seguro para diferentes perfis de usuário (eleitores e administradores).
-  * ✅ **Gestão Abrangente de Eleições**: Administradores podem criar, configurar, monitorizar e gerir eleições e candidatos com facilidade.
-  * ✅ **Votação Criptografada e Anónima**: Cada eleitor pode submeter um voto para uma eleição específica, com mecanismos que garantem o anonimato e a segurança do processo.
-  * ✅ **Resultados em Tempo Real**: Visualização instantânea dos resultados à medida que a votação se desenrola e após o seu término.
-  * ✅ **Temporizador Integrado**: Exibição de um temporizador para indicar o tempo restante para o início ou término da votação, mantendo os eleitores informados.
-  * ✅ **Design Responsivo e Moderno**: Interface de utilizador otimizada para uma experiência consistente em dispositivos desktop e móveis.
-  * ✅ **Gestão de Perfil com Foto**: Os usuários podem atualizar suas informações de perfil, incluindo o upload de uma foto de perfil.
+* ✅ **Autenticação e Autorização Robusta**: Login e registo seguro para diferentes perfis (eleitores e administradores).
+* ✅ **Gestão de Eleições**: Criar, configurar, monitorizar e gerir eleições e candidatos com facilidade.
+* ✅ **Votação Criptografada e Anónima**: Garante integridade e sigilo, com opção de **ocultar votos individuais**.
+* ✅ **Resultados em Tempo Real**: Resultados exibidos em tempo real ou apenas após o término.
+* ✅ **Temporizador Integrado**: Contagem regressiva para início e fim da votação.
+* ✅ **Gestão de Perfil com Foto**: Utilizadores podem atualizar dados e foto de perfil.
+* ✅ **Design Responsivo e Mobile-First**:
+
+  * Interface otimizada para desktop, tablets e smartphones.
+  * Layout adaptável (grid flexível, botões acessíveis, texto legível).
+  * Testado em múltiplos tamanhos de ecrã.
+* ✅ **PWA Completo**:
+
+  * Instalação como app nativo (Android/iOS/PC).
+  * Funcionalidade offline e cache inteligente.
+  * Tela de loading com animações modernas.
+  * Notificações de status (online/offline).
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* **Backend**: Django (Python)
+* **Frontend**: HTML, CSS, JavaScript, Bootstrap (responsivo)
+* **Banco de Dados**: PostgreSQL (recomendado) | SQLite/MySQL (opcional)
+* **Infraestrutura**: Docker + Fly.io
+* **PWA**: Manifest, Service Worker, Cache Offline, Instalação Mobile
+
+---
 
 ## 🚀 Requisitos do Sistema
 
-Certifique-se de ter os seguintes softwares instalados antes de prosseguir:
+* 🔹 **Python** 3.8+
+* 🔹 **Django** 4.0+
+* 🔹 **PostgreSQL** (ou outro DB suportado pelo Django)
+* 🔹 **Docker** (para deploy)
 
-  * 🔹 **Python**: Versão 3.8 ou superior.
-  * 🔹 **Django**: Versão 4.0 ou superior.
-  * 🔹 **Base de Dados**: PostgreSQL (recomendado) ou qualquer outra base de dados suportada pelo Django (MySQL, SQLite, etc.).
+---
 
-## ⚙️ Instruções de Configuração e Instalação
+## ⚙️ Instalação Local
 
-Siga os passos abaixo para configurar e executar o projeto localmente:
-
-### 1\. Clonar o Repositório
+### 1. Clonar o Repositório
 
 ```bash
 git clone https://github.com/aquiliviomaria/secure-vote.git
-cd e-voting-system
+cd secure-vote
 ```
 
-### 2\. Criar e Ativar o Ambiente Virtual
-
-É uma boa prática usar ambientes virtuais para isolar as dependências do projeto.
+### 2. Criar e Ativar Ambiente Virtual
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # No Linux/macOS
-# No Windows: .venv\Scripts\activate
+source .venv/bin/activate   # Linux/macOS
+.venv\Scripts\activate      # Windows
 ```
 
-### 3\. Instalar as Dependências
-
-Instale todas as bibliotecas Python necessárias listadas no `requirements.txt`.
+### 3. Instalar Dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4\. Configurar Variáveis de Ambiente
+### 4. Configurar Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto (na mesma pasta de `manage.py`) e adicione as seguintes variáveis. **Substitua os valores pelos seus dados reais.**
+Criar um arquivo `.env` com:
 
 ```env
-SECRET_KEY=sua_chave_secreta_muito_segura_aqui # Gere uma chave forte para produção
-DEBUG=True # Altere para False em produção
-DATABASE_URL=sua_url_da_base_de_dados # Ex: postgres://user:password@host:port/database_name
-# Exemplo para SQLite (padrão do Django): DATABASE_URL=sqlite:///db.sqlite3
+SECRET_KEY=sua_chave_secreta
+DEBUG=True
+DATABASE_URL=postgres://user:password@host:port/database
 ```
 
-**Nota sobre `DATABASE_URL`:** Se você estiver usando SQLite para desenvolvimento, geralmente não precisa definir `DATABASE_URL` no `.env` a menos que configure o `settings.py` para lê-lo. O padrão do Django já aponta para `db.sqlite3`. Para outras bases de dados, certifique-se de que a `DATABASE_URL` está formatada corretamente para o `dj-database-url` ou configure suas credenciais diretamente em `settings.py`.
-
-### 5\. Aplicar Migrações do Banco de Dados
-
-Crie as tabelas do banco de dados a partir dos modelos do Django.
+### 5. Aplicar Migrações
 
 ```bash
-python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 6\. Criar um Superusuário (Opcional, mas recomendado para Administradores)
+### 6. Criar Superusuário
 
 ```bash
 python manage.py createsuperuser
 ```
 
-Siga as instruções no terminal para criar um usuário administrador.
-
-### 7\. Executar o Servidor de Desenvolvimento
-
-Inicie o servidor de desenvolvimento do Django.
+### 7. Executar Servidor
 
 ```bash
 python manage.py runserver
 ```
 
-Acesse a aplicação no seu navegador: [http://127.0.0.1:8000/].
+Acesse em http://127.0.0.1:8000
 
-## 📖 Como Usar
+---
 
-### **Painel Administrativo (Backend)**
+## 📱 PWA – Como Testar
 
-🛠️ Acesse o painel administrativo em [http://127.0.0.1:8000/admin/] utilizando as credenciais do superusuário criado.
-🛠️ Crie e configure eleições, adicione candidatos e gerencie os usuários do sistema.
+1. Iniciar servidor Django:
 
-### **Portal do Eleitor (Frontend)**
+   ```bash
+   python manage.py runserver
+   ```
+2. Abrir `http://localhost:8000` no navegador.
+3. Nas DevTools (F12 → Application), verificar **Manifest** e **Service Worker**.
+4. Instalar como App:
 
-🗳️ Eleitores podem registar-se ou iniciar sessão através da página principal.
-🗳️ Após o login, terão acesso ao painel do eleitor, onde poderão visualizar as eleições ativas e submeter seus votos.
+   * Chrome/Edge → botão na barra de endereços.
+   * Firefox → Menu → "Instalar".
+   * iOS (Safari) → Partilhar → "Adicionar à Tela Inicial".
+5. Testar modo **offline**: desconectar a internet e abrir o app.
 
-### **Visualização de Resultados**
+---
 
-📊 Os resultados da eleição podem ser visualizados em tempo real ou após o término da votação, dependendo da configuração.
+## 🐳 Deploy com Docker + Fly.io
+
+### 1. Build Local
+
+```bash
+docker build -t securevote .
+docker run -p 8000:8000 securevote
+```
+
+### 2. Deploy Fly.io
+
+```bash
+fly deploy --local-only
+```
+
+---
 
 ## 📸 Screenshots
 
-Aqui estão algumas imagens do sistema em funcionamento:
+* Painel Administrativo
+![alt text](<Screenshot From 2025-09-18 11-15-13-1.png>)
 
-*Painel Administrativo*
+* Interface de Votação (mobile e desktop)
+mobile
+![alt text](<WhatsApp Image 2025-09-18 at 11.01.48 AM.jpeg>)
 
+desktop
+![alt text](<Screenshot From 2025-09-18 11-15-13.png>)
 
-*Listagem e Gestão de Eleições*
+* Tela de Login
+![alt text](<WhatsApp Image 2025-09-18 at 11.01.53 AM.jpeg>)
 
+* Loading Animado (PWA)
+![alt text](<WhatsApp Image 2025-09-18 at 11.01.46 AM.jpeg>)
 
-*Detalhes da Eleição e Temporizador*
-
-
-*Interface de Votação para o Eleitor*
-
-
-*Tela de Login e Registo de Usuários*
-
-
------
+---
 
 ## 🤝 Contribuição
 
-Contribuições são sempre bem-vindas\! Se você deseja contribuir para o projeto, por favor, siga os passos abaixo:
+1. Fork do repositório
+2. Criar branch: `git checkout -b feature/minha-feature`
+3. Commit: `git commit -m 'Nova feature'`
+4. Push: `git push origin feature/minha-feature`
+5. Pull Request 🚀
 
-1.  Faça um fork do repositório.
-2.  Crie uma nova branch (`git checkout -b feature/sua-feature`).
-3.  Faça suas alterações e commit-as (`git commit -m 'Adiciona nova feature'`).
-4.  Envie para a branch (`git push origin feature/sua-feature`).
-5.  Abra um Pull Request.
+---
 
------
+## 🎉 Status Atual
+
+* ✅ Backend Django configurado
+* ✅ PWA completo (manifest, SW, offline, instalação)
+* ✅ Docker + Fly.io deploy funcional
+* ✅ Tela de loading animada
+* ✅ **Responsividade mobile garantida**
+* ✅ Opção de ocultar votos para máxima privacidade
+

@@ -4,14 +4,14 @@
     <div class="user-panel">
       <div class="pull-left image">
         <img
-          {# AQUI ESTÁ A ALTERAÇÃO: Carrega a profile_image do usuário ou a imagem padrão #}
+          
           src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}"
           class="img-circle"
           alt="User Image"
         />
       </div>
       <div class="pull-left info">
-        {# Exibindo o primeiro e último nome, ou o email se não existirem #}
+        
         <p>
           {% if request.user.first_name and request.user.last_name %}
             {{ request.user.first_name }} {{ request.user.last_name }}
@@ -33,11 +33,13 @@
         </a>
       </li>
 
+      {% if election_setting.show_votes %}
       <li class="">
         <a href="{% url 'viewVotes' %}">
           <i class="glyphicon glyphicon-lock"></i> <span>Votos</span>
         </a>
       </li>
+      {% endif %}
 
       <li class="header">GERIR</li>
       <li class="">
@@ -59,7 +61,7 @@
       <li class="">
         <a href="{% url 'ballot_position' %}"
           ><i class="fa fa-file-text"></i>
-          <span>Posição na Cédula Eleitoral</span></a
+          <span>Posição na Cédula</span></a
         >
       </li>
       <li class="">

@@ -25,28 +25,45 @@
 
   /* Cabeçalho principal (Header Navbar) */
   .main-header {
-    background: var(--card-bg); 
-    border-bottom: 1px solid var(--border-light); 
-    box-shadow: 0 0 10px var(--shadow-light); 
+    background: #ffffff; 
+    border-bottom: 1px solid #e5e7eb; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
   }
 
-  /* Área do Logo (parte esquerda do header) */
+  /* Sobrescrever skin azul do AdminLTE */
+  .skin-blue .main-header .navbar {
+    background-color: #ffffff !important;
+  }
+  .skin-blue .main-header .navbar .nav > li > a {
+    color: var(--text-dark) !important;
+  }
+  .skin-blue .main-header .navbar .sidebar-toggle {
+    color: #374151 !important;
+  }
+  .skin-blue .main-header .navbar .sidebar-toggle:hover {
+    color: var(--primary-blue) !important;
+    background-color: rgba(0, 119, 181, 0.08) !important;
+  }
+
+  /* Área do Logo (parte esquerda do header) - DESIGN LIMPO */
   .logo {
-    background: var(--primary-blue); 
+    background: #ffffff; /* Fundo branco limpo */
     padding: 10px 20px;
-    color: #fff; 
+    color: var(--text-dark); 
     font-weight: 700;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 90, 141, 0.2); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
     display: flex; /* Adicionado para alinhar imagem e texto */
     align-items: center; /* Centraliza verticalmente */
     justify-content: center; /* Centraliza horizontalmente */
     gap: 10px; /* Espaço entre a logo e o texto */
+    border-right: 1px solid #e5e7eb; /* Borda sutil separando do resto do header */
   }
 
   /* Ajustes para o hover do logo */
   .logo:hover {
-    background-color: darkred; /* Azul um pouco mais escuro no hover */
+    background-color: #f9fafb; /* Cinza muito claro no hover */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Sombra um pouco mais pronunciada */
   }
 
   /* Estilo da Imagem da Logo */
@@ -56,12 +73,12 @@
     vertical-align: middle; /* Alinha com o texto */
   }
 
-  /* Texto do logo grande e mini - MANTÉM GRADIENTE E ANIMAÇÃO */
+  /* Texto do logo grande e mini - DESIGN LIMPO COM GRADIENTE MODERNO */
   .logo-lg .logo-text, /* Mudado para .logo-text */
   .logo-mini .logo-text { /* Mudado para .logo-text */
     font-size: 2rem;
     font-weight: 700;
-    background: black;
+    background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -84,9 +101,18 @@
 
 
   @keyframes logoGlow {
-    0% { text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue); }
-    50% { text-shadow: 0 0 20px var(--secure-green), 0 0 40px var(--secure-green); }
-    100% { text-shadow: 0 0 10px var(--quantum-blue), 0 0 20px var(--quantum-blue); }
+    0% { 
+      text-shadow: 0 0 5px var(--primary-blue), 0 0 10px var(--primary-blue); 
+      filter: brightness(1);
+    }
+    50% { 
+      text-shadow: 0 0 10px var(--secondary-blue), 0 0 20px var(--secondary-blue); 
+      filter: brightness(1.1);
+    }
+    100% { 
+      text-shadow: 0 0 5px var(--primary-blue), 0 0 10px var(--primary-blue); 
+      filter: brightness(1);
+    }
   }
 
   /* Links do menu da Navbar (lado direito) */
@@ -103,10 +129,13 @@
   /* Botão de alternar sidebar (Hamburger icon) */
   .sidebar-toggle {
     color: var(--text-dark); 
+    font-size: 18px !important;
+    transition: color 0.3s ease !important;
   }
   .sidebar-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.03); 
-    color: var(--primary-blue); 
+    background-color: rgba(0, 90, 141, 0.1) !important; 
+    color: #f8f9fa !important; 
+    font-size: 18px !important;
   }
 
 
@@ -297,6 +326,116 @@
     50% { text-shadow: 0 0 10px var(--secure-green); }
     100% { text-shadow: 0 0 5px var(--quantum-blue); }
   }
+
+  /* ======================================== */
+  /* RESPONSIVIDADE MOBILE - DESIGN MODERNO */
+  /* ======================================== */
+  
+  /* Estilos para telas menores que 768px (mobile) */
+  @media (max-width: 767px) {
+    /* Header principal com fundo branco moderno */
+    .main-header {
+      background: #ffffff !important; 
+      border-bottom: 1px solid #e5e7eb !important; 
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; 
+    }
+
+    /* Logo mantém o fundo branco limpo em mobile */
+    .logo {
+      background: #ffffff !important; 
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; 
+      border-right: 1px solid #e5e7eb !important;
+    }
+
+    /* Navbar com fundo branco */
+    .navbar {
+      background: #ffffff !important; 
+    }
+
+    /* Ícone hamburger com cor escura para contraste no fundo branco */
+    .sidebar-toggle {
+      color: #374151 !important; /* Cinza escuro para contraste */
+      font-size: 18px !important;
+      transition: all 0.3s ease !important;
+      background: transparent !important;
+    }
+
+    .sidebar-toggle:hover {
+      color: var(--primary-blue) !important; /* Azul no hover */
+      background-color: rgba(0, 119, 181, 0.08) !important; /* Fundo azul muito sutil */
+      transform: scale(1.05) !important; /* Efeito de escala sutil */
+    }
+
+    /* Links do menu da navbar com cores ajustadas */
+    .navbar-custom-menu .nav > li > a {
+      color: #374151 !important; /* Cinza escuro */
+    }
+
+    .navbar-custom-menu .nav > li > a:hover {
+      color: var(--primary-blue) !important; 
+      background: rgba(0, 119, 181, 0.05) !important; 
+    }
+
+    /* Dropdown menu com fundo branco */
+    .dropdown-menu {
+      background: #ffffff !important; 
+      border: 1px solid #e5e7eb !important; 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important; 
+    }
+
+    /* User header mantém o gradiente */
+    .user-header {
+      background: linear-gradient(45deg, var(--secure-green), var(--quantum-blue)) !important; 
+    }
+
+    /* User footer com fundo cinza muito claro */
+    .user-footer {
+      background: #f9fafb !important; 
+      border-top: 1px solid #e5e7eb !important; 
+    }
+
+    /* Botões do user footer */
+    .user-footer .btn-default {
+      background: #ffffff !important; 
+      border: 1px solid #d1d5db !important;
+      color: #374151 !important; 
+    }
+
+    .user-footer .btn-default:hover {
+      background: #f3f4f6 !important; 
+      border-color: #9ca3af !important; 
+      color: var(--primary-blue) !important; 
+    }
+  }
+
+  /* Estilos para telas muito pequenas (até 480px) */
+  @media (max-width: 480px) {
+    /* Logo com padding reduzido */
+    .logo {
+      padding: 8px 15px !important;
+    }
+
+    /* Logo texto menor em telas muito pequenas */
+    .logo-lg .logo-text {
+      font-size: 1.5rem !important;
+    }
+
+    .logo-mini .logo-text {
+      font-size: 1.2rem !important;
+    }
+
+    /* Ícone hamburger um pouco menor */
+    .sidebar-toggle {
+      font-size: 16px !important;
+      padding: 12px !important;
+    }
+
+    /* User image menor */
+    .user-image {
+      width: 25px !important;
+      height: 25px !important;
+    }
+  }
 </style>
 
 <header class="main-header">
@@ -319,14 +458,14 @@
       <ul class="nav navbar-nav">
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {# ATENÇÃO: Carrega profile_image do usuário ou padrão #}
+            {#  Carrega profile_image do usuário ou padrão #}
             <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}" 
                  class="user-image" alt="User Image">
-            <span class="hidden-xs">{{ request.user.first_name }}</span> {# Mostrar apenas o primeiro nome na navbar #}
+            <span class="hidden-xs">{{ request.user.first_name }}</span> 
           </a>
           <ul class="dropdown-menu">
             <li class="user-header">
-              {# ATENÇÃO: Carrega profile_image do usuário ou padrão #}
+              
               <img src="{% if request.user.profile_image %}{{ request.user.profile_image.url }}{% else %}{% static 'images/admin1.png' %}{% endif %}" 
                    class="img-circle" alt="User Image">
 
@@ -334,8 +473,8 @@
                 {{ request.user.first_name }} {{ request.user.last_name }} 
                 {% if request.user.is_superuser %}
                     <small>Administrador(a)</small>
-                {% elif request.user.groups.all %} {# Se o usuário pertence a algum grupo #}
-                    <small>{{ request.user.groups.all.0.name }}</small> {# Pega o nome do primeiro grupo #}
+                {% elif request.user.groups.all %} 
+                    <small>{{ request.user.groups.all.0.name }}</small> 
                 {% else %}
                     <small>Eleitor(a)</small> 
                 {% endif %}
@@ -356,8 +495,7 @@
   </nav>
 </header>
 
-{# O MODAL DE PERFIL ESTÁ INCLUÍDO DIRETAMENTE AQUI (para facilitar o exemplo) #}
-{# Em um projeto real, é melhor ter o modal em um arquivo separado e usar {% include 'path/to/profile_modal.html' %} #}
+
 <div class="modal fade" id="profile">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -431,7 +569,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-times-circle"></i> Fechar</button>
-            {# Renomeado de btn-success para btn-primary-gradient para consistência #}
+           
             <button type="submit" class="btn btn-primary-gradient btn-flat" name="save"><i class="fa fa-save"></i> Salvar Alterações</button>
             </form>
           </div>
